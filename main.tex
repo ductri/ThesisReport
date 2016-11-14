@@ -1,0 +1,161 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 12pt]{article}
+\usepackage[a4paper, left=30mm]{geometry}
+\geometry{
+	bmargin=2.8cm,
+	tmargin=2.8cm,
+	lmargin=3.1cm,
+	rmargin=2.3cm,
+}
+\usepackage[utf8]{vietnam}
+\usepackage{graphicx}
+\usepackage{lastpage}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Phân tích cảm xúc trong văn bản y khoa}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyhead[L]{\leftmark}
+\rhead{\small \textit{Phân tích cảm xúc trong văn bản y khoa} \hspace{0.6cm} \thepage}
+\setlength{\headheight}{30pt} 
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{float}
+\usepackage[labelfont=bf]{caption}
+\usepackage{array}
+\setlength\extrarowheight{2pt}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage{csquotes}
+\usepackage[backend=bibtex,
+style=numeric,
+bibencoding=ascii
+%style=alphabetic
+%style=reading
+]{biblatex}
+
+\usepackage{amsthm}
+%For noitemsep
+\usepackage{enumitem}
+%For tabular env
+\usepackage{array}
+%For footnote on table
+\usepackage{tablefootnote}
+%Reset footnote counter for each page
+\usepackage[perpage]{footmisc}
+\usepackage{changepage}   % for the adjustwidth environment
+\usepackage{xspace}	%Stop ignoring space after command
+\usepackage{import} %For section from another file
+\usepackage[intlimits]{amsmath}
+
+\renewcommand{\headrulewidth}{1pt}
+\setlength\parindent{0pt} % noindent for all paragraph
+\addbibresource{reference/my_ref.bib}
+
+\captionsetup[figure]{labelfont=sc, font={sf, small}}
+\captionsetup[table]{labelfont=sc, font=sf}
+
+\theoremstyle{definition}
+\newtheorem{exmp}{Ví dụ}[section]
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\newcommand{\refformat}[1]{#1}
+\newcommand{\example}[1]{\vspace{5px} \begin{adjustwidth}{0.05\textwidth}{} \textit{Ví dụ:} #1\end{adjustwidth}\vspace{5px}}
+\newcommand{\examp}[1]{\vspace{5px} \begin{adjustwidth}{0.0\textwidth}{} \textit{Ví dụ:} #1\end{adjustwidth}\vspace{5px}}
+\newcommand{\myquote}[1]{#1}
+% Constant
+\newcommand{\tichcuc}{\textit{Tích cực}\xspace}
+\newcommand{\tieucuc}{\textit{Tiêu cực}\xspace}
+\newcommand{\trungtinh}{\textit{Trung tính}\xspace}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\large ĐẠI HỌC BÁCH KHOA THÀNH PHỐ HỒ CHÍ MINH}\\[0.2cm] % Name of your university/college
+\textsc{\Large \scshape khoa khoa học và kỹ thuật máy tính}\\[0.5cm] % Major heading such as course name
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.4]{hinh/HCMUT_official_logo.png}
+\end{figure} 
+
+\textsc{\large BÁO CÁO LUẬN VĂN TỐT NGHIỆP}\\[0.2cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Phân tích cảm xúc trong\\văn bản y khoa}\\[0.4cm] % Title of your document
+\HRule \\[0.8cm]
+
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+\begin{flushright}
+\begin{minipage}{0.7\textwidth}
+
+\end{minipage}
+\end{flushright}
+
+\begin{flushleft} \large
+\textbf{Giáo viên hướng dẫn:}\\
+GS. TS. Cao Hoàng Trụ\\[1.0cm]
+\end{flushleft}
+
+\begin{flushleft} \large
+\textbf{Sinh viên thực hiện:}\\
+Nguyễn Đức Trí - 51204052\\
+Nguyễn Diệp Phương Linh - 51201899\\[1.5cm]
+\end{flushleft}
+
+\large \emph{Thành phố Hồ Chí Minh, 12/2016}
+
+\vfill % Fill the rest of the page with whitespace
+\end{titlepage}
+
+% START MAIN DOCUMENT
+\pagebreak
+\tableofcontents
+
+\thispagestyle{empty}
+
+\pagebreak
+
+\import{sections/}{gioithieu.tex}
+\pagebreak
+
+\import{sections/}{nghiencuulienquan.tex}
+\pagebreak
+
+\import{sections/}{kienthucnentang.tex}
+\pagebreak
+
+\import{sections/}{motabaitoan.tex}
+\pagebreak
+
+\import{sections/}{phuongphapdexuat.tex}
+\pagebreak
+
+\import{sections/}{phuongphapdanhgia.tex}
+\pagebreak
+
+\import{sections/}{ketluan.tex}
+\pagebreak
+
+\printbibliography[title={Tài liệu tham khảo}]
+\end{document}
