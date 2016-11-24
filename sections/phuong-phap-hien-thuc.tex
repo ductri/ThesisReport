@@ -1,0 +1,20 @@
+\section{Phương pháp hiện thực}
+\subsection{N-gram}
+\subsubsection*{Giới thiệu}
+Theo kết luận của \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
+
+%Định nghĩa
+N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn... Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng n-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng n-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng n-gram, kết quả tốt nhất tăng 20.58\% so với baseline. \\
+
+Ví dụ câu: "Standard practice in pupillary monitoring yields inaccurate data"
+\begin{itemize}
+\item[•]Với n=1, n-gram được gọi là uni-gram. Câu trên sẽ được chuyển thành các uni-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data
+\item[•]Với n=2, n-gram được gọi là bi-gram. Câu trên sẽ được chuyển thành các bi-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data
+\item[•]Với n=3, n-gram được gọi là tri-gram. Câu trên sẽ được chuyển thành các n-gram với n=3: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
+\end{itemize}
+
+
+
+Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo này kết luận việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này.\\
+
+Để có thể sử dụng n-gram vào giải thuật SVM, phải sử dụng một cách nào đó để chuyển các n-gram sang vector các số thực. Có 2 cách được sử dụng phổ biến: đếm số lần xuất hiện của n-gram, biểu diễn dạng binary thể hiện có hay không có xuất hiện n-gram. Cách biểu diễn thứ 2 làm mất đi một phần thông tin khi đưa vào bộ phân loại SVM, tuy nhiên theo \cite{pang2002thumbs} cách này đem lại kết quả tốt hơn. 
