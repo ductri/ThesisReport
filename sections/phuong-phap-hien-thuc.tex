@@ -1,4 +1,5 @@
 \section{Phương pháp hiện thực}
+Với các bài toán giải quyết bằng phương pháp học máy, bước trích xuất đặc trưng là quan trọng nhất. Bước này định nghĩa những đặc trưng nào được sử dụng và sử dụng như thế nào. Chúng tôi xem xét 4 đặc trưng sau: n-gram, change phrase, negation và so-cal. Trong phần này, mỗi mục con trình bày theo thứ tự: ...
 \subsection{N-gram}
 \subsubsection*{Giới thiệu}
 Theo kết luận của \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
@@ -11,10 +12,55 @@ Ví dụ câu: "Standard practice in pupillary monitoring yields inaccurate data
 \item[•]Với n=1, n-gram được gọi là uni-gram. Câu trên sẽ được chuyển thành các uni-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data
 \item[•]Với n=2, n-gram được gọi là bi-gram. Câu trên sẽ được chuyển thành các bi-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data
 \item[•]Với n=3, n-gram được gọi là tri-gram. Câu trên sẽ được chuyển thành các n-gram với n=3: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
+\item[•]Với n>3, số lượng n-gram quá lớn và tần số xuất hiện thấp, dễ làm mô hình học máy bị học quá khớp (overfitting)
 \end{itemize}
 
+\subsubsection*{Các tùy chỉnh}
+Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo này kết luận việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp khác nhau của n-gram để tìm ra kết quả tốt nhất.\\
 
+Để có thể sử dụng n-gram vào giải thuật SVM, phải sử dụng một cách nào đó để chuyển các n-gram sang vector các số thực. Có 2 cách được sử dụng phổ biến: đếm số lần xuất hiện của n-gram, biểu diễn dạng binary thể hiện có hay không có xuất hiện n-gram. Cách biểu diễn thứ 2 làm mất đi một phần thông tin khi đưa vào bộ phân loại SVM, tuy nhiên theo \cite{pang2002thumbs} cách này đem lại kết quả tốt hơn. Báo cáo của \cite{sarker2011outcome} kết luận không có sự khác biệt đáng kể giữa 2 cách trên. Trong báo cáo này, chúng tôi thử nghiệm cả 2 cách để tìm ra kết quả tốt nhất.
+\subsubsection*{Mở rộng}
+Việc áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại. Tác giả //TODO cho rằng việc áp dụng các kiến thức liên quan đến lĩnh vực đang xem xét giúp tăng độ chính xác khi phân loại. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa. Ví dụ với câu: "Elevated troponin level after acute stroke is common and is associated with ECG changes suggestive of myocardial ischemia and increased risk of death", từ "stroke" xét trong ngữ cảnh y học nghĩa là đột quỵ. Nhưng đối với việc phân loại cảm xúc, chúng tôi chỉ quan tâm tới ý nghĩa khái quát của từ này: "stroke" mô tả một loại bệnh. Như vậy, các thuật ngữ y khoa thuộc cùng 1 kiểu (triệu chứng, loại bệnh, tên thuốc, ...) đều được xem là một. Từ đó, giảm thiểu khả năng bộ phân loại bị nhiễu hoặc bị học lệch (overfitting).\\
 
-Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo này kết luận việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này.\\
+Một trong những công cụ đã được xây dựng hoàn chỉnh và sử dụng phổ biến trong các bài toán liên quan đến y khoa trên dữ liệu tiếng Anh là UMLS. Đây là một hệ thống tích hợp các thuật ngữ y khoa cùng các mã chuẩn hóa nhằm tạo tiền đề cho việc xây dựng và phát triển các hệ thống thông tin y khoa cũng như các dịch vụ chăm sóc y tế khác. Để hiện thực nhiệm vụ trên, chúng tôi sử dụng công cụ MetaMap kết hợp hệ thống UMLS. UMLS phân các thuật ngữ y học ra làm 136 kiểu \footnote{Chi tiết các kiểu tham khảo tại \texttt{https://metamap.nlm.nih.gov/Docs/SemanticTypes\_2013AA.txt}}. MetaMap là một công cụ cho phép tra cứu tên kiểu của 1 thuật ngữ y học bất kỳ (hình \ref{fig:metamap}).\\
 
-Để có thể sử dụng n-gram vào giải thuật SVM, phải sử dụng một cách nào đó để chuyển các n-gram sang vector các số thực. Có 2 cách được sử dụng phổ biến: đếm số lần xuất hiện của n-gram, biểu diễn dạng binary thể hiện có hay không có xuất hiện n-gram. Cách biểu diễn thứ 2 làm mất đi một phần thông tin khi đưa vào bộ phân loại SVM, tuy nhiên theo \cite{pang2002thumbs} cách này đem lại kết quả tốt hơn. 
+\begin{figure}[!]
+\centering
+\includegraphics[scale=0.32]{metamap.png}
+\caption{MetaMap sử dụng nguồn tài nguyên UMLS, giúp tra cứu tên kiểu của 1 thuật ngữ y học}
+\label{fig:metamap}
+\end{figure}
+%Một số ví dụ:\\
+\example{1}{
+\myquote{Elevated troponin level after acute \underline{stroke} is common and is associated with ECG changes suggestive of myocardial \underline{ischemia} and increased risk of death}\\
+$\xrightarrow{MetaMap}$ \\
+\myquote{Elevated troponin level after acute \underline{DSYN} is common and is associated with ECG changes suggestive of myocardial \underline{DSYN} and increased risk of death}\\
+Từ \underline{stroke} và \underline{ischemia} đều thuộc kiểu Loại bệnh hoặc triệu chứng, nên được thay bằng nhãn DSYN (Disease or Syndrome)
+}
+\example{2}{
+\myquote{
+In addition, regardless of psychiatric status, \underline{ADHD} placed children at relative risk for educational and vocational disadvantage}\\
+$\xrightarrow{MetaMap}$ \\
+\myquote{In addition, regardless of psychiatric status, \underline{MOBD} placed children at relative risk for educational and vocational disadvantage}\\
+Từ \underline{ADHD} chỉ một dạng rối loạn về thần kinh, nên được thay bằng nhãn MOBD (Mental or Behavioral Dysfunction)\\
+}
+\subsubsection*{Vector hóa}
+%TODO mô hình hóa bởi biểu đồ
+Để chuyển một câu từ dạng text sang dạng vector để có thể áp dụng giải thuật SVM, chúng tôi tiến hành thống kê tất cả các từ xuất hiện trong cả tập huấn luyện, sau đó chỉ giữ lại những từ xuất hiện từ 3 lần trở lên. Những từ có tuần suất xuất hiện trong cả tập huấn luyện dưới 3 lần có khả năng gây nhiễu hoặc khiến bộ phân loại học lệch (overfitting). Sau bước này, chúng ta có 1 tập thống kê S gồm k phần tử, với thứ tự các phần tử không thay đổi. Từ đó, mỗi câu trong tập huấn luyện được biểu diễn bởi một vector k chiều, giá trị tại chiều thứ i được xác định:
+\begin{itemize}[noitemsep]
+\item[•] Nếu câu không chứa từ thứ i trong tập thống kê S, giá trị tại chiều thứ i bằng 0
+\item[•] Nếu câu có chứa từ thứ i trong tập thống kê S, như đã phân tích ở trên, có 2 cách biểu diễn giá trị tại chiều thứ i: bằng 1 nếu chỉ quan tâm đến việc có xuất hiện hay không; bằng số lần xuất hiện của từ đó trong câu nếu quan tâm đến tần suất xuất hiện
+\end{itemize}
+
+\example{3}{
+Giả sử sau khi thống kê qua toàn tập huấn luyện, thu được tập S như sau: drug, risk, disturbances, associated with, disadvantage, evidence. Khi đó, nếu chỉ quan tâm đến việc có xuất hiện n-gram trong câu hay không, các câu ở ví dụ 1 và 2 được chuyển thành dạng binary vector như sau:
+}
+\begin{tabular}{| c | c | c | c | c | c | c | c |}
+\hline
+  & \textbf{drug} & \textbf{risk} & \textbf{disturbances} & \textbf{associated with} & \textbf{disadvantage} & \textbf{evidence}
+\\ \hline
+Ví dụ 1 & 0 & 1 & 0 & 1 & 0 & 0
+\\ \hline
+Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
+\\ \hline
+\end{tabular}

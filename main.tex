@@ -58,15 +58,17 @@ bibencoding=ascii
 \setlength\parindent{0pt} % noindent for all paragraph
 \addbibresource{reference/my_ref.bib}
 
-\captionsetup[figure]{labelfont=sc, font={sf, small}}
+\captionsetup[figure]{labelfont=sc, font={sf}}
 \captionsetup[table]{labelfont=sc, font=sf}
 
 \theoremstyle{definition}
 \newtheorem{exmp}{Ví dụ}[section]
 \renewcommand{\thefootnote}{\arabic{footnote}}
 \newcommand{\refformat}[1]{#1}
-\newcommand{\example}[1]{\vspace{5px} \begin{adjustwidth}{0.05\textwidth}{} \textit{Ví dụ:} #1\end{adjustwidth}\vspace{5px}}
-\newcommand{\examp}[1]{\vspace{5px} \begin{adjustwidth}{0.0\textwidth}{} \textit{Ví dụ:} #1\end{adjustwidth}\vspace{5px}}
+\newcommand{\example}[2]{\vspace{5px} 
+	\textit{Ví dụ #1:}
+	\begin{adjustwidth}{0.08\textwidth}{0cm}  #2
+	\end{adjustwidth}\vspace{0px}}
 \newcommand{\myquote}[1]{#1}
 % Constant
 \newcommand{\tichcuc}{\textit{Tích cực}\xspace}
