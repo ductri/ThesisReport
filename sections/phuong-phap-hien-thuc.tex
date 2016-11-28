@@ -65,7 +65,6 @@ Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
 \\ \hline
 \end{tabular}
 \subsection{Change phrase}
-
 Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al có một số thay đổi và mở rộng đặc trưng này.
 \subsubsection*{Định nghĩa}
 \textit{Change phrase} có thể hiểu là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, thường dùng trong những câu so sánh. Ví dụ: Câu ``Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia'' thể hiện việc sử dụng ``Atypical antipsychotic'' làm tăng nguy cơ chết so với không dùng ``Atypical antipsychotic''. Nghiên cứu \cite{niu2005analysis} sử dụng danh sách 4 nhãn đại diện để mô tả \textit{Change phrase}:
@@ -111,23 +110,4 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành
 
 Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Bằng cách này, giải thuật không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.
 
-\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}\subsection{Yếu tố phủ định}
-\subsubsection*{Tổng quan}
-%Định nghĩa
-Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
-
-Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{chapman2013extending} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{chapman2013extending}. \\
-
-%Negation bao gồm các thành phần chính....
-
-%Lợi ích
-Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
-
-Theo kết quả nghiên cứu của \cite{chapman2001evaluation}, khoảng một nửa số câu mô tả trong các văn bản lâm sàng và báo cáo y khoa chịu sự can thiệp của các yếu tố phủ định. Vì vậy việc nhận diện và phân tích tốt các yếu tố phủ định góp phần rất lớn để nâng cao hiệu quả phân loại trong câu.\\
-
-Ở phạm vi báo cáo luận văn này, chúng tôi xem xét việc xử lý yếu tố phủ định như một bài toán con trong bài toán phân tích cảm xúc chung.
-\subsubsection*{Bài toán phân tích phủ định}
-Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (i) xác định cụm từ mang ý nghĩa phủ định cùng với tầm vực ảnh hưởng của cụm từ đó trong câu và (ii) phân tích ảnh hưởng cũng như hiệu quả của từ phủ định lên ý nghĩa phân loại của cả câu.
-
-
-\subsubsection*{Giải thuật}
+\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}
