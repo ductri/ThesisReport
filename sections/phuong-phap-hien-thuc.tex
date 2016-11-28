@@ -64,3 +64,24 @@ Ví dụ 1 & 0 & 1 & 0 & 1 & 0 & 0
 Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
 \\ \hline
 \end{tabular}
+
+\subsection{Yếu tố phủ định}
+\subsubsection*{Tổng quan}
+%Định nghĩa
+Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
+
+Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{chapman2013extending} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{chapman2013extending}. \\
+
+%Negation bao gồm các thành phần chính....
+
+%Lợi ích
+Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
+
+Theo kết quả nghiên cứu của \cite{chapman2001evaluation}, khoảng một nửa số câu mô tả trong các văn bản lâm sàng và báo cáo y khoa chịu sự can thiệp của các yếu tố phủ định. Vì vậy việc nhận diện và phân tích tốt các yếu tố phủ định góp phần rất lớn để nâng cao hiệu quả phân loại trong câu.\\
+
+Ở phạm vi báo cáo luận văn này, chúng tôi xem xét việc xử lý yếu tố phủ định như một bài toán con trong bài toán phân tích cảm xúc chung.
+\subsubsection*{Bài toán phân tích phủ định}
+Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (i) xác định cụm từ mang ý nghĩa phủ định cùng với tầm vực ảnh hưởng của cụm từ đó trong câu và (ii) phân tích ảnh hưởng cũng như hiệu quả của từ phủ định lên ý nghĩa phân loại của cả câu.
+
+
+\subsubsection*{Giải thuật}
