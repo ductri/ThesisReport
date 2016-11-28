@@ -78,6 +78,7 @@ BAD: Mang ý nghĩa tiêu cực: suffer", "adverse", "hazards", "risk", "death",
 \end{itemize}
 Kết hợp 2 nhóm trên, ta có 4 đặc trưng giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{bảng~\ref{tab:changphrase}}. Với câu “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”, từ ``increased'' sẽ được gán nhãn MORE, ``risk'' được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ “increased” là ``risk''. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.
 
+<<<<<<< HEAD
 \begin{table}[H]
 \centering
 \caption{Các đặc trưng \textit{Change phrase}}
@@ -103,6 +104,19 @@ MORE & BAD & \tieucuc \\
 \item[•] Giải thuật nhận biết sự kết hợp của các nhãn trên
 \end{itemize}
 Trong nghiên cứu này, chúng tôi sử dụng danh sách các từ cho mỗi nhãn chủ yếu từ nghiên cứu của nhóm tác giả Sarker, Abeed, et al.\cite{sarker2011outcome}. Nhóm tác giả trên tự tập hợp danh sách các nhóm từ bằng tay nhưng không liệt kê trong báo cáo của mình. Nhóm chúng tôi có liên hệ và đã nhận được mã nguồn, từ đó lấy được danh sách các nhóm từ. Danh sách này gồm 371 từ (BAD: 223 từ, GOOD: 82 từ, MORE: 30 từ, LESS:36 từ). Sau đó, chúng tôi mở rộng danh sách bằng cách thu thập thêm. Danh sách cuối cùng gồm 423 từ (BAD: 238, GOOD: 96, MORE: 42 từ, LESS: 47 từ).\\
+=======
+\subsection{Yếu tố phủ định}
+\subsubsection*{Tổng quan}
+%Định nghĩa
+Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
+
+Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{Chapman2013}, \cite{Zeng2007} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{Chapman2013}, \cite{CruzDiaz2015}. \\
+
+%Negation bao gồm các thành phần chính....
+
+%Lợi ích
+Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
+>>>>>>> 98a629d19ca2c4fdf625f7b42a399ac49015bf59
 
 Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành nhận dạng xem 1 câu có thuộc mẫu nào trong 4 mẫu: LESS GOOD, LESS BAD, MORE GOOD, MORE BAD. Nghiên cứu sử dụng phương pháp hiện thực tham khảo theo bài báo \cite{niu2005analysis}. Giải thuật trích xuất đặc trưng này thực hiện qua 2 bước.\\
 
