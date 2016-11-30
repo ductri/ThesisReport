@@ -64,6 +64,51 @@ Ví dụ 1 & 0 & 1 & 0 & 1 & 0 & 0
 Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
 \\ \hline
 \end{tabular}
+\subsection{Change phrase}
+Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al có một số thay đổi và mở rộng đặc trưng này.
+\subsubsection*{Định nghĩa}
+\textit{Change phrase} có thể hiểu là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, thường dùng trong những câu so sánh. Ví dụ: Câu ``Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia'' thể hiện việc sử dụng ``Atypical antipsychotic'' làm tăng nguy cơ chết so với không dùng ``Atypical antipsychotic''. Nghiên cứu \cite{niu2005analysis} sử dụng danh sách 4 nhãn đại diện để mô tả \textit{Change phrase}:
+\begin{itemize}[noitemsep]
+\item[•]Nhãn thể hiện sự thay đổi tình trạng, gồm:\\
+LESS: Làm giảm bớt, một số từ như: "reduce", "decline", "fall", "less", "little",...
+MORE: Làm tăng thêm (hoặc duy trì), một số từ như: "enhance", "higher", "exceed", "increase", "improve",...
+\item[•]Nhãn xác định tính phân cực của đối tượng bị thay đổi, gồm:\\
+GOOD: Mang ý nghĩa tích cực: "benefit", "improvement", "advantage", "accuracy", "great", ...\\
+BAD: Mang ý nghĩa tiêu cực: suffer", "adverse", "hazards", "risk", "death",...
+\end{itemize}
+Kết hợp 2 nhóm trên, ta có 4 đặc trưng giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{bảng~\ref{tab:changphrase}}. Với câu “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”, từ ``increased'' sẽ được gán nhãn MORE, ``risk'' được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ “increased” là ``risk''. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.
+
+\begin{table}[H]
+\centering
+\caption{Các đặc trưng \textit{Change phrase}}
+\label{tab:changphrase}
+\begin{tabular}{ | P{0.25\textwidth} | P{0.25\textwidth}| P{0.25\textwidth} | }
+\hline
+\textbf{Nhóm làm thay đổi tình trạng} & \textbf{Nhóm xác định đối tượng} & \textbf{Phân loại tính phân cực} \\
+\hline
+LESS & GOOD & \tieucuc \\
+\hline
+LESS & BAD & \tichcuc \\
+\hline
+MORE & GOOD	& \tichcuc \\
+\hline
+MORE & BAD & \tieucuc \\
+\hline
+\end{tabular}
+\end{table}
+\subsubsection*{Các tùy chỉnh}
+Đặc trưng Change phrase phụ thuộc vào 2 yếu tố:
+\begin{itemize}[noitemsep]
+\item[•] Danh sách các từ trong mỗi nhãn LESS, MORE, BAD, GOOD
+\item[•] Giải thuật nhận biết sự kết hợp của các nhãn trên
+\end{itemize}
+Trong nghiên cứu này, chúng tôi sử dụng danh sách các từ cho mỗi nhãn chủ yếu từ nghiên cứu của nhóm tác giả Sarker, Abeed, et al.\cite{sarker2011outcome}. Nhóm tác giả trên tự tập hợp danh sách các nhóm từ bằng tay nhưng không liệt kê trong báo cáo của mình. Nhóm chúng tôi có liên hệ và đã nhận được mã nguồn, từ đó lấy được danh sách các nhóm từ. Danh sách này gồm 371 từ (BAD: 223 từ, GOOD: 82 từ, MORE: 30 từ, LESS:36 từ). Sau đó, chúng tôi mở rộng danh sách bằng cách thu thập thêm. Danh sách cuối cùng gồm 423 từ (BAD: 238, GOOD: 96, MORE: 42 từ, LESS: 47 từ).\\
+
+Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành nhận dạng xem 1 câu có thuộc mẫu nào trong 4 mẫu: LESS GOOD, LESS BAD, MORE GOOD, MORE BAD. Nghiên cứu sử dụng phương pháp hiện thực tham khảo theo bài báo \cite{niu2005analysis}. Giải thuật trích xuất đặc trưng này thực hiện qua 2 bước.\\
+
+Ở bước đầu, giải thuật tập trung xem xét những từ mô tả sự thay đổi trong câu bằng cách so trùng các từ trong 2 nhóm LESS và GOOD với các từ trong câu. Sau đó, giải thuật thêm tag ``\_LESS'' hoặc ``\_MORE'' tùy vào từ đó thuộc nhãn nào. 2 tag này được thêm vào cuối các từ thuộc phạm vi từ từ thuộc 1 trong 2 nhóm trên cho đến cuối câu hoặc gặp 1 dấu câu. \\
+
+Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Bằng cách này, giải thuật không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.
 
 \subsection{Yếu tố phủ định}
 \subsubsection*{Tổng quan}
@@ -76,13 +121,4 @@ Nhiều thuật toán phân tích phủ định đã được hiện thực trê
 
 %Lợi ích
 Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
-
-Theo kết quả nghiên cứu của \cite{chapman2001evaluation}, khoảng một nửa số câu mô tả trong các văn bản lâm sàng và báo cáo y khoa chịu sự can thiệp của các yếu tố phủ định. Vì vậy việc nhận diện và phân tích tốt các yếu tố phủ định góp phần rất lớn để nâng cao hiệu quả phân loại trong câu.\\
-
-Ở phạm vi báo cáo luận văn này, chúng tôi xem xét việc xử lý yếu tố phủ định như một bài toán con trong bài toán phân tích cảm xúc chung.
-\subsubsection*{Bài toán phân tích phủ định}
-Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (i) xác định cụm từ mang ý nghĩa phủ định cùng với tầm vực ảnh hưởng của cụm từ đó trong câu và (ii) phân tích ảnh hưởng cũng như hiệu quả của từ phủ định lên ý nghĩa phân loại của cả câu.
-
-
-\subsubsection*{Giải thuật}
-\cite{Councill2010}, \cite{Chapman2013}
+\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}
