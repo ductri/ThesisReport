@@ -2,6 +2,87 @@
 \subsection{Phân tích cảm xúc trong báo cáo y học}
 \subsubsection*{Phân tích cảm xúc trong văn bản nói chung}
 \subsubsection*{Phân tích cảm xúc trong báo cáo y khoa}
-\subsection{Sự phủ định}
+
+\subsection{Phân tích phủ định}
+\subsubsection*{Sự phủ định}
+%Định nghĩa
+Sự phủ định (negation) là một khái niệm nhằm chỉ một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác \cite{skeppstedt2016marker}. Như ở ví dụ 1, từ phủ định ``no'' phủ nhận sự tồn tại của cụm từ ``significant effect'', hay nói cách khác, cụm danh từ ``significant effect'' chịu ảnh hưởng của yếu tố phủ định trong câu. 
+
+\example{1}{\myquote{Early administration of oral steroid medication in patients with acute sciatica had ([no] significant effect).}\\}
+
+Nhóm tác giả \cite{chapman2001evaluation} đã khẳng định rằng xấp xỉ một nửa số câu mô tả trong các văn bản lâm sàng và báo cáo y khoa chịu sự can thiệp của các yếu tố phủ định. Việc xuất hiện sự phủ định trong câu có thể dẫn đến thay đổi hoàn toàn tính phân cực của câu. Vì vậy hiện thực tốt bước tự động phân tích phủ định góp phần quan trọng để nâng cao hiệu quả phân loại tính phân cực của câu trong văn bản y khoa.\\
+
+Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh \cite{Aronow1999, chapman2001evaluation, Mutalik2001, Elkin2005, Zeng2007}, và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{benamara2012how, costumero2014an, Chapman2013, CruzDiaz2015, gindl2006negation}. Ở phạm vi báo cáo luận văn này, chúng tôi xem xét việc xử lý yếu tố phủ định như một bài toán con trong bài toán phân tích cảm xúc chung.
+
+\subsubsection*{Hình thức phủ định}
+
+Trong ngữ pháp tiếng Anh \cite{Givon1993}, phủ định có thể xảy ra theo hai hình thức: phủ định hình thái (morphological negation) và phủ định cú pháp (syntactic negation). Trong đó, phủ định hình thái được tạo ra khi thay đổi từ gốc bằng những tiền tố phủ định (như ``dis-'', ``non-'', ``un-'') hoặc hậu tố phủ định (như ``-less''), còn phủ định cú pháp là hình thức phủ định sử dụng từ ngữ phủ định hoặc mẫu cú pháp riêng biệt rõ ràng và mang ý nghĩa phủ nhận một từ hoặc cụm từ khác trong cùng câu hoặc ở câu liên quan.\\
+
+Bài toán phân tích phủ định được đặt ra để xác định từ gây phủ định và phạm vi phủ định của từ đó trong câu, nhằm phân tích ảnh hưởng của sự phủ định lên tính phân cực của câu. Phạm vi của phủ định hình thái chỉ giới hạn ở một từ riêng lẻ nên không tác động lên yếu tố khác. Vì vậy bài toán chủ yếu tập trung phân tích dạng phủ định cú pháp, bao gồm hai thành phần chính là từ phủ định (có thể bao gồm một từ hoặc một cụm từ) và phạm vi phủ định của từ đó. Ví dụ 1 là một trường hợp đơn giản nhất của phủ định cú pháp.
+
+\subsubsection*{Từ phủ định}
+
+Trên thực tế, bài toán phân tích phủ định thường gặp khó khăn bởi sự đa dạng về từ loại của từ phủ định và từ bị phủ định cũng như vị trí tương đối của chúng trong câu. Như ở ví dụ 2, từ phủ định không chỉ là những từ đơn giản như ``no'', ``not'' mà còn bao gồm từ phủ định khác như ``without'', ``rule out'', ``exclude'', ... 
+
+\example{2}{\myquote{Mildly hyperinflated lungs ([without] focal opacity).\\(Myelomeningocele is [excluded]).}\\}
+
+Bên cạnh đó, những động từ như ``rule out'', ``exclude'' mang ý nghĩa khác nhau khi xuất hiện trong những trường hợp đặc biệt. Trong ví dụ 3, đây là câu mệnh lệnh yêu cầu khám trong ghi chú của bác sĩ, cho thấy khả năng viêm phổi (pneumonia) vẫn còn hiện diện. Vì thế ``rule out'' trong câu này không thể hiện sự phủ định.
+
+\example{3}{\myquote{(<Rule out> pneumonia).}\\}
+
+Tuy nhiên, khi được tìm thấy trong câu bị động như ở ví dụ 4, nó thể hiện sự phủ định rõ ràng khi phủ nhận khả năng bị ung thư phổi. 
+
+\example{4}{\myquote{(The possibility of lung cancer is [ruled out]).}\\}
+
+Mặt khác, nếu dạng bị động của những động từ này bị phủ định, sự phủ định sẽ bị loại bỏ như ở ví dụ 5.
+
+\example{5}{\myquote{(It is <not ruled out> that the ureterocele opens into the vagina).}\\}
+
+Bởi sự phức tạp trong việc nhận diện ý nghĩa phủ định của các từ phủ định nên cần thiết có một danh sách các từ phủ định được lọc và phân loại rõ ràng. Giải thuật phủ định NegEx \cite{Tanushi2013} (sẽ được đề cập ở phần sau) đã xây dựng một danh sách thuật ngữ phủ định\footnote{https://code.google.com/archive/p/negex/wikis/NegExTerms.wiki} chia làm ba loại:
+
+\begin{itemize}[noitemsep]
+\item[•] Phủ định tiền điều kiện (Pre-condition negation term) bao gồm những từ phủ định có vị trí đứng trước những cụm từ bị nó phủ định trong câu. Ví dụ như ``without'', ``absence of'', ``rule out''...
+\item[•] Phủ định hậu điều kiện (Post-condition negation term) bao gồm những từ phủ định có vị trí đứng sau những cụm từ bị nó phủ định trong câu và thường ở thể bị động. Ví dụ như ``be ruled out'', ...
+\item[•] Giả phủ định (Pseudo negation term) bao gồm những cụm từ trông có vẻ như từ phủ định nhưng không mang ý nghĩa phủ định. Ví dụ như ``not certain if'', ``without difficulty''...
+\end{itemize}
+
+Việc phân loại các từ phủ định như trên giúp trả lời hai câu hỏi: từ nào trong câu là từ có mang ý nghĩa phủ định (không phải giả phủ định) và vị trí của từ bị phủ định là trước hay sau từ phủ định đó. Vấn đề còn lại là xác định phạm vi ảnh hưởng của từ phủ định trong câu.
+
+\subsubsection*{Phạm vi phủ định}
+
+Xét về phạm vi phủ định, phủ định cú pháp được chia hai loại là phủ định liên câu (intersentential negation) và phủ định trong câu (sentential negation) \cite{Councill2010}. Khác với phủ định liên câu - dạng phủ định mà từ phủ định có ảnh hưởng phủ định lên câu khác, phủ định trong câu có từ phủ định và từ bị phủ định cùng tồn tại trong một câu (ví dụ 6). Với đề tài luận văn này, chúng tôi chỉ xem xét đến dạng phủ định trong câu.
+
+\example{6}{Phủ định liên câu: \myquote{``Can I get you anything else? \textbf{No}.''}\\Phủ định trong câu: \myquote{``The treatment does \textbf{not} reveal the etiology of the patient's pain.''}\\}
+
+Để giải quyết vấn đề xác định phạm vi phủ định trong câu cần xây dựng một danh sách chứa thuật ngữ kết thúc (termination terms)\footnote{https://code.google.com/archive/p/negex/wikis/NegExTerms.wiki} để làm tín hiệu kết thúc sự ảnh hưởng của từ phủ định lên các thành phần không liên quan trong câu. Như ở ví dụ 7, từ ``but'' báo hiệu kết thúc phạm vi phủ định gây ra bởi từ phủ định ``denies''.
+
+\example{7}{Patient ([denies] chest pain) \textbf{but} continues to experience SOB.\\}
+
+Nếu một từ (hoặc cụm từ) được hỏi nằm trong phạm vi phủ định thì từ đó bị phủ định. Ở ví dụ 7, từ ``chest pain'' bị phủ định vì nằm trong vùng phủ định của từ ``denies''.
+
+\subsubsection*{Giải thuật phân tích phủ định NegEx}
+Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu giải thuật phân tích phủ định NegEx\footnote{https://code.google.com/archive/p/negex/}. \\
+
+Giải thuật NegEx dùng để xác định sự tồn tại của phủ định trong câu và xác định xem một cụm từ bất kỳ trong câu có chịu ảnh hưởng của yếu tố phủ định hay không. Giải thuật nhận dữ liệu đầu vào là câu văn được nghi ngờ có sự phủ định và một cụm từ thuộc câu văn đó mà cần xác định xem có bị phủ định hay không. Sau quá trình xử lý, giải thuật đưa ra câu trả lời gồm: câu văn có tồn tại sự phủ định không, xác định từ phủ định trong câu và cụm từ được hỏi có bị phủ định hay không.\\ 
+
+Trong quá trình xử lý, NegEx dùng danh sách thuật ngữ phủ định và danh sách thuật ngữ kết thúc để giải quyết bài toán. Bên cạnh đó, giải thuật xây dựng hai biểu thức chính quy (regular expressions) để xác định phạm vi phủ định trong câu. Biểu thức RE1 bao gồm tất cả các từ (từ đơn hoặc cụm từ) đứng sau thuật ngữ phủ định và sẽ kết thúc bởi một thuật ngữ kết thúc hoặc dấu kết thúc câu hoặc một thuật ngữ phủ định khác. Biểu thức RE2 chỉ xác định khoảng 5 từ (từ đơn hoặc cụm từ), ưu tiên lĩnh vực y khoa đứng trước thuật ngữ phủ định đang xét. \\
+
+Áp dụng vào bài toán, với mỗi câu trong dữ liệu đầu vào, giải thuật NegEx lặp lại theo các bước sau:
+
+\begin{enumerate}
+\item Xác định tất cả các từ phủ định có trong câu dựa trên danh sách thuật ngữ phủ định, ký hiệu là tập \textit{A}.
+\item Tìm từ phủ định đầu tiên trong câu, kí hiệu là \textit{Neg1}.
+\item Nếu \textit{Neg1} là từ phủ định giả, bỏ qua và thực hiện bước 6.
+\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy RE1 xác định vùng phủ định của \textit{Neg1}.
+\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy RE2 xác định vùng phủ định của \textit{Neg1}.
+\item Tìm từ phủ định kế tiếp (cho đến khi hết các từ trong tập \textit{A}), ký hiệu \textit{Neg1} và lặp lại bước 3.
+\end{enumerate}
+
+Một số ví dụ khi chạy giải thuật NegEx:
+
+\example{8}{``Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or ([no] treatment).''\\Từ phủ định tìm được: ``no'' là thuật ngữ phủ định tiền điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``treatment''.}
+
+\example{9}{``The patient is (tumor [free]).''\\Từ phủ định tìm được: ``free'' là thuật ngữ phủ định hậu điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``tumor''.}
+
 \subsection{Phương pháp học máy Support Vector Machine}
 \subsection{Thư viện y khoa UMLS Metathesaurus}

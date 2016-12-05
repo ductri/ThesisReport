@@ -109,16 +109,3 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành
 Ở bước đầu, giải thuật tập trung xem xét những từ mô tả sự thay đổi trong câu bằng cách so trùng các từ trong 2 nhóm LESS và GOOD với các từ trong câu. Sau đó, giải thuật thêm tag ``\_LESS'' hoặc ``\_MORE'' tùy vào từ đó thuộc nhãn nào. 2 tag này được thêm vào cuối các từ thuộc phạm vi từ từ thuộc 1 trong 2 nhóm trên cho đến cuối câu hoặc gặp 1 dấu câu. \\
 
 Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Bằng cách này, giải thuật không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.
-
-\subsection{Yếu tố phủ định}
-\subsubsection*{Tổng quan}
-%Định nghĩa
-Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
-
-Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{Chapman2013}, \cite{Zeng2007} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{Chapman2013}, \cite{CruzDiaz2015}. \\
-
-%Negation bao gồm các thành phần chính....
-
-%Lợi ích
-Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
-\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}
