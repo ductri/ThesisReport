@@ -1,5 +1,6 @@
 \section{Rút trích đặc trưng}
 Với các bài toán giải quyết bằng phương pháp học máy, bước trích xuất đặc trưng là quan trọng nhất. Bước này định nghĩa những đặc trưng nào được sử dụng và sử dụng như thế nào. Chúng tôi xem xét 4 đặc trưng sau: n-gram, change phrase, negation và so-cal. Trong phần này, mỗi mục con trình bày theo thứ tự: ...
+\subsection{Tiền xử lý dữ liệu <<trong mục này, sẽ nói rõ đây ko phải đặc trưng, mà là bước cần đc thực hiện trước để có thể rút trích đặc trưng>>}
 \subsection{N-gram} \label{subsec:ngram}
 \subsubsection*{Giới thiệu}
 Theo kết luận của \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
@@ -111,6 +112,20 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành
 Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành rish\_MORE, từ đó thay đổi đặc trưng n-gram. Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
 
 Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS GOOD, LESS BAD, MORE GOOD, MORE BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm 4 từ (trước và sau từ thuộc nhóm MORE), nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE GOOD. Tương tự như vậy đối với 3 mẫu còn lại.
+
+\subsection{Yếu tố phủ định}
+\subsubsection*{Tổng quan}
+%Định nghĩa
+Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
+
+Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{Chapman2013}, \cite{Zeng2007} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{Chapman2013}, \cite{CruzDiaz2015}. \\
+
+%Negation bao gồm các thành phần chính....
+
+%Lợi ích
+Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
+\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}
+
 \subsection{SO-CAL}
 Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic orientation Calculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
 
@@ -224,16 +239,3 @@ Ngoài ra, một số cụm từ có tính tăng cường cũng được xem xé
 \subsubsection*{Irrealis Blocking}
 \subsubsection*{Sự thiên lệch trong ngôn ngữ}
 \subsubsection*{Những đặc điểm khác}
-
-\subsection{Yếu tố phủ định}
-\subsubsection*{Tổng quan}
-%Định nghĩa
-Yếu tố phủ định (negation) là một từ hoặc cụm từ mang ý nghĩa phủ nhận sự tồn tại của một yếu tố khác trong câu \cite{skeppstedt2016marker}. Cụ thể trong bài toán phân loại cảm xúc, ở câu "He denies any antecedent palpitations, shortness of breath, chest pain, headache, or lightheadedness", yếu tố phủ định được xác định là "denies" phủ nhận sự tồn tại của một loạt các triệu chứng bệnh "palpitations", "shortness of breath", "chest pain", "headache", "lightheadedness".  \\
-
-Nhiều thuật toán phân tích phủ định đã được hiện thực trên văn bản tiếng Anh (2-5)\cite{Chapman2013}, \cite{Zeng2007} và một số trong đó được phát triển để nhận diện phủ định cho các ngôn ngữ khác \cite{costumero2014an}, \cite{benamara2012how}, \cite{gindl2006negation}, \cite{Chapman2013}, \cite{CruzDiaz2015}. \\
-
-%Negation bao gồm các thành phần chính....
-
-%Lợi ích
-Trong lĩnh vực nghiên cứu về xử lý ngôn ngữ tự nhiên nói chung và trong bài toán phân tích cảm xúc nói riêng, việc xử lý phủ định //mang lại lợi ích... \\
-\cite{liu2012sentiment}\cite{marsland2015machine}\cite{Giachanou2016}\cite{ali2013can}\cite{taboada2011lexicon}\cite{niu2006using}\cite{ohana2009sentiment}

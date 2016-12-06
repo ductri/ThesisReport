@@ -1,0 +1,10 @@
+del main.aux
+del main.bbl
+del main.blg
+del main.log
+del main.pdf
+del main.run.xml
+del main.synctex.gz
+del main.tex.bak
+del main.toc
+del main-blx.bib

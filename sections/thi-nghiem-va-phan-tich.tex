@@ -1,4 +1,5 @@
 \section{Thí nghiệm và đánh giá}
+\subsection{Thu thập và đánh giá dữ liệu}
 \subsection{Phương pháp đánh giá}
 Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
 \begin{figure}[h]
@@ -116,16 +117,31 @@ Tên mỗi cột chỉ là đặc trưng ngram đại diện. Ví dụ: Trigram 
 \centering
 \begin{minipage}{1\textwidth}
 \caption{Các thử nghiệm nhằm tối ưu đặc trưng Phủ định}
-\begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
+\begin{tabular}{|l|m{0.3\textwidth}|ccc|ccc|}
 \hline
-\textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
-1 & Kiểm tra trong câu có yếu tố phủ định hay không& 23.45\% & 23.45\% & 23.45\% \\ \hline
-2 & Thay các từ phủ định trong câu bằng nhãn NEGATION & 23.45\% & 23.45\% & 23.45\% \\ \hline
-3 & Thêm nhãn ``\_NEG'' ngay sau các từ chịu ảnh hưởng phủ định & 23.45\% & 23.45\% & 23.45\% \\ \hline
-4 & Kết hợp 1 và 2 & 23.45\% & 23.45\% & 23.45\% \\ \hline
-5 & Kết hợp 1 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
-6 & Kết hợp 2 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
-7 & Kết hợp 1 và 2 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
+\multirow{2}{*}{\textbf{STT}} & \multirow{2}{*}{\textbf{Đặc trưng}} & \multicolumn{3}{c|}{\textbf{Negation tu metamap}} & \multicolumn{3}{c|}{\textbf{Negation 2}}  \\ \cline{3-8}
+                     &                            & \textbf{P}           & \textbf{R}           & \textbf{F}           & \textbf{P}        & \textbf{R}        & \textbf{F}        \\
+\hline
+1 & Kiểm tra trong câu có yếu tố phủ định hay không& 69.36 & 68.53 & 68.45 &
+69.59 & 68.32 & 68.50 \\ \hline
+
+2 & Thay các từ phủ định trong câu bằng nhãn NEGATION & 69.57 & 68.67 & 68.60 & 
+70.07 & 68.98 & 69.09 \\ \hline
+
+3 & Thêm nhãn ``\_NEG'' ngay sau các từ chịu ảnh hưởng phủ định & 68.93 & 67.91 & 67.88 &
+69.11 & 68.12 & 68.03 \\ \hline
+
+4 & Kết hợp 1 và 2 & 68.88 & 68.10 & 68.09 &
+69.95 & 68.64 & 68.82 \\ \hline
+
+5 & Kết hợp 1 và 3 & 69.41 & 68.55  & 68.56 &
+69.47 & 67.85 & 68.16 \\ \hline
+
+6 & Kết hợp 2 và 3 & 68.84 & 68.02 & 67.93 &
+69.00 & 68.00 & 67.83 \\ \hline
+
+7 & Kết hợp 1 và 2 và 3 & 69.35 & 68.40 & 68.44 &
+69.62 & 67.96 & 68.22 \\ \hline
 \end{tabular}
 %{\footnotesize \\
 %\begin{description}[noitemsep]
