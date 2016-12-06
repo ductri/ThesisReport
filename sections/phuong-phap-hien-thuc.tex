@@ -1,6 +1,6 @@
 \section{Rút trích đặc trưng}
 Với các bài toán giải quyết bằng phương pháp học máy, bước trích xuất đặc trưng là quan trọng nhất. Bước này định nghĩa những đặc trưng nào được sử dụng và sử dụng như thế nào. Chúng tôi xem xét 4 đặc trưng sau: n-gram, change phrase, negation và so-cal. Trong phần này, mỗi mục con trình bày theo thứ tự: ...
-\subsection{N-gram}
+\subsection{N-gram} \label{subsec:ngram}
 \subsubsection*{Giới thiệu}
 Theo kết luận của \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
@@ -108,7 +108,122 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi tiến hành
 
 Ở bước đầu, giải thuật tập trung xem xét những từ mô tả sự thay đổi trong câu bằng cách so trùng các từ trong 2 nhóm LESS và GOOD với các từ trong câu. Sau đó, giải thuật thêm tag ``\_LESS'' hoặc ``\_MORE'' tùy vào từ đó thuộc nhãn nào. 2 tag này được thêm vào cuối các từ thuộc phạm vi từ từ thuộc 1 trong 2 nhóm trên cho đến cuối câu hoặc gặp 1 dấu câu. \\
 
-Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Bằng cách này, giải thuật không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.
+Ví dụ: “Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia”. Giải thuật sẽ đánh dấu tag ``\_MORE'' từ từ increased đến hến câu: ``Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE''. Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành rish\_MORE, từ đó thay đổi đặc trưng n-gram. Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
+
+Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS GOOD, LESS BAD, MORE GOOD, MORE BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm 4 từ (trước và sau từ thuộc nhóm MORE), nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE GOOD. Tương tự như vậy đối với 3 mẫu còn lại.
+\subsection{SO-CAL}
+Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic orientation Calculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
+
+Phân tích cảm xúc dựa trên từ vựng là một phương pháp khác, tránh được bất lợi của phương pháp học máy là không cần qua quá trình huấn luyện. Tuy nhiên đa số các nghiên cứu này đều phân tích cảm xúc trên văn bản thông thường, không tập trung vào 1 lĩnh vực cụ thể nào \cite{taboada2011lexicon}\cite{Zhang2011}\cite{ohana2009sentiment}\cite{Giachanou2016}. \\
+
+Phương pháp này ngầm định 2 giả thiết sau đã được thỏa mãn:
+\begin{itemize}
+\item[•] Bản thân mỗi từ có sẳn tính phân cực mà không bị phụ thuộc vào ngữ cảnh. Điều này có nghĩa là mỗi từ luôn chỉ có 1 xu hướng phân cực (tốt, xấu hoặc tích cực, tiêu cực) trong mọi câu mà từ đó xuất hiện.
+\item[•] Tính phân cực của mỗi từ được đề cập ở trên có thể được biểu diễn bởi 1 số thực
+\end{itemize}
+Dựa trên 2 giả thiết trên, tính phân cực của một câu phụ thuộc vào số thực biểu diễn tính phân cực của các từ trong câu đó, và cũng được biểu diễn bởi 1 số thực. Sự phụ thuộc giữa tính phân cực của các từ và tính phân cực của cả câu là tùy thuộc vào các nghiên cứu, có thể mô hình hóa như công thức sau:
+\begin{equation}
+Polarity_{sentence}=f(Polarity_{words-in-sentence})
+\end{equation}
+Phần tiếp theo, chúng tôi trình bày chi tiết sự thuộc trên theo 7 điểm chính.\\
+\subsubsection*{Từ điển}
+Đây là cộng cụ giúp tra cứu điểm số của mỗi từ. Các từ điển hiện nay thuộc 2 loại: xây dựng thủ công hoặc xây dựng bán tự động. Từ điển xây dựng thủ công điển hình được sử dụng nhiều trong các nghiên cứu là bộ từ điển General Inquirer. Lợi thế của loại tự điển này là được con người đánh điểm số, vì vậy giảm thiếu sai sót. Các nghiên cứu có thể dựa trên bộ từ điển này để tự mở rộng thành bộ từ điển của mình. Tuy nhiên, bất lợi của loại này là kích thước thường nhỏ. Bộ từ điển thuộc thứ 2 được sử dụng phổ biến là WordNet. Từ điển thuộc loại bán tự động được xây dựng bằng cách sử dụng một tập từ hạt giống có tính phân cực cao. Các từ này có thể được tập hợp thủ công hoặc từ vào từ điển General Inquirer. Từ đó, điểm của các từ khác được sinh ra dựa trên tần số xuất hiện so của chúng so với các từ hạt giống. Lợi thế của loại từ điển này là kích thước lớn, tạo độ bao phủ cao, từ đó nhiều từ được gán điểm số hơn. Tuy nhiên độ chính xác của loại từ điển này không cao, và kích thước lớn thường đi kèm với nhiễu. \\
+
+Nghiên cứu \cite{taboada2011lexicon} vì thế chọn phương án xây dựng một bộ từ điển thủ công dựa trên một số nguồn text như các bình luận về phim, sách, máy tính, khách sạn,... và các từ thuộc nhóm tích cực, tiêu cực từ từ điển General Inquirer. 
+
+Điểm số mỗi từ trong từ điển được xây dựng có giá trị từ -5 đến 5 với ý nghĩa: Giá trị càng nhỏ thể hiện tính phân cực về phía tiêu cực càng nhiều, và ngược lại. 
+\begin{table}[H]
+\begin{tabular}{l l}
+\hline
+\textbf{Từ} & \textbf{Giá trị} 
+\\ \hline
+monstrosity & -5
+\\ 
+hate (noun and verb) & -4
+\\ 
+disgust & -3
+\\ 
+sham & -3
+\\ 
+fabricate & -2
+\\ 
+delay (noun and verb) & -1
+\\
+determination & 1
+\\
+determination & 1
+\\ 
+inspire & 2
+\\ 
+inspiration & 2
+\\ 
+endear & 3
+\\ 
+relish (verb) & 4
+\\ 
+masterpiece & 5
+\\ \hline
+\end{tabular}
+\end{table}
+\subsubsection*{Từ loại}
+Hầu hết các nghiên cứu ban đầu về phân tích cảm xúc dựa trên từ vừng đều chỉ tập trung vào tính từ. Điểm số của cả văn bản chỉ phụ thuộc vào điểm số của tính từ trong câu và những từ liên quan. 
+Xét 2 ví dụ sau: 
+\begin{itemize}
+\item[•] The young man strolled+ purposefully+ through his neighborhood+
+\item[•] The teenaged male strutted- cockily- through his turf-
+\end{itemize}
+Các dấu + ở câu thứ nhất thể hiện xu hướng bổ sung tích tích cực vào độ phân cực của cả câu, trong khi dấu - ở ví dụ thứ 2 ngược lại. Từ đó cho thấy, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng có tác động đến điểm số phân cực của cả câu. Các nghiên cứu sau này đã mở rộng hơn, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng được xem xét tới. \\
+
+Điều này không những giúp đánh giá tốt hơn trong trường hợp ví dụ trên, ngoài ra còn giúp giải quyết một số trường hợp đặc biệt khi một từ có thể thuộc nhiều loại từ loại. Ví dụ: từ ``novel'' nếu xét theo từ loại danh từ thì chỉ mang ý nghĩa trung tính, nếu xét theo từ loại tính từ lại có ý nghĩa tích cực. Từ ``plot'' mang ý nghĩa tiêu cực nếu là động từ, nhưng mang tính nghĩa trung tính nếu xem là danh từ. Trong nghiên cứu \cite{taboada2011lexicon}, bộ từ điển được xây dựng gồm 2252 tính từ, 1142 danh từ, 903 động từ, and 745 phó từ. \\
+
+Tất cả các động từ và danh từ trong từ điển đều được xử lý lemmatized, vì vậy các động từ ở các dạng thể hiện khác nhau đều cùng 1 điểm số. Khác với động từ, danh từ và tính từ đều được đánh điểm thủ công, phó từ được đánh điểm tự động dựa trên tính từ. Phó từ được bỏ đuôi ``-ly'', sau đó so trùng với các tính từ. Ví dụ: từ 'purposefully' sẽ được gán điểm số của tính từ 'purposefull'. Tuy nhiên, một số ngoại lệ như các phó từ 'fast' được xử lý thủ công. 
+\subsubsection*{Tính tăng cường (intensification)}
+Một từ có tính tăng cường được hiểu là các từ bản thân nó không có điểm số thể hiện tính phân cực, nhưng có khả năng tác động lên 1 từ khác, làm tăng lên hoặc hạ thấp tính phân cực của từ đó. Từ đó làm thay đổi điểm số thể hiện tính phân cực của cả cụm từ. Một số từ có tính tăng cường như: slightly, very, most, the most. Một giải thuật đơn giản có thể được sử dụng trong trường hợp này như sau:
+Khi gặp một từ có tác động làm tăng tính phân cực (very), điểm của từ bị tác động được cộng thêm 1 hằng số. 
+Ví dụ: very good được tính bằng cách P(very good) = P(good) + 1
+Tương tự với trường hợp còn lại. Tuy nhiên cách hiện thực này không thể hiện đúng bản chất của tác động tăng cường. Bởi vì cùng một từ very có thể có tác động mạnh yếu khác nhau tùy thuộc vào từ bị tác động. Nói cách khác, sự tác động này nên phụ thuộc vào từ bị tác động. Nghiên cứu \cite{taboada2011lexicon} sử dụng công thức sau để tính điểm số trong trường hợp này:
+\begin{equation}
+P (cụm từ) = P (từ bị tác động) * (100\% - tỉ lệ tác động)
+\end{equation}
+\begin{table}[h]
+\begin{tabular}{l l}
+\hline
+\textbf{Từ} & \textbf{Tỉ lệ tác động} 
+\\ \hline
+slightly & -50\%
+\\ 
+somewhat & -30\%
+\\ 
+pretty & -10\%
+\\ 
+really & +15\%
+\\ 
+very & +25\%
+\\ 
+extraordinarily & +50\%
+\\
+(the) most & +100\%
+\\ \hline
+\end{tabular}
+\end{table}
+Ví dụ:
+good có điểm số là 3.0, từ đó very good có điểm số là: 3.0 * (100\% + 25\%) =  3.75\\
+Trong trường hợp có hơn 1 từ có tính tăng cường, điểm số được tính tương tự theo cách đệ quy. Ví dụ: really very good: (3 * [100\% + 25\%]) * (100\% + 15\%) = 4.3\\
+
+Trong trường hợp một tính từ bổ sung nghĩa cho một danh từ theo sau nó, tính từ đó được coi như là một từ có tính tăng cường. Vì vậy, bản thân tính từ đó không có điểm số, và chỉ làm thay đổi điểm số của danh từ theo sau. 
+Ví dụ:
+\begin{itemize}
+\item[•] The plot had huge problems
+\item[•] They have made clear progress
+\item[•] This is a total failure
+\item[•] It’s an insignificant criticism
+\end{itemize}
+Ngoài ra, một số cụm từ có tính tăng cường cũng được xem xét (như a great deal of)
+\subsubsection*{Yếu tố phủ định}
+
+\subsubsection*{Irrealis Blocking}
+\subsubsection*{Sự thiên lệch trong ngôn ngữ}
+\subsubsection*{Những đặc điểm khác}
 
 \subsection{Yếu tố phủ định}
 \subsubsection*{Tổng quan}

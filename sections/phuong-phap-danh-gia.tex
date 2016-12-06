@@ -1,4 +1,173 @@
 \section{Thí nghiệm và đánh giá}
 \subsection{Phương pháp đánh giá}
+Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.9\textwidth}
+\includegraphics[scale=0.35]{../hinh/phepdo.png}
+{\footnotesize \\
+\begin{description}[noitemsep]
+\item[Hình chữ nhật] Toàn bộ dữ liệu 
+\item[Hình eclip] Phần dữ liệu hệ thống cho rằng thuộc lớp Positive
+\item[True Negative] Phần dữ liệu thuộc lớp Negative, hệ thống cũng cho rằng thuộc lớp Negative
+\item[False Negative] Phần dữ liệu thuộc lớp Positive, hệ thống cho rằng thuộc lớp Negative
+\item[True Positive] Phần dữ liệu thuộc lớp Positive, hệ thống cũng cho rằng thuộc lớp Positive
+\item[False Positive] Phần dữ liệu thuộc lớp Negative, hệ thống cho rằng thuộc lớp Positive
+\end{description}
+\par}
+\end{minipage}
+\caption{Các thành phần trong các phép đo Độ chính xác, Độ bao phủ và f1}
+\label{fig:phepdo}
+\end{figure}
+
+Dựa trên câu trả lời là tập hợp các phần tử mà hệ thống cho rằng thuộc lớp dương, toàn bộ dữ liệu sẽ được chia thành 4 nhóm như Hình \ref{fig:phepdo}. Từ đó, định nghĩa các phép đo như sau:
+\subsubsection*{Độ chính xác (Precision)}
+Độ chính xác \(P\) là hệ số đánh giá mức độ chính xác của câu trả lời, mức độ chính xác càng cao thì giá trị \(P\) càng lớn. Công thức tính \(P\) như sau:
+$$P=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả hệ thống đưa ra}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Positive|}}$$
+Trong trường hợp tất cả những câu trả lời hệ thống đưa ra đều đúng, thì giá trị $P=1$ là lớn nhất. Quy ước rằng nếu hệ thống không đưa ra câu trả lời nào, khi đó ngầm hiểu hệ thống không "sai", giá trị $P=1$.
+\subsubsection*{Độ bao phủ (Recall)}
+Độ bao phủ \(R\) là hệ số đánh giá mức độ bao phủ của các câu trả lời, độ bao phủ càng cao thì \(R\) càng lớn. Công thức tính \(R\) như sau:
+$$R=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả lời đúng thực tế}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Negative|}}$$
+Trong trường hợp hệ thống đưa ra đủ tất cả các câu trả lời đúng thì giá trị $R=1$ là lớn nhất.
+\subsubsection*{F-measure}
+Trên thực tế, với lượng dữ liệu lớn và phức tạp, khả năng tất cả những câu trả lời hệ thống đưa ra đều đúng và hệ thống đưa ra đủ tất cả các câu trả lời đúng ($P=R=1$) là rất thấp. Hai hệ số này thường bù trừ lẫn nhau, tức là để đạt độ bao phủ \(R\) cao, hệ thống có xu hướng đưa ra nhiều câu trả lời hơn làm cho xác suất có câu trả lời sai tăng, độ chính xác \(P\)  giảm, và ngược lại. Một hệ thống nếu chỉ có \(P\) cao mà \(R\) thấp thì tuy hệ thống có câu trả lời thường đúng nhưng lại bỏ sót nhiều trường hợp đúng khác. Hệ thống chỉ có \(R\) cao mà \(P\) thấp thì hệ thống đó tuy bao quát đầy đủ tất cả các trường hợp đúng thực tế, nhưng tỉ lệ câu trả lời sai lại lớn. Một hệ thống tốt yêu cầu cả độ chính xác P và độ bao phủ đều cao R. Do đó vấn đề đặt ra là tìm một độ đo duy nhất mà đảm bảo cả \(P\) và \(R\) để thuận tiện cho việc tối ưu.\\
+
+Để giải quyết vấn đề trên, ta sử dụng tiêu chí đánh giá \(F\) là trung bình điều hòa của \(P\) và \(R\), từ đó đảm bảo rằng chỉ khi cả \(P\) và \(R\) cao thì \(F\) mới đạt giá trị cao. Công thức tính \(F\) như sau:
+$$F=2*\frac{P*R}{P + R} $$
+\subsubsection*{Độ chính xác (P), độ bao phủ (R), F đối với bài toán phân loại đa lớp}
+Để áp dụng 3 độ đo trên vào bài toán phân loại 3 lớp, chúng tôi xem như đang giải 3 bài toán con thuộc loại bài toán phân loại nhị phân. Khi đó, điểm số của bài toán lớn bằng trung bình có trọng số của điểm số từng bài toán con. Cụ thể:
+Xét 3 bài toán con:
+\begin{enumerate}
+\item Phân loại một câu thuộc lớp \tichcuc hay không thuộc lớp \tichcuc. Lớp dương được chọn là lớp \tichcuc
+\item Phân loại một câu thuộc lớp \tieucuc hay không thuộc lớp \tieucuc. Lớp dương được chọn là lớp \tieucuc
+\item Phân loại một câu thuộc lớp \trungtinh hay không thuộc lớp \trungtinh. Lớp dương được chọn là lớp \trungtinh
+\end{enumerate}
+Khi đó:
+$$P = \alpha_1*P_1 + \alpha_2*P_2 + \alpha_3*P_3$$
+$$R = \alpha_1*R_1 + \alpha_2*R_2 + \alpha_3*R_3$$
+$$F = \alpha_1*F_1 + \alpha_2*F_2 + \alpha_3*F_3$$
+với $\alpha_1 + \alpha_2 + \alpha_3 = 1$ và $\alpha_1, \alpha_2, \alpha_3$ lần lược là tỉ lệ số lượng các câu thuộc lớp \tichcuc, \tieucuc, \trungtinh trong tập dữ liệu huấn luyện.
+\subsubsection*{K-fold cross validation}
+Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phương pháp \textit{k-fold cross validation} để đánh giá hiệu quả của hệ thống. Phương pháp này nhằm tránh trường hợp tập kiểm tra, vì được chia ngẫu nhiên, có thể rơi vào trường hợp quá dễ hoặc quá khó đối với hệ thống. Tập dữ liệu được chia ngẫu nhiên thành \(k\) phần. Phần thứ \(i\) sẽ được chọn làm tập để đánh giá, \(k-1\) phần còn lại dùng cho việc học các tham số của mô hình. Tiến trình trên được thực hiện \(k\) lần với \(i\) chạy từ 1 đến \(k\), giá trị trung bình là kết quả cuối cùng dùng để đánh giá hệ thống.
+\subsubsection*{Kiểm định Student's t-test}
+Trong quá trình thử nghiệm các đặc trưng, chúng tôi đề xuất sử dụng phương pháp phương pháp kiểm định Student's t-test nhằm xác nhận có sự khác biệt về hiệu quả giữa các đặc trưng. Phương pháp Student's t-test sử dụng 2 tập kết quả, qua các bước tính toán, xem xét sự khác biệt giữa hai tập kết quả có thể tin tưởng hay không. %TODO viết thêm
 \subsection{Kết quả thí nghiệm}
-\subsection{Phân tích và đánh giá kết quả}
+Với mỗi lần chạy, chúng tôi sử dụng k-fold với $k=5$. Tuy nhiên, do tập dữ liệu không đủ lớn, kết quả các lần chạy có sự dao động, vì vậy, với mỗi lần thử nghiệm, chúng tôi lặp lại việc chạy k-fold 30 lần, sau đó lấy điểm số trung bình xem như kết quả cuối cùng. Đối với giải thuật học máy SVM, có 2 tham số cần được tùy chỉnh thích hợp. Để xác định tham số c, hệ thống chạy nhiều lần với c thuộc 1 khoảng cho trước (trong nghiên cứu này, c chạy từ 20 đến 30), từ đó chọn ra giá trị c tương ứng với độ đo f lớn nhất. Như vậy, với mỗi thử nghiệm, giá trị độ do f luôn là giá trị cao nhất được chọn từ những lần chạy với giá trị c thay đổi từ 20 đến 30. \\
+
+Trong mục này chúng tôi trình bày 4 nhóm thử nghiệm: Thử nghiệm với đặc trưng n-gram, thử nghiệm với đặc trưng phủ định, thử nghiệm kết hợp các đặc trưng cơ bản và thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL
+\subsubsection*{Thử nghiệm với đặc trưng n-gram}
+Chúng tôi tiến hành thử nghiệm với đặc trưng n-gram trước tiên vì như đã phân tích ở mục \ref{subsec:ngram}, n-gram được xem như đặc trưng nền tảng (baseline). Kết quả thử nghiệm thể hiện ở Bảng \ref{table:ngram}
+\begin{table}[H]
+\centering
+\begin{minipage}{1.0\textwidth}
+\caption{Các thử nghiệm nhằm tối ưu hóa đặc trưng n-gram} \label{table:ngram}
+\begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
+
+\hline
+\textbf{STT} & \textbf{Đặc trưng} & \textbf{P (\%)} & \textbf{R (\%)} & \textbf{F (\%)} \\ \hline
+1 & Unigram (F, min\_df = 1) & 66.21 & 65.46 & 65.06 \\ %\hline
+2 & Unigram (P, min\_df = 1) & 66.56 & 65.62 & 65.23 \\ %\hline
+3 & Unigram (F, min\_df = 2) & 66.50 & 65.55 & 65.59 \\ %\hline
+4 & Unigram (P, min\_df = 2) & 68.26 & 67.38 & 67.31 \\ %\hline
+5 & Unigram (F, min\_df = 3) & 66.98 & 65.48 & 65.80 \\ %\hline
+6 & Unigram (P, min\_df = 3) & 68.12 & 67.23 & 67.32 \\ 
+7 & Unigram (F, min\_df = 4) & 67.02	& 65.13 & 65.62 \\ 
+8 & Unigram (P, min\_df = 4) & 67.83 & 66.34 & 66.71 \\% \hline
+9 & Unigram (F, min\_df = 5) & 66.75 & 64.21 & 64.92 \\ 
+10 & Unigram (P, min\_df = 5) & 67.18 & 65.27 & 65.79 \\ \hline
+11 & Unigram + Bigram (P, min\_df  = 3) & 68.72 & 67.83 & 67.77 \\% \hline
+12 & Unigram  + Bigram + Trigram \newline (P, min\_df = 3) & 68.68 & 68.00 & 67.87 \\ 
+13 &  \textbf{Unigram  + Bigram + Trigram + 4-gram}\textbf{(P, min\_df = 3)} & \textbf{68.76} & \textbf{68.09} & \textbf{67.96}\\ 
+14  &  Unigram  + Bigram + Trigram + 4-gram + 5-gram (P, min\_df = 3) & 68.81 & 67.98 & 67.86 \\ \hline
+\end{tabular}
+{\footnotesize \\
+\begin{description}[noitemsep]
+\item[P] Chỉ quan tâm đến việc có xuất hiện hay không n-gram trong câu, nhận 2 giá trị: 1 hoặc 0
+\item[F] Quan tâm đến số lần xuất hiện n-gram trong câu
+\item[min\_df] Số câu có n-gram đó để n-gram đó được thêm vào bộ từ vừng
+\end{description}
+\par}
+\end{minipage}
+\end{table}
+
+Các thử nghiệm từ 1-10 cho thấy 2 xu hướng. Hình \ref{fig:mindf-p-f} thể hiện sự phụ thuộc của độ đo F vào tham số $min\_df$ và cách vector hóa đặc trưng n-gram. $min\_df$ là tham số ngưỡng, chỉ những n-gram nào có số lần xuất hiện từ $min\_df$ trở lên mới được thêm vào tập từ vựng S. Qua biểu đồ có thể thấy, với $min\_df$ quá nhỏ hoặc quá lớn đều làm giảm giá trị độ đo F. Khi $min\_df$ quá nhỏ, số lượng từ vựng quá lớn dẫn tới số lượng ngram gây nhiễu nhiều. Ngược lại khi $min\_df$ quá lớn, tập từ vựng quá nhỏ dẫn tới có quá ít thông tin trong câu được giữ lại, không đủ thông tin để phân loại. Từ biểu đồ, $min\_df=2$ hay $min\_df=3$ không có sự khác biệt rõ rệt giá trị độ đo F. Trong nghiên cứu này, chúng tôi chọn tham số $min\_df=3$ cho các thử nghiệm còn lại.\\
+
+Hình \ref{fig:mindf-p-f} còn thể hiện một xu hướng khác. Kết quả của n-gram tốt hơn hẳn khi sử dụng phương pháp vector hóa nhị phân. Kết quả này phù hợp với báo cáo của \cite{pang2002thumbs}. Ngược lại, nghiên cứu \cite{sarker2011outcome} thực hiện phân tích cảm xúc trên đoạn văn bản, khẳng định không có sự khác biệt đáng kể giữa 2 cách vector hóa. Điều này có thể do việc lặp từ trên câu có ý nghĩa khác với lặp từ trên đoạn.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{../hinh/mindf_p_f.png}
+\caption{Mối quan hệ giữa tham số min\_df, cách vector hóa và độ đo F} \label{fig:mindf-p-f}
+\end{figure}
+
+Hình \ref{fig:ket-hop-ngram} thể hiện ảnh hưởng của cách kết hợp các n-gram. Theo đó, có sự cải thiện khi chuyển từ việc chỉ dùng Unigram sang dùng kết hợp Unigram và Bigram. Khi mở rộng việc kết hợp đến $n=3$ và $n=4$, mặc dù chỉ số F có tăng không thực sự đáng kể. Khi kết hợp đến $n=5$, chỉ số F bắt đầu giảm. Với n càng lớn, mặc dù số lượng ngram không khác nhau nhiều (giả sử 1 câu có 20 từ, với n=1 tạo ra 20 ngram, n=3 tạo ra 18 ngram) nhưng các n-gram có tần suất xuất hiện càng thấp. Trong khi đó, hệ thống chỉ thêm ngram vào tập từ vựng S chỉ khi từ đó xuất hiện từ 3 lần trở lên. Vì vậy, việc kết hợp với các ngram (n lớn, $n=5$ chẳng hạn) không giúp bổ sung thêm vào tập từ vựng S. Ngược lại, với $n=2, 3, 4$ giúp hệ thống nhận thêm các cụm từ như: no evidence, improve quality life, reduce risk,... Trong các thử nghiệm tiếp theo, chúng tôi dùng đặc trưng n-gram là sự kết hợp của Unigram, Bigram, Trigram và 4-gram (ngram với $n=4$).
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.7\textwidth}
+\includegraphics[scale=0.25]{../hinh/ket_hop_ngram.png}
+{\footnotesize \\
+Tên mỗi cột chỉ là đặc trưng ngram đại diện. Ví dụ: Trigram đại diện cho thử nghiệm thứ 12, là kết hợp cả Unigram, Bigram và Trigram \par}
+\caption{Kết hợp các n-gram} \label{fig:ket-hop-ngram}
+\end{minipage}
+\end{figure}
+
+\subsubsection*{Thử nghiệm với đặc trưng Phủ định}
+\begin{table}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\caption{Các thử nghiệm nhằm tối ưu đặc trưng Phủ định}
+\begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
+\hline
+\textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
+1 & Kiểm tra trong câu có yếu tố phủ định hay không& 23.45\% & 23.45\% & 23.45\% \\ \hline
+2 & Thay các từ phủ định trong câu bằng nhãn NEGATION & 23.45\% & 23.45\% & 23.45\% \\ \hline
+3 & Thêm nhãn ``\_NEG'' ngay sau các từ chịu ảnh hưởng phủ định & 23.45\% & 23.45\% & 23.45\% \\ \hline
+4 & Kết hợp 1 và 2 & 23.45\% & 23.45\% & 23.45\% \\ \hline
+5 & Kết hợp 1 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
+6 & Kết hợp 2 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
+7 & Kết hợp 1 và 2 và 3 & 23.45\% & 23.45\% & 23.45\% \\ \hline
+\end{tabular}
+%{\footnotesize \\
+%\begin{description}[noitemsep]
+%\item[P] Chỉ quan tâm đến việc có xuất hiện hay không n-gram trong câu, nhận 2 giá trị: 1 hoặc 0
+%\item[F] Quan tâm đến số lần xuất hiện n-gram trong câu
+%\item[min\_df] Số câu có n-gram đó để n-gram đó được thêm vào bộ từ vừng
+%\end{description}
+%\par}
+\end{minipage}
+\end{table}
+
+\subsubsection*{Thử nghiệm kết hợp các đặc trưng cơ bản}
+\begin{table}[H]
+\centering
+\begin{minipage}{1.0\textwidth}
+\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản}
+\begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
+\hline
+\textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
+1 & N-gram & 23.45\% & 23.45\% & 23.45\% \\ \hline
+2 & N-gram + Change\_Phrase & 23.45\% & 23.45\% & 23.45\% \\ \hline
+3 & N-gram + Change\_Phrase + Negation & 23.45\% & 23.45\% & 23.45\% \\ \hline
+4 & N-gram + Change\_Phrase + Negation + UMLS & 23.45\% & 23.45\% & 23.45\% \\ \hline
+\end{tabular}
+\end{minipage}
+\end{table}
+
+\subsubsection*{Thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
+\begin{table}[H]
+\centering
+\begin{minipage}{1\textwidth}
+\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
+\begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
+\hline
+\textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
+1 & N-gram + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
+3 & N-gram + Change\_Phrase + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
+4 & N-gram + Change\_Phrase + Negation + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
+5 & N-gram + Change\_Phrase + Negation + UMLS + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
+\end{tabular}
+\end{minipage}
+\end{table}
+\subsection{Các phân tích mở rộng}
+\subsubsection*{Sự phụ thuộc hiệu quả đặc trưng ngram với kích thước tập huấn luyện}
+\subsubsection*{So sánh kết quả đối với từng lớp}
