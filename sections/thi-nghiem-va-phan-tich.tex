@@ -1,5 +1,65 @@
 \section{Thí nghiệm và đánh giá}
 \subsection{Thu thập và đánh giá dữ liệu}
+\subsubsection*{Thu thập dữ liệu}
+%Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
+\subsubsection*{Đánh nhãn dữ liệu}
+Giải thuật học máy chúng tôi sử dụng là có giám sát nên dữ liệu đầu vào cần được đánh nhãn phân loại tính phân cực cảm xúc (\tichcuc, \tieucuc, \trungtinh) trước khi đưa vào học và kiểm tra. Vì vậy, chúng tôi đã hiện thực một trang web phục vụ cho việc đánh nhãn dữ liệu.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{../hinh/SQL.png}
+\caption{Lược đồ ánh xạ quan hệ (relational schema diagram)}
+\label{fig:SQL}
+\end{figure}
+
+Đầu tiên, chúng tôi sử dụng MySQL Workbench 6.3 \footnote{http://www.mysql.com/products/workbench/} để tạo cơ sở dữ liệu lưu trữ theo lược đồ ở hình \ref{fig:SQL}:
+\begin{itemize}
+\item Bảng \textit{Sentence} chứa dữ liệu các câu gồm mã số câu (\textit{sen\_id}), nội dung câu (\textit{content}) và số lần câu được đánh nhãn (\textit{number\_labeled}). Tập dữ liệu sau khi thu thập sẽ được thêm vào bảng này với giá trị số lần câu được đánh nhãn ở mỗi câu ban đầu mặc định bằng 0.
+\item Bảng \textit{Submission} chứa nhật ký đánh nhãn gồm mã số nhãn (\textit{id}) tăng tuần tự theo mỗi nhãn được đánh cho một câu bất kỳ, mã số câu (\textit{sentence\_id}) tương ứng với mã số câu ở bảng \textit{Sentence}, loại nhãn (\textit{label}) với quy ước giá trị 0, 1, 2 lần lượt tương ứng cho các nhãn \tieucuc, \trungtinh, \tichcuc.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{../hinh/Webpage.png}
+\caption{Giao diện trang đánh nhãn dữ liệu}
+\label{fig:web}
+\end{figure}
+
+Tiếp theo, chúng tôi xây dựng một trang web hỗ trợ người dùng đánh nhãn dữ liệu\footnote{http://anotation.mybluemix.net/}. Giao diện web đơn giản, trực quan (hình \ref{fig:web}), gồm hai phần chính:
+\begin{itemize}
+\item Phần hướng dẫn: mô tả cách sử dụng trang web để đánh nhãn dữ liệu, trong đó đặc tả chi tiết thế nào là phân loại \tichcuc, \tieucuc hay \trungtinh, lấy ví dụ cụ thể để người đọc dễ hình dung và hiểu rõ ràng về các loại nhãn phân loại.
+\item Phần đánh nhãn: hiển thị thông tin một câu ngẫu nhiên thuộc bảng \textit{Sentence} trong cơ sở dữ liệu và các lựa chọn để người dùng đánh nhãn phân loại. 
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{../hinh/WebSenId.png}
+\caption{Thông tin một bản ghi thuộc bảng \textit{Sentence}}
+\label{fig:websen}
+\end{figure}
+
+Thông tin chi tiết một câu được hiển thị như hình \ref{fig:websen} bao gồm giá trị các trường thuộc bảng \textit{Sentence} (mã số câu, nội dung câu, số lần câu được đánh nhãn). Để gắn nhãn phân loại cho câu, người dùng sử dụng nhóm nút chức năng (hình \ref{fig:webbtn}) gồm nút \textsc{tích cực} (gắn nhãn \tichcuc), nút \textsc{trung tính} (gắn nhãn \trungtinh), nút \textsc{tiêu cực} (gắn nhãn \tieucuc) hoặc lựa chọn ``Đổi câu khác'' nếu người dùng cảm thấy câu có phân loại không rõ ràng.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{../hinh/WebLabel.png}
+\caption{Nhóm nút chức năng hỗ trợ người dùng lựa chọn phân loại}
+\label{fig:webbtn}
+\end{figure}
+
+Quy trình gắn nhãn dữ liệu của trang web được mô hình hóa như hình \ref{fig:updatedb}. Mỗi lần người dùng mới truy cập hoặc tải lại trang web, hệ thống lựa chọn ngẫu nhiên một câu trong dữ liệu để hiển thị. Khi người dùng đánh nhãn \tichcuc, \tieucuc hoặc \trungtinh cho câu, cơ sở dữ liệu sẽ cập nhật dữ liệu trong bảng \textit{Sentence}: tăng thêm 1 cho số lần câu được đánh nhãn với mã số câu tương ứng, đồng thời thêm một bản ghi vào bảng \textit{Submission} với mã số câu tương ứng kèm lựa chọn phân loại của người dùng (chỉ lưu các giá trị 0, 1, 2). Nếu người dùng chọn ``Đổi câu khác'' hệ thống không cập nhật mà chỉ hiển thị ngẫu nhiên một câu khác trong tập dữ liệu để người dùng tiến hành gán nhãn.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{../hinh/UpdateDatabase.png}
+\caption{Quy trình gắn nhãn dữ liệu của trang web}
+\label{fig:updatedb}
+\end{figure}
+
+
+\subsubsection*{Đánh giá dữ liệu}
+%Nhờ bao nhiêu người đánh nhãn...
+
 \subsection{Phương pháp đánh giá}
 Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
 \begin{figure}[h]
