@@ -2,6 +2,24 @@
 \subsection{Thu thập và đánh giá dữ liệu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
+
+\begin{table}[H]
+\centering
+\begin{minipage}{1.0\textwidth}
+\caption{Tập dữ liệu thu thập được} 
+\label{table:data}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+ id & sen \\ 
+ \hline
+ idsample & sensample \\ 
+ idsample & sensample \\ 
+ idsample & sensample \\ 
+ \hline
+\end{tabular}
+\end{minipage}
+\end{table}
+
 \subsubsection*{Đánh nhãn dữ liệu}
 Giải thuật học máy chúng tôi sử dụng là có giám sát nên dữ liệu đầu vào cần được đánh nhãn phân loại tính phân cực cảm xúc (\tichcuc, \tieucuc, \trungtinh) trước khi đưa vào học và kiểm tra. Vì vậy, chúng tôi đã hiện thực một trang web phục vụ cho việc đánh nhãn dữ liệu.\\
 
@@ -33,7 +51,7 @@ Tiếp theo, chúng tôi xây dựng một trang web hỗ trợ người dùng �
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.45]{../hinh/WebSenId.png}
+\fbox{\includegraphics[scale=0.45]{../hinh/WebSenId.png}}
 \caption{Thông tin một bản ghi thuộc bảng \textit{Sentence}}
 \label{fig:websen}
 \end{figure}
@@ -42,7 +60,7 @@ Thông tin chi tiết một câu được hiển thị như hình \ref{fig:webse
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.45]{../hinh/WebLabel.png}
+\fbox{\includegraphics[scale=0.45]{../hinh/WebLabel.png}}
 \caption{Nhóm nút chức năng hỗ trợ người dùng lựa chọn phân loại}
 \label{fig:webbtn}
 \end{figure}
@@ -51,11 +69,37 @@ Quy trình gắn nhãn dữ liệu của trang web được mô hình hóa như 
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.25]{../hinh/UpdateDatabase.png}
+\includegraphics[scale=0.27]{../hinh/UpdateDatabase.png}
 \caption{Quy trình gắn nhãn dữ liệu của trang web}
 \label{fig:updatedb}
 \end{figure}
 
+Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
+
+\begin{itemize}
+\item Với những câu chỉ có 1 loại nhãn được gắn: lưu kết quả xem như là nhãn phân loại cuối cùng của câu.
+\item Với những câu có 2 loại nhãn được gắn: tự chỉnh sửa, lấy kết quả đúng lưu như nhãn phân loại cuối cùng của câu.
+\item Với những câu có 3 loại nhãn được gắn: bỏ những câu này ra khỏi tập dữ liệu vì nghi ngờ độ nhập nhằng về ý nghĩa phân cực của câu.
+\end{itemize}
+
+Kết quả sau khi lọc được lưu lại như Bảng \ref{table:labeleddata}.
+
+\begin{table}[H]
+\centering
+\begin{minipage}{1.0\textwidth}
+\caption{Tập dữ liệu sau khi đánh nhãn} 
+\label{table:labeleddata}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+ id & sen & label \\ 
+ \hline
+ idsample & sensample & 0 \\ 
+ idsample & sensample & 1 \\ 
+ idsample & sensample & 2 \\ 
+ \hline
+\end{tabular}
+\end{minipage}
+\end{table}
 
 \subsubsection*{Đánh giá dữ liệu}
 %Nhờ bao nhiêu người đánh nhãn...
