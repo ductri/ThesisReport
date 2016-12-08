@@ -55,6 +55,9 @@ bibencoding=ascii
 \usepackage[intlimits]{amsmath}
 \usepackage{multirow}
 
+\renewcommand{\ttdefault}{pcr}
+\newcommand{\myquote}[1]{{\ttfamily #1}}
+
 \renewcommand{\headrulewidth}{1pt}
 \setlength\parindent{0pt} % noindent for all paragraph
 \addbibresource{reference/my_ref.bib}
@@ -66,16 +69,21 @@ bibencoding=ascii
 \newtheorem{exmp}{Ví dụ}[section]
 \renewcommand{\thefootnote}{\arabic{footnote}}
 \newcommand{\refformat}[1]{#1}
-\newcommand{\example}[2]{\vspace{5px} 
-	\textit{Ví dụ #1:}
-	\begin{adjustwidth}{0.08\textwidth}{0cm}  #2
-	\end{adjustwidth}\vspace{0px}}
-\newcommand{\myquote}[1]{#1}
+\newcommand{\example}[2]{
+\vspace{5px} 
+	Ví dụ #1
+	\begin{adjustwidth}{0.08\textwidth}{0cm}
+	\begin{minipage}{0.92\textwidth}
+	 #2
+	\end{minipage}
+	 
+	\end{adjustwidth}\vspace{10px}}
+%\newcommand{\myquote}[1]{#1}
 % Constant
 \newcommand{\tichcuc}{\textit{Tích cực}\xspace}
 \newcommand{\tieucuc}{\textit{Tiêu cực}\xspace}
 \newcommand{\trungtinh}{\textit{Trung tính}\xspace}
-
+\newcommand{\term}[1]{\textit{#1}}
 
 \begin{document}
 
