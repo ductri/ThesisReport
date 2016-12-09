@@ -1,8 +1,22 @@
 \section{Phương pháp đề xuất}
 \subsection{Mô tả bài toán}
 \subsection{Kiến trúc tổng quan}
-\subsection{Các đặc trưng cơ bản}
-\subsubsection*{N-gram}
+\subsubsection*{Tiền xử lý} \label{sec:tien-xu-ly}
+Đây là bước xử lý trước khi có thể rút trích đặc trưng. Trong bước này, chúng tôi xử lý dữ liệu theo thứ tự:
+\begin{itemize}
+\item[•] Tách câu: Từ dữ liệu thu thập được, chúng tôi cần tách thành các câu. Tách một đoạn văn thành câu có thể dựa vào các dấu câu như dấu chấm (.) hoặc dấu 2 chấm (:), \ldots
+\item[•] Chuyển tất cả các ký tự thành chữ thường.
+\item[•] Xóa các ký tự đặc biệt, gồm: ?, \%, @, \#, $\wedge$, \$, ., ,,  ;, :, /, ", (, ), +, -, =
+\item[•] Thay tất cả số bằng nhãn \term{DIGIT}.
+\item[•] Loại bỏ \term{Stop words}: Các từ \term{stop word} là những từ thông thường được sử dụng mà có tính chất phân cực thấp. Một số từ \term{stop word} như: it, I, you, then, \ldots
+\item[•] \term{Tokenization}: Sử dụng ký tự khoảng trắng để tách tách câu thành các token
+\item[•] \term{Lemmatization:} Trả về dạng đúng của một động từ, dù động từ đó đang ở thì nào. \term{Lemmatization} thực hiện bằng cách loại bỏ đi các biến tố (\term{inflectional}). \\
+Ví dụ: ``produced'' -> ``produce''.
+\item[•] \term{Stemming} Loại bỏ hầu hết các hậu tố của 1 từ, trả về gốc của một từ dù từ đó được dùng như động từ, tính từ, danh từ hay phó từ.\\
+ Ví dụ:  ``produced'' hoặc ``production'' -> ``produc''.
+\end{itemize}
+\subsection{N-gram} \label{sec:ngram}
+\subsubsection*{Mô tả}
 Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
 %Định nghĩa
@@ -48,7 +62,37 @@ $\xrightarrow{MetaMap}$ \\
 \myquote{In addition, regardless of psychiatric status, \underline{MOBD} placed children at relative risk for educational and vocational disadvantage}\\
 Từ \underline{\myquote{ADHD}} chỉ một dạng rối loạn về thần kinh, nên được thay bằng nhãn MOBD (Mental or Behavioral Dysfunction)\\
 }
-\subsubsection*{Change Phrase}
+\subsubsection*{Rút trích}
+Giải thuật trích xuất đặc trưng n-gram trải qua 2 bước, được mô tả như Hình \ref{fig:mo-hinh-ngram}\\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.30]{../hinh/mo-hinh-ngram.png}
+\caption{Giải thuật trích xuất đặc trưng n-gram} \label{fig:mo-hinh-ngram}
+\end{figure}
+
+Ở bước đầu tiên (1), giải thuật nhận vào tập hợp các câu. Mỗi câu sẽ được tách ra thành các n-gram. Tất cả các n-gram từ các câu sẽ được tổng hợp lại thành tập từ vựng T. Tuy nhiên, không phải tất cả các n-gram đều được thêm vào tập từ vựng T. Giải thuật quy định 1 mức ngưỡng $min\_df$ là số câu tối thiểu cùng chứa 1 n-gram thì n-gram đó mới được thêm vào tập T. Nếu $min\_df=1$ thì tập từ vựng T chứa tất cả các n-gram. Nghiên cứu \cite{sarker2011outcome} sử dụng $min\_df = 5$, trong khi nghiên cứu \cite{niu2005analysis} dùng $min\_df=4$. Tuy nhiên cả 2 nghiên cứu trên đều không giải thích về cách chọn các giá trị trên. Trong nghiên cứu này, chúng tôi tiến hành các thí nghiệm để phân tích và chọn ra giá trị $min\_df$ tối ưu nhất.\\
+
+Bước còn lại là vector hóa câu: chuyển 1 câu từ dạng \term{text} sang dạng vector đại diện cho câu đó. Đầu tiền, cần sắp xếp các n-gram trong tập từ vựng T ở bước (1). Việc sắp xếp này là tùy ý, nhưng sau khi đã sắp xếp phải giữ nguyên thứ tự các n-gram trong tập T. Giả sử $T=\{\text{n-gram}_1, \text{n-gram}_2, \text{n-gram}_3, \ldots, \text{n-gram}_n\}$. Khi đó, mỗi câu $s_i$ sẽ được chuyển thành vector $v_i$ có n chiều. Có 2 cách hiện thực để xác định giá trị tại chiều thứ $k$ của vector $v_i$
+\begin{enumerate}
+\item Giá trị tại chiều thứ $k$ của vector $v_i$ là giá trị nhị phân, bằng 0 nếu câu đó không chứa $\text{n-gram}_k$, bằng 1 nếu câu đó chứa $\text{n-gram}_k$.
+\item Giá trị tại chiều thứ $k$ của vector $v_i$ là số nguyên, thể hiện số lần xuất hiện $\text{n-gram}_k$ trong câu đó.
+\end{enumerate}
+Để thuận tiện khi gọi tên trong các thử nghiệm, chúng tôi quy ước đặt tên cách hiện thực thứ nhất là \term{vector nhị phân}, cách hiện thực thứ 2 là \term{vector số nguyên}. \\
+\example{3}{
+Giả sử sau khi qua bước (1), thu được tập từ vựng T gồm các n-gram như sau: drug, risk, disturbances, associated with, disadvantage, evidence. Khi đó, nếu sử dụng cách vector hóa dùng \term{vector nhị phân}, các câu ở ví dụ 1 và 2 được chuyển thành dạng vector như sau:
+}
+\begin{tabular}{| c | c | c | c | c | c | c | c |}
+\hline
+  & \textbf{drug} & \textbf{risk} & \textbf{disturbances} & \textbf{associated with} & \textbf{disadvantage} & \textbf{evidence}
+\\ \hline
+Ví dụ 1 & 0 & 1 & 0 & 1 & 0 & 0
+\\ \hline
+Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
+\\ \hline
+\end{tabular}
+Khi đó, $v_1 = (0, 1, 0, 1, 0, 0) $ và $v_2=(0, 1, 0, 0, 1, 0)$
+\subsection{Change Phrase}
+\subsubsection*{Mô tả}
 Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al. có một số thay đổi và mở rộng đặc trưng này.\\
 
 \textit{Change phrase} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh. \\
@@ -87,8 +131,30 @@ MORE & BAD & \tieucuc \\
 \hline
 \end{tabular}
 \end{table}
-\subsubsection*{Sự phủ định}
+\subsubsection*{Rút trích}
+Rút trích đặc trưng Change phrase phụ thuộc vào 2 yếu tố:
+\begin{itemize}
+\item[•] Danh sách từ trong mỗi nhóm LESS, MORE, BAD, GOOD
+\item[•] Giải thuật nhận biết sự kết hợp của các nhãn trên
+\end{itemize}
+Với yếu tố thứ nhất, trong nghiên cứu này, chúng tôi sử dụng danh sách từ cho mỗi nhóm tham khảo từ nghiên cứu của nhóm tác giả Sarker, Abeed, et al.\cite{sarker2011outcome}. Nhóm tác giả trên tự tập hợp danh sách các nhóm từ thủ công nhưng không liệt kê trong báo cáo của mình. Nhóm chúng tôi có liên hệ và đã nhận được mã nguồn, từ đó lấy được danh sách các nhóm từ. Danh sách này gồm 371 từ (BAD: 223 từ, GOOD: 82 từ, MORE: 30 từ, LESS:36 từ). Sau đó, chúng tôi mở rộng danh sách bằng cách thu thập thủ công. Danh sách cuối cùng gồm 423 từ (BAD: 238, GOOD: 96, MORE: 42 từ, LESS: 47 từ).\\
+
+Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi xem xét yếu tố thứ 2: hiện thực giải thuật nhận dạng xem 1 câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD. Giải thuật nhận dạng câu thuộc mẫu nào được thực hiện qua 2 bước.\\
+
+Ở bước 1, giải thuật nhận dạng những từ mô tả sự thay đổi, bằng cách so trùng các từ trong 2 nhóm LESS và MORE với các từ trong câu. Để có thể so trùng thành công, trước tiên các từ trong 2 nhóm này được xử lý \term{lemmatization} và \term{stemming} như ở mục \ref{sec:tien-xu-ly}. Sau đó mỗi từ trong câu được so sánh với các từ trong 2 nhóm trên. Nếu từ $w$ thuộc 1 trong 2 nhóm trên, giải thuật thêm \term{tag} ``\_LESS'' hoặc ``\_MORE'' vào cuối các từ thuộc phạm vi từ từ $w$ đến dấu chấm câu (\term{punctuation}) gần nhất (về phía cuối câu). Dấu chấm câu (\term{punctuation}) có thể là dấu chấm (.), dấu phẩy (,), dấu hai chấm (:) hoặc dấu chấm phẩy (;). Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành risk\_MORE, từ đó thay đổi tập từ vựng T của đặc trưng n-gram . Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
+
+\example{1}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}\\
+Giải thuật sẽ đánh dấu \term{tag} \_MORE từ từ increased đến hến câu:  \myquote{Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE}}
+
+Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm vi từ từ đó đến hết câu, nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE-GOOD. Tương tự như vậy đối với 3 mẫu còn lại.\\
+
+Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
+
+\subsection{Sự phủ định}
+\subsubsection*{Mô tả}
+\subsubsection*{Rút trích}
 \subsection{Đặc trưng mở rộng SO-CAL}
+\subsubsection*{Mô tả}
 Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic orientation Calculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
 
 Phân tích cảm xúc dựa trên từ vựng là một phương pháp khác, tránh được bất lợi của phương pháp học máy là không cần qua quá trình huấn luyện. Tuy nhiên đa số các nghiên cứu này đều phân tích cảm xúc trên văn bản thông thường, không tập trung vào 1 lĩnh vực cụ thể nào \cite{taboada2011lexicon}\cite{Zhang2011}\cite{ohana2009sentiment}\cite{Giachanou2016}. \\
@@ -102,4 +168,115 @@ Dựa trên 2 giả thiết trên, tính phân cực của một câu phụ thu�
 \begin{equation}
 Polarity_{sentence}=f(Polarity_{words-in-sentence})
 \end{equation}
+\subsubsection*{Rút trích}
+Rút trích đặc trưng SO-CAl chính là giải thuật tính điểm số cho mỗi câu phụ thuộc vào điểm số của mỗi từ trong câu. Sau đây, chúng tôi trình bày các vấn đề chính khi tính điểm cho từ
+\paragraph*{Từ điển}
+Đây là công cụ giúp tra cứu điểm số của mỗi từ. Các từ điển hiện nay thuộc 2 loại: xây dựng thủ công hoặc xây dựng bán tự động. Từ điển xây dựng thủ công điển hình được sử dụng nhiều trong các nghiên cứu là bộ từ điển General Inquirer. Lợi thế của loại tự điển này là được con người đánh điểm số, vì vậy giảm thiếu sai sót. Các nghiên cứu có thể dựa trên bộ từ điển này để tự mở rộng thành bộ từ điển của mình. Tuy nhiên, bất lợi của loại này là kích thước thường nhỏ. Bộ từ điển thuộc loại thứ 2 được sử dụng phổ biến là WordNet. Từ điển thuộc loại bán tự động được xây dựng bằng cách sử dụng một tập từ hạt giống có tính phân cực cao. Các từ này có thể được tập hợp thủ công hoặc được lấy từ từ điển General Inquirer. Từ đó, điểm của các từ khác được sinh ra dựa trên tần số xuất hiện của chúng so với các từ hạt giống. Lợi thế của loại từ điển này là kích thước lớn, tạo độ bao phủ cao, từ đó nhiều từ được gán điểm số hơn. Tuy nhiên độ chính xác của loại từ điển này không cao, và kích thước lớn thường đi kèm với nhiễu. \\
 
+Nghiên cứu \cite{taboada2011lexicon} vì thế chọn phương án xây dựng một bộ từ điển thủ công dựa trên một số nguồn text như các bình luận về phim, sách, máy tính, khách sạn,... và các từ thuộc nhóm tích cực, tiêu cực từ từ điển General Inquirer. 
+
+Điểm số mỗi từ trong từ điển được xây dựng có giá trị từ -5 đến 5 với ý nghĩa: Giá trị càng nhỏ thể hiện tính phân cực về phía tiêu cực càng nhiều, và ngược lại. 
+\begin{table}[H]
+\begin{tabular}{l l}
+\hline
+\textbf{Từ} & \textbf{Giá trị} 
+\\ \hline
+monstrosity & -5
+\\ 
+hate (noun and verb) & -4
+\\ 
+disgust & -3
+\\ 
+sham & -3
+\\ 
+fabricate & -2
+\\ 
+delay (noun and verb) & -1
+\\
+determination & 1
+\\
+determination & 1
+\\ 
+inspire & 2
+\\ 
+inspiration & 2
+\\ 
+endear & 3
+\\ 
+relish (verb) & 4
+\\ 
+masterpiece & 5
+\\ \hline
+\end{tabular}
+\end{table}
+\paragraph*{Từ loại}
+Hầu hết các nghiên cứu ban đầu về phân tích cảm xúc dựa trên từ vừng đều chỉ tập trung vào tính từ. Điểm số của cả văn bản chỉ phụ thuộc vào điểm số của tính từ trong câu và những từ liên quan. 
+Xét 2 ví dụ sau: 
+\begin{itemize}
+\item[•] The young man strolled+ purposefully+ through his neighborhood+
+\item[•] The teenaged male strutted- cockily- through his turf-
+\end{itemize}
+Các dấu + ở câu thứ nhất thể hiện xu hướng bổ sung tích tích cực vào độ phân cực của cả câu, trong khi dấu - ở ví dụ thứ 2 ngược lại. Từ đó cho thấy, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng có tác động đến điểm số phân cực của cả câu. Các nghiên cứu sau này đã mở rộng hơn, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng được xem xét tới. \\
+
+Điều này không những giúp đánh giá tốt hơn trong trường hợp ví dụ trên, ngoài ra còn giúp giải quyết một số trường hợp đặc biệt khi một từ có thể thuộc nhiều loại từ loại. Ví dụ: từ ``novel'' nếu xét theo từ loại danh từ thì chỉ mang ý nghĩa trung tính, nếu xét theo từ loại tính từ lại có ý nghĩa tích cực. Từ ``plot'' mang ý nghĩa tiêu cực nếu là động từ, nhưng mang tính nghĩa trung tính nếu xem là danh từ. Trong nghiên cứu \cite{taboada2011lexicon}, bộ từ điển được xây dựng gồm 2252 tính từ, 1142 danh từ, 903 động từ, and 745 phó từ. \\
+
+Tất cả các động từ và danh từ trong từ điển đều được xử lý \term{lemmatized}, vì vậy các động từ ở các dạng thể hiện khác nhau đều cùng 1 điểm số. Các động từ, danh từ và tính từ đều được đánh điểm thủ công, riêng phó từ được đánh điểm tự động dựa trên tính từ. Phó từ được bỏ đuôi ``-ly'', sau đó so trùng với các tính từ. Ví dụ: từ \myquote{purposefully} sẽ được gán điểm số của tính từ \myquote{purposefull}. Tuy nhiên, một số ngoại lệ như các phó từ \myquote{fast} được xử lý thủ công. 
+\paragraph*{Tính tăng cường (intensification)}
+Một từ có tính tăng cường được hiểu là các từ bản thân nó không có điểm số thể hiện tính phân cực, nhưng có khả năng tác động lên 1 từ khác, làm tăng lên hoặc hạ thấp tính phân cực của từ đó. Từ đó làm thay đổi điểm số thể hiện tính phân cực của cả cụm từ. Một số từ có tính tăng cường như: \myquote{slightly}, \myquote{very}, \myquote{most}, \myquote{the most}. Một giải thuật đơn giản có thể được sử dụng trong trường hợp này như sau:
+Khi gặp một từ có tác động làm tăng tính phân cực (\myquote{very}), điểm của từ bị tác động được cộng thêm 1 hằng số. 
+Cụm từ \myquote{very good} được tính điểm bằng công thức: $Polarity(\text{\myquote{very good}}) = P(\text{\myquote{good}}) + 1$.
+Tương tự với trường hợp còn lại. \\
+
+Tuy nhiên cách hiện thực này không thể hiện đúng bản chất của tác động tăng cường. Bởi vì cùng một từ \myquote{very} có thể có tác động mạnh yếu khác nhau tùy thuộc vào từ bị tác động. Nói cách khác, sự tác động này nên phụ thuộc vào cả 2 thành phần: 
+\begin{itemize}
+\item[•] Tính chất tăng cường của từ tác động. Tính chất này có thể được thể hiện bằng tỉ lệ phần trăm (\%) như Bảng \ref{table:intensive}.
+\item[•] Tính phân cực của từ bị tác động
+\end{itemize}
+Nghiên cứu \cite{taboada2011lexicon} sử dụng công thức (\ref{equa:intensive}) để tính điểm số trong trường hợp này:
+\begin{equation}
+\label{equa:intensive}
+Polarity (\text{cụm từ}) = Polarity(\text{từ bị tác động}) * (100\% - \text{tỉ lệ tác động})
+\end{equation}
+\begin{table}[H]
+\caption{Tỉ lệ tác động của một số từ} \label{table:intensive}
+\begin{tabular}{l l}
+\hline
+\textbf{Từ} & \textbf{Tỉ lệ tác động} 
+\\ \hline
+slightly & -50\%
+\\ 
+somewhat & -30\%
+\\ 
+pretty & -10\%
+\\ 
+really & +15\%
+\\ 
+very & +25\%
+\\ 
+extraordinarily & +50\%
+\\
+(the) most & +100\%
+\\ \hline
+\end{tabular}
+\end{table}
+\example{}{
+\myquote{good} có điểm số là 3.0, từ đó \myquote{very good} có điểm số là: 3.0 * (100\% + 25\%) =  3.75}
+Trong trường hợp có hơn 1 từ có tính tăng cường, điểm số được tính tương tự theo cách đệ quy. \\
+\example{2}{\myquote{really very good}: (3 * [100\% + 25\%]) * (100\% + 15\%) = 4.3}
+
+Trong trường hợp một tính từ bổ sung nghĩa cho một danh từ theo sau nó, tính từ đó được coi như là một từ có tính tăng cường. Vì vậy, bản thân tính từ đó không có điểm số, và chỉ làm thay đổi điểm số của danh từ theo sau. \\
+
+\example{}{
+\myquote{This is a total failure}\\
+Tính từ \myquote{total} được xem là từ có tính tăng cường, nên thay vì sử dụng điểm số, \myquote{total} ảnh hưởng đến điểm số của \myquote{failure}: $-3.0 * (100\% + 50\%) = -4.5$
+}
+\paragraph*{Xử lý phủ định}
+Sự xuất hiện từ phủ định có thể làm đảo chiều tính phân cực cho cả câu. Tuy nhiên, một từ phân cực về phía tiêu cực mạnh (điểm số rất thấp), không có nghĩa rằng sẽ phân cực về phía tích cực mạnh (điểm số rất cao). Nghiên cứu \cite{taboada2011lexicon} sử dụng chiến lược \term{shift negation}. Thay vì chỉ đơn thuần đổi dấu điểm số, \term{shift negation} chỉ cộng/trừ 1 lượng cố định (trong nghiên cứu này là 4) vào điểm số của từ bị phủ định.\\
+
+\example{}{
+\myquote{This CD is not horrid}\\
+Điểm số của \myquote{horrid} là -5, khi đó, \myquote{not horrid} có điểm số là: -5 + 4 = -1
+}
+
+\paragraph*{Tính điểm số cho câu}
+Sau khi đã tính điểm cho các từ, SO-CAL tính điểm cho câu dựa trên nguyên tắc: Lấy trung bình cộng điểm số những từ có điểm số khác 0. Trường hợp tất cả các từ có điểm số bằng 0 thì điểm số của câu cũng bằng 0
