@@ -158,18 +158,18 @@ Các thử nghiệm trong phần này đều dùng kết hợp với đặc trư
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
-\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản}
+\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản} \label{table:ket-hop-dac-trung}
 \begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
 \hline
 \textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
 1 & N-gram & 68.76 & 68.09 & 67.96  \\ \hline
-2 & N-gram + Change\_Phrase & 70.15 & 69.42 & 69.35 \\ \hline
-3 & N-gram + Change\_Phrase + Negation & 71.09 & 70.11 & 70.11 \\ \hline
-4 & N-gram + Change\_Phrase + Negation + UMLS & 23.45\% & 23.45\% & 23.45\% \\ \hline
+2 & N-gram + \term{Change phrase} & 70.15 & 69.42 & 69.35 \\ \hline
+\textbf{3} & \textbf{N-gram} + \textbf{\term{Change phrase}} + \textbf{Phủ định} & \textbf{71.09} & \textbf{70.11} & \textbf{70.11} \\ \hline
+4 & N-gram + \term{Change phrase} + Phủ định + Metamap & 70.95 & 69.99 & 70.01 \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
-
+Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp các đặc trưng cơ bản với nhau. \term{Change phrase} có hiệu quả rõ rệt khi giúp tăng 1.39\% so với \term{baseline} n-gram. Đặc trưng Phủ định cũng góp phần cải thiện kết quả. Kết quả khi sử dụng n-gram với Metamap lại không cho kết quả tốt. Điều này trái ngược với kết quả của nghiên cứu \cite{sarker2011outcome} và \cite{niu2005analysis}.
 \subsubsection*{Thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
 \begin{table}[H]
 \centering
