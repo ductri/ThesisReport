@@ -25,8 +25,8 @@ Giải thuật học máy chúng tôi sử dụng là có giám sát nên dữ l
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{../hinh/SQL.png}
-\caption{Lược đồ ánh xạ quan hệ (relational schema diagram)}
+\includegraphics[scale=0.25]{../hinh/EERD.png}
+\caption{Mô hình thực thể liên kết tăng cường của cơ sở dữ liệu}
 \label{fig:SQL}
 \end{figure}
 
@@ -74,15 +74,17 @@ Quy trình gắn nhãn dữ liệu của trang web được mô hình hóa như 
 \label{fig:updatedb}
 \end{figure}
 
-Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
+Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến hành gắn nhãn cho tập dữ liệu. Kết quả tập dữ liệu sau khi gắn nhãn được lưu lại như Bảng \ref{table:labeleddata}.
 
-\begin{itemize}
-\item Với những câu chỉ có 1 loại nhãn được gắn: lưu kết quả xem như là nhãn phân loại cuối cùng của câu.
-\item Với những câu có 2 loại nhãn được gắn: tự chỉnh sửa, lấy kết quả đúng lưu như nhãn phân loại cuối cùng của câu.
-\item Với những câu có 3 loại nhãn được gắn: bỏ những câu này ra khỏi tập dữ liệu vì nghi ngờ độ nhập nhằng về ý nghĩa phân cực của câu.
-\end{itemize}
+%Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
 
-Kết quả sau khi lọc được lưu lại như Bảng \ref{table:labeleddata}.
+%\begin{itemize}
+%\item Với những câu chỉ có 1 loại nhãn được gắn: lưu kết quả xem như là nhãn phân loại cuối cùng của câu.
+%\item Với những câu có 2 loại nhãn được gắn: tự chỉnh sửa, lấy kết quả đúng lưu như nhãn phân loại cuối cùng của câu.
+%\item Với những câu có 3 loại nhãn được gắn: bỏ những câu này ra khỏi tập dữ liệu vì nghi ngờ độ nhập nhằng về ý nghĩa phân cực của câu.
+%\end{itemize}
+
+%Kết quả sau khi lọc được lưu lại như Bảng \ref{table:labeleddata}.
 
 \begin{table}[H]
 \centering
