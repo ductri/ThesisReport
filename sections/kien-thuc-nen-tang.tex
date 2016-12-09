@@ -83,5 +83,82 @@ Một số ví dụ khi chạy giải thuật NegEx:
 
 \example{9}{``The patient is (tumor [free]).''\\Từ phủ định tìm được: ``free'' là thuật ngữ phủ định hậu điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``tumor''.}
 \subsection{Phương pháp học máy Support Vector Machine}
+Với dữ liệu dạng văn bản, nhiều phương pháp phân loại có thể được sử dụng như: \term{Support Vector Machine} (SVM), \term{Naive Bayes}, \term{Expectation–maximization algorithm}, ...\cite{manning2009anintroduction}. Trong quá trình nghiên cứu và hiện thực, nhóm chọn mô hình SVM làm giải thuật nền tảng để dán nhãn các lớp cho tập dữ liệu bởi hiệu suất cao của phương pháp này trong việc phân loại nhãn văn bản \cite{joachims1998text}.\\
+
+SVM được Vapnik lần đầu tiên giới thiệu vào năm 1992 và từ đó trở thành một trong những giải thuật học máy được sử dụng phổ biến nhất bởi hiệu suất phân loại rất tốt trên những tập dữ liệu có kích thước không quá lớn. SVM được sử dụng chủ yếu để giải quyết các bài toán phân loại và phân tích hồi quy \cite{chandrakala2012opinion}\cite{manning2009anintroduction}. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{hinh/SVM1.png}
+\caption{Minh họa mô hình phân loại dữ liệu có nhãn}
+\label{fig:dataclassify}
+\end{figure}
+\pagebreak
+Mô hình SVM chuẩn là một mô hình học máy có giám sát sử dụng thuật toán phân loại nhị phân. SVM nhận đầu vào là một tập dữ liệu biết trước nhãn của mỗi phần tử thuộc tập dữ liệu đó. Ví dụ như ở hình~\ref{fig:dataclassify}, tập dữ liệu đầu vào gồm tập hợp các điểm biết trước phân lớp (hình tam giác, hình tròn). Nhiệm vụ của SVM là xây dựng một đường phân cách tuyến tính chia tập dữ liệu thành hai nhóm điểm thuộc hai lớp khác nhau, sao cho khi có một điểm mới xuất hiện chưa biết trước nhãn, từ vị trí của điểm này so với đường phân cách có thể dự đoán điểm mới thuộc nhóm phân lớp nào. Để giải quyết bài toán này, mô hình SVM sử dụng giải thuật tối ưu hóa khoảng cách giữa đường phân chia tuyến tính đến điểm dữ liệu gần nhất ở cả hai lớp.
+\subsubsection*{Giải thuật tối ưu hóa khoảng cách}
+\begin{figure}[h] \centering
+    \begin{subfigure}[b]{0.325\textwidth}    \centering
+        \includegraphics[width=\textwidth]{hinh/SVM2.png}
+        \caption{ }
+        \label{fig:svm1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.325\textwidth}    \centering
+        \includegraphics[width=\textwidth]{hinh/SVM3.png}
+        \caption{ }
+        \label{fig:svm2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.325\textwidth}    \centering
+        \includegraphics[width=\textwidth]{hinh/SVM4.png}
+        \caption{ }
+        \label{fig:svm3}
+    \end{subfigure}
+    \caption[Caption for LOF]{Minh họa giải thuật tối ưu hóa khoảng cách của mô hình SVM \footnotemark}
+    \label{fig:svm}
+\end{figure}
+\footnotetext{Tham khảo Figure 15.1 trang 320 của \cite{manning2009anintroduction}}
+Với không gian dữ liệu tương đối đơn giản như hình~\ref{fig:svm1}, vấn đề đặt ra là có vô số đường tuyến tính có khả năng phân chia tập dữ liệu thành hai lớp phân biệt. Trong tập hợp các đường phân cách này, ta cần lựa chọn một đường tối ưu để tăng hiệu quả phân loại và giảm nhiễu cho tập dữ liệu bằng giải thuật tối ưu hóa khoảng cách của SVM.\\
+
+Đầu tiên, đường phân cách cần nằm cách đều hai nhóm phân loại để đảm bảo xác suất phân loại điểm mới công bằng cho cả hai lớp (hình~\ref{fig:svm2}). Điều này có nghĩa là khoảng cách \textit{D} từ đường phân cách đến điểm gần nhất ở cả hai lớp  phải bằng nhau. Tuy nhiên, số lượng đường tuyến tính đảm bảo yêu cầu trên là vô số. Lúc này ta quan tâm đến độ lớn của \textit{D}: nếu \textit{D} nhỏ, xác suất phân loại sai sẽ cao hơn do sai số của dữ liệu đầu vào trên thực tế. Vì vậy mô hình SVM chọn đường phân loại có khoảng cách lớn nhất đến điểm gần nhất ở cả hai lớp (hình~\ref{fig:svm3}). Các điểm dữ liệu thuộc hai lớp có vị trí gần nhất với đường thẳng phân loại gọi là \textit{support vector}.
+
+\subsubsection*{Kĩ thuật Kernel}
+Dựa vào đặc trưng về vị trí điểm dữ liệu, tập dữ liệu đầu vào có thể được chia làm hai loại:
+\begin{itemize}
+\item[•] Khả phân cách tuyến tính: tồn tại ít nhất một đường thẳng thuộc không gian dữ liệu có thể phân chia tập dữ liệu xác định thành hai nhóm có nhãn khác nhau như hình~\ref{fig:dataclassify}.
+\item[•] Không khả phân cách tuyến tính: không tồn tại đường thẳng thuộc không gian tập dữ liệu có khả năng chia các điểm dữ liệu thành hai nhóm có nhãn khác nhau. Lúc này bài toán trở thành phân loại phi tuyến.
+\end{itemize}
+Trong trường hợp dữ liệu đầu vào không khả phân cách tuyến tính, cách giải quyết đầu tiên là biến đổi không gian dữ liệu trở thành khả phân cách tuyến tính. Nói cách khác, ta cần tìm một hàm ánh xạ sao cho với không gian dữ liệu sau khi ánh xạ tồn tại ít nhất một đường thẳng hoặc mặt phẳng tuyến tính có thể phân loại dữ liệu thành hai lớp. Để làm việc này ta có thể chỉnh sửa các đặc trưng của dữ liệu, hoặc suy diễn đặc trưng mới trên cơ sở những đặc trưng có sẵn. Ngoài ra, ta cũng có thể ánh xạ các điểm dữ liệu vào không gian có số chiều lớn hơn sao cho trong không gian đó có ít nhất một đường thẳng hay mặt phẳng tuyến tính có thể giúp phân loại các điểm dữ liệu (hình~\ref{fig:axkernel}). Hàm ánh xạ thường không cố định và được lựa chọn tùy theo đặc tính của dữ liệu và tính chất bài toán.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{hinh/kernel.png}
+\caption[Caption for LOF]{Minh họa ánh xạ tập dữ liệu không khả phân cách tuyến tính \footnotemark}
+\label{fig:axkernel}
+\end{figure}
+\footnotetext{Tham khảo Figure 7 của \cite{pei2012using}}
+\subsubsection*{Phương pháp soft-margin}
+Trên thực tế, sai số của dữ liệu đầu vào là một trong những nguyên nhân dẫn đến bài toán phân loại phi tuyến. Trong trường hợp này, phương pháp \textit{soft-margin} thường được sử dụng để cải thiện giải thuật tối ưu hóa khoảng cách (hình~\ref{fig:softmargin}). Phương pháp này cho phép tồn tại một số điểm được phân chia sai lớp với một giới hạn sai số nhất định (gọi là độ lỗi).
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{hinh/SVM5.png}
+\caption{Minh họa phương pháp soft-margin}
+\label{fig:softmargin}
+\end{figure}
+\subsubsection*{Bài toán phân loại đa lớp}
+Mô hình SVM dạng chuẩn như trên chỉ giúp phân loại dữ liệu thành hai lớp. Trong khi đó, bài toán thực tế đòi hỏi số lượng lớp phân loại đầu ra thường lớn hơn 2. Ví dụ như bài toán phân tích cảm xúc trên văn bản y khoa yêu cầu phân loại cảm xúc thành 3 lớp: \tichcuc, \tieucuc và \trungtinh. Lúc này cần áp dụng một hoặc kết hợp một số phương pháp phân loại đa lớp sử dụng mô hình SVM như OvA (One-vesus-All), OvO (One-against-one), DDAG (Decision Directed Acyclic Graph).
+\begin{table}[H] \centering
+\caption{Minh họa phương pháp phân loại OvA cho bài toán phân tích cảm xúc trong bệnh án điện tử}
+\begin{tabular}{ | P{0.2\textwidth} | P{0.2\textwidth} | P{0.2\textwidth} | P{0.2\textwidth} | }
+\hline 
+\textbf{Bộ phân loại} & \tichcuc & \tieucuc & \trungtinh \\ 
+\hline 
+\textbf{SVM\textsubscript{1}} & O & X & X \\ 
+\hline 
+\textbf{SVM\textsubscript{2}} & X & O & X \\ 
+\hline 
+\textbf{SVM\textsubscript{3}} & X & X & O \\ 
+\hline 
+\end{tabular}
+\label{tab:svmclass} 
+\end{table}
+Bảng~\ref{tab:svmclass} minh họa phương pháp phân loại OvA: kết hợp nhiều mô hình SVM để phân loại dữ liệu. Trong đó, mỗi SVM giúp phân loại một lớp dữ liệu tương ứng với các lớp khác. Cụ thể với bài toán phân tích cảm xúc trong văn bản y khoa đã đề cập, ta cần ba mô hình SVM: SVM\textsubscript{1} phân loại dữ liệu thành lớp \tichcuc với lớp \textit{Không tích cực} (bao gồm \tieucuc và \trungtinh), SVM\textsubscript{2} phân loại dữ liệu thành lớp \tieucuc với lớp \textit{Không tiêu cực} (bao gồm \tichcuc và \trungtinh), và tương tự với SVM\textsubscript{3}. Khi xuất hiện một điểm dữ liệu mới, dữ liệu đó sẽ được phân loại qua tất cả những lớp SVM đã được xây dựng.
 \subsection{Thư viện y khoa UMLS Metathesaurus}
 \subsection{Phương pháp đánh giá độ đồng nhất Kappa's Cohen}
