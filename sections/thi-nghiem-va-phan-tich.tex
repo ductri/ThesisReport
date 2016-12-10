@@ -25,8 +25,8 @@ Giải thuật học máy chúng tôi sử dụng là có giám sát nên dữ l
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{../hinh/SQL.png}
-\caption{Lược đồ ánh xạ quan hệ (relational schema diagram)}
+\includegraphics[scale=0.25]{../hinh/EERD.png}
+\caption{Mô hình thực thể liên kết tăng cường của cơ sở dữ liệu}
 \label{fig:SQL}
 \end{figure}
 
@@ -74,15 +74,17 @@ Quy trình gắn nhãn dữ liệu của trang web được mô hình hóa như 
 \label{fig:updatedb}
 \end{figure}
 
-Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
+Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến hành gắn nhãn cho tập dữ liệu. Kết quả tập dữ liệu sau khi gắn nhãn được lưu lại như Bảng \ref{table:labeleddata}.
 
-\begin{itemize}
-\item Với những câu chỉ có 1 loại nhãn được gắn: lưu kết quả xem như là nhãn phân loại cuối cùng của câu.
-\item Với những câu có 2 loại nhãn được gắn: tự chỉnh sửa, lấy kết quả đúng lưu như nhãn phân loại cuối cùng của câu.
-\item Với những câu có 3 loại nhãn được gắn: bỏ những câu này ra khỏi tập dữ liệu vì nghi ngờ độ nhập nhằng về ý nghĩa phân cực của câu.
-\end{itemize}
+%Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
 
-Kết quả sau khi lọc được lưu lại như Bảng \ref{table:labeleddata}.
+%\begin{itemize}
+%\item Với những câu chỉ có 1 loại nhãn được gắn: lưu kết quả xem như là nhãn phân loại cuối cùng của câu.
+%\item Với những câu có 2 loại nhãn được gắn: tự chỉnh sửa, lấy kết quả đúng lưu như nhãn phân loại cuối cùng của câu.
+%\item Với những câu có 3 loại nhãn được gắn: bỏ những câu này ra khỏi tập dữ liệu vì nghi ngờ độ nhập nhằng về ý nghĩa phân cực của câu.
+%\end{itemize}
+
+%Kết quả sau khi lọc được lưu lại như Bảng \ref{table:labeleddata}.
 
 \begin{table}[H]
 \centering
@@ -154,8 +156,7 @@ $$F = \alpha_1*F_1 + \alpha_2*F_2 + \alpha_3*F_3$$
 với $\alpha_1 + \alpha_2 + \alpha_3 = 1$ và $\alpha_1, \alpha_2, \alpha_3$ lần lược là tỉ lệ số lượng các câu thuộc lớp \tichcuc, \tieucuc, \trungtinh trong tập dữ liệu huấn luyện.
 \subsubsection*{K-fold cross validation}
 Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phương pháp \textit{k-fold cross validation} để đánh giá hiệu quả của hệ thống. Phương pháp này nhằm tránh trường hợp tập kiểm tra, vì được chia ngẫu nhiên, có thể rơi vào trường hợp quá dễ hoặc quá khó đối với hệ thống. Tập dữ liệu được chia ngẫu nhiên thành \(k\) phần. Phần thứ \(i\) sẽ được chọn làm tập để đánh giá, \(k-1\) phần còn lại dùng cho việc học các tham số của mô hình. Tiến trình trên được thực hiện \(k\) lần với \(i\) chạy từ 1 đến \(k\), giá trị trung bình là kết quả cuối cùng dùng để đánh giá hệ thống.
-\subsubsection*{Kiểm định Student's t-test}
-Trong quá trình thử nghiệm các đặc trưng, chúng tôi đề xuất sử dụng phương pháp phương pháp kiểm định Student's t-test nhằm xác nhận có sự khác biệt về hiệu quả giữa các đặc trưng. Phương pháp Student's t-test sử dụng 2 tập kết quả, qua các bước tính toán, xem xét sự khác biệt giữa hai tập kết quả có thể tin tưởng hay không. %TODO viết thêm
+
 \subsection{Kết quả thí nghiệm}
 Với mỗi lần chạy, chúng tôi sử dụng k-fold với $k=5$. Tuy nhiên, do tập dữ liệu không đủ lớn, kết quả các lần chạy có sự dao động, vì vậy, với mỗi lần thử nghiệm, chúng tôi lặp lại việc chạy k-fold 30 lần, sau đó lấy điểm số trung bình xem như kết quả cuối cùng. Đối với giải thuật học máy SVM, có 2 tham số cần được tùy chỉnh thích hợp. Để xác định tham số c, hệ thống chạy nhiều lần với c thuộc 1 khoảng cho trước (trong nghiên cứu này, c chạy từ 20 đến 30), từ đó chọn ra giá trị c tương ứng với độ đo f lớn nhất. Như vậy, với mỗi thử nghiệm, giá trị độ do f luôn là giá trị cao nhất được chọn từ những lần chạy với giá trị c thay đổi từ 20 đến 30. \\
 
