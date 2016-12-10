@@ -162,5 +162,50 @@ Mô hình SVM dạng chuẩn như trên chỉ giúp phân loại dữ liệu th�
 Bảng~\ref{tab:svmclass} minh họa phương pháp phân loại OvA: kết hợp nhiều mô hình SVM để phân loại dữ liệu. Trong đó, mỗi SVM giúp phân loại một lớp dữ liệu tương ứng với các lớp khác. Cụ thể với bài toán phân tích cảm xúc trong văn bản y khoa đã đề cập, ta cần ba mô hình SVM: SVM\textsubscript{1} phân loại dữ liệu thành lớp \tichcuc với lớp \textit{Không tích cực} (bao gồm \tieucuc và \trungtinh), SVM\textsubscript{2} phân loại dữ liệu thành lớp \tieucuc với lớp \textit{Không tiêu cực} (bao gồm \tichcuc và \trungtinh), và tương tự với SVM\textsubscript{3}. Khi xuất hiện một điểm dữ liệu mới, dữ liệu đó sẽ được phân loại qua tất cả những lớp SVM đã được xây dựng.
 \subsection{Thư viện y khoa UMLS Metathesaurus}
 \subsection{Phương pháp đánh giá độ đồng nhất Cohen's kappa}
-Hệ số \term{Cohen's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của 2 ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của 2 người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ loại bỏ yếu tố xác xuất ngẫu nhiên xảy ra sự đồng ý giữa 2 ý kiến đánh giá.
+Hệ số \term{Cohen's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của 2 ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của 2 người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ có xem xét đến xác xuất ngẫu nhiên xảy ra sự đồng ý giữa 2 ý kiến đánh giá.\\
 
+Phương pháp hệ số \term{kappa} có 3 phiên bản:
+\begin{itemize}
+\item[•] Phiên bản gốc do Jacob Cohen giới thiệu năm 1960, thường được gọi là \term{Cohen's kappa}. Trong nghiên cứu này, chúng tôi sử dụng phiên bản gốc.
+\item[•] Phiên bản \term{kappa} có trọng số, giúp xét đến cả tỉ lệ không đồng ý.
+\item[•] Phiên bản \term{Fleiss' kappa} có thể đo độ đồng nhất với số lượng người đánh nhãn không giới hạn, trong khi phiên bản gốc chỉ có thể đánh giá khi có đúng 2 người đánh nhãn.
+\end{itemize}
+Mỗi người đánh nhãn được yêu cầu phân loại mỗi câu thuộc vào 1 trong 3 loại: \tichcuc, \tieucuc hoặc \trungtinh. Từ đó, các câu đã đánh nhãn được thống kê như Bảng \ref{table:kappa}.
+\begin{table}[H]
+\caption{Thống kê các câu được đánh nhãn} \label{table:kappa}
+\begin{tabular}{|m{2cm}|l|l|l|l|l|}
+\hline
+	& \multicolumn{5}{c|}{\textbf{Người đánh nhãn 1}}                                                                \\ \hline
+\multirow{5}{2cm}{\textbf{Người đánh nhãn 2}} & \textbf{}           & \textbf{Tích cực} & \textbf{Tiêu cực} & \textbf{Trung tính} & \textbf{Tổng cộng}         \\ \cline{2-6} 
+                                            & \textbf{Tích cực}   & $p_{11}$          & $p_{12}$          & $p_{13}$            & $p_{1a}$                      \\ \cline{2-6} 
+                                            & \textbf{Tiêu cực}   & $p_{21}$          & $p_{22}$          & $p_{23}$            & $p_{2a}$                      \\ \cline{2-6} 
+                                            & \textbf{Trung tính} & $p_{31}$          & $p_{32}$          & $p_{33}$            & $p_{3a}$                      \\ \cline{2-6} 
+                                            & \textbf{Tổng cộng}  & $p_{1b}$             & $p_{2b}$             & $p_{3b}$               & $p$ (Tổng số câu) \\ \hline
+\end{tabular}
+\end{table}
+Hệ số kappa được tính bởi công thức:
+$$\kappa = \dfrac{p_o - p_e}{1 - p_e} = 1 - \dfrac{1-p_o}{1-p_e}$$
+Trong đó:
+\begin{itemize}
+\item[•] $p_o$ là tỉ lệ đồng ý tương đối giữa 2 người đánh nhãn. $p_o = \dfrac{p_{11}+p_{22}+p_{33}}{p}$
+\item[•] $p_e$ là giả thiết xác suất 2 người đánh nhãn đồng ý ngẫu nhiên. Xét các câu được đánh nhãn \tichcuc, xác suất để người thứ nhất đánh 1 câu thuộc nhãn \tichcuc là $p_{1b}/p$, xác suất để người thú 2 đánh 1 câu thuộc nhãn \tieucuc là $p_{1a}/p$, do đó, xác xuất ngẫu nhiên 2 người cùng đánh 1 câu thuộc nhãn \tichcuc là: 
+$$\dfrac{p_{1b}}{p} * \dfrac{p_{1a}}{p}$$
+Từ đó, $p_e$ là tổng xác suất ngẫu nhiên 2 người cùng đánh 1 câu thuộc nhãn \tichcuc, \tieucuc, \trungtinh:
+$$p_e = \frac{p_{1a}}{p}*\frac{p_{1b}}{p} + \frac{p_{2a}}{p}*\frac{p_{2b}}{p} + \frac{p_{3a}}{p}*\frac{p_{3b}}{p}$$
+\end{itemize}
+
+Nếu 2 người đánh nhãn hoàn toàn đồng ý với nhau, $p_o=1$ và $p_e = 0$, suy ra $\kappa=1$. Ngược lại, $\kappa<0$ nếu tỉ lệ đồng ý giữa 2 người đánh nhãn thấp hơn cả xác xuất đồng ý ngẫu nhiên. Theo nghiên cứu \cite{Viera2005}, độ đồng nhất giữa 2 người đánh nhãn được đánh giá như Bảng \ref{table:thang-do-kappa}
+\begin{table}[H]
+\centering
+\caption{Thang đo đánh giá độ đồng nhất dựa trên giá trị $\kappa$} \label{table:thang-do-kappa}
+\begin{tabular}{|c|l|}
+\hline
+Giá trị & Mức độ đồng nhất \\ \hline
+$\kappa<0$ & Thấp hơn xác xuất đồng ý ngẫu nhiên \\ \hline
+$0.1<\kappa<0.2$ & Hơi đồng ý (\term{slight}) \\ \hline
+$0.21<\kappa<0.40$ & Mức độ khá (\term{fair}) \\ \hline
+$0.41<\kappa<0.60$ & Mức độ vừa phải (\term{moderate}) \\ \hline
+$0.61<\kappa<0.80$ & Mức độ tốt (\term{substantial}) \\ \hline
+$0.81<\kappa<0.99$ & Mức độ gần như hoàn hảo (\term{almost perfect}) \\ \hline
+\end{tabular}
+\end{table}
