@@ -137,7 +137,7 @@ Mô hình SVM dạng chuẩn như trên chỉ giúp phân loại dữ liệu th�
 \label{tab:svmclass} 
 \end{table}
 Bảng~\ref{tab:svmclass} minh họa phương pháp phân loại OvA: kết hợp nhiều mô hình SVM để phân loại dữ liệu. Trong đó, mỗi SVM giúp phân loại một lớp dữ liệu tương ứng với các lớp khác. Cụ thể với bài toán phân tích cảm xúc trong văn bản y khoa đã đề cập, ta cần ba mô hình SVM: SVM\textsubscript{1} phân loại dữ liệu thành lớp \tichcuc với lớp \textit{Không tích cực} (bao gồm \tieucuc và \trungtinh), SVM\textsubscript{2} phân loại dữ liệu thành lớp \tieucuc với lớp \textit{Không tiêu cực} (bao gồm \tichcuc và \trungtinh), và tương tự với SVM\textsubscript{3}. Khi xuất hiện một điểm dữ liệu mới, dữ liệu đó sẽ được phân loại qua tất cả những lớp SVM đã được xây dựng.
-\subsection{Thư viện y khoa UMLS Metathesaurus}
+
 \subsection{Phương pháp đánh giá độ đồng nhất Cohen's kappa}
 Hệ số \term{Cohen's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của 2 ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của 2 người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ có xem xét đến xác xuất ngẫu nhiên xảy ra sự đồng ý giữa 2 ý kiến đánh giá.\\
 
@@ -186,3 +186,41 @@ $0.61<\kappa<0.80$ & Mức độ tốt (\term{substantial}) \\ \hline
 $0.81<\kappa<0.99$ & Mức độ gần như hoàn hảo (\term{almost perfect}) \\ \hline
 \end{tabular}
 \end{table}
+
+\subsection{Thư viện y khoa UMLS Metathesaurus}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.52]{../hinh/KienTrucMetamap.png}
+\caption{Kiến trúc tổng quát của MetaMap \cite{Aronson2010}} \label{fig:kientrucmetamap}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{../hinh/metamapsample.png}
+\caption{Ví dụ kết quả chạy MetaMap}
+\label{fig:metamapsample}
+\end{figure}
+
+Metamap cung cấp 3 phương pháp cơ bản để sử dụng công cụ này:
+\begin{itemize}
+\item Tương tác trực tiếp thông qua giao diện web\footnote{https://ii.nlm.nih.gov/Interactive/UTS\_Required/metamap.shtml} (\term{Use MetaMap Interactively}): MetaMap cung cấp giao diện web (hình~\ref{fig:mmweb}) giúp người dùng, đặc biệt là người mới sử dụng, có cái nhìn trực quan nhất về cách MetaMap hoạt động bao gồm cấu trúc dữ liệu đầu vào và đầu ra, những tùy chọn và cách các tùy chọn này ảnh hưởng đến kết quả phân tích. Tuy nhiên, mỗi lần gửi dữ liệu lên máy chủ MetaMap thông qua giao diện web này, MetaMap giới hạn dữ liệu đầu vào chỉ có một tập tin dữ liệu dạng text chứa không quá 10000 ký tự vì thế không thể sử dụng cách này cho những mẩu dữ liệu quá dài. Hơn nữa việc gửi và nhận kết quả trực tuyến thông qua mạng nên không đảm bảo tốc độ xử lý và bảo mật dữ liệu. Với những hạn chế vừa nêu, sau khi đã làm quen với cách hoạt động của MetaMap, người dùng có thể chọn 2 cách sau để tương tác với MetaMap.
+\item Gửi dữ liệu lên máy chủ MetaMap\footnote{https://ii.nlm.nih.gov/Batch/UTS\_Required/metamap.shtml} (\term{Use Batch MetaMap}): người dùng có thể gửi bộ dữ liệu lên máy chủ của MetaMap (hinh2~\ref{fig:batchmm}), sau quá trình xử lý MetaMap sẽ trả kết quả về địa chỉ email người dùng cung cấp. Ưu điểm của phương pháp này là tốc độ xử lý nhanh do không có tương tác trong quá trình phân tích dữ liệu. Tuy nhiên khi xảy ra lỗi trong quá trình chạy thì khó phán đoán được lỗi xảy ra ở mẩu dữ liệu nào. 
+\item Sử dụng MetaMap cục bộ (\term{Use MetaMap Locally}): Nếu người dùng muốn hoàn toàn kiểm soát dữ liệu của mình thì việc cài đặt MetaMap ngay trên máy tính cá nhân là lựa chọn tốt nhất. Ưu điểm của phương pháp này là tốc độ xử lý nhanh, không phụ thuộc vào hệ thống mạng do không cần gửi dữ liệu lên máy chủ MetaMap, đảm bảo quyền kiểm soát dữ liệu và khả năng điều chỉnh cấu trúc kết quả phù hợp với nhu cầu sử dụng. Tuy nhiên nhược điểm lớn của phương pháp này là tốn khá nhiều tài nguyên hệ thống và cần máy tính có cấu hình đủ mạnh để làm máy chủ cục bộ.
+\end{itemize}
+
+Kết quả xử lý trả về như nhau khi dùng cả 3 phương pháp. Trong hệ thống phân loại chúng tôi đã sử dụng MetaMap cục bộ để tối đa khả năng điều chỉnh cấu trúc dữ liệu đầu ra.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{../hinh/mmweb.png}
+\caption{Giao diện web tương tác trực tiếp của MetaMap}
+\label{fig:mmweb}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{../hinh/batchmm.png}
+\caption{Batch MetaMap}
+\label{fig:batchmm}
+\end{figure}
