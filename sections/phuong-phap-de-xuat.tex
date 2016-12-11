@@ -1,4 +1,4 @@
-\section{Phương pháp đề xuất}	\label{section:phuongphapdexuat}
+\section{Phương pháp đề xuất}	\label{sec:phuongphapdexuat}
 \subsection{Mô tả bài toán}
 Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu trong các báo cáo nghiên cứu thuộc lĩnh vực y khoa. Mỗi câu được hệ thống phân vào 1 trong 3 loại: \tichcuc,\tieucuc, hoặc \trungtinh. Bản thân việc xác định câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (Sentence boundary disambiguation), không nằm trong phạm vi đề tài. Chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{Kiss:2006:UMS:1245119.1245122} được hiện thực trong thư viện NLTK.\\
 
@@ -179,7 +179,7 @@ Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị
 
 \subsection{Sự phủ định} \label{sec:su-phu-dinh}
 \subsubsection*{Mô tả}
-Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{section:hienthuchethong}).\\
+Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{sec:hienthuchethong}).\\
 %\footnote{https://code.google.com/archive/p/negex/}. \\
 
 Giải thuật NegEx dùng để xác định sự tồn tại của phủ định trong câu và xác định xem một cụm từ bất kỳ trong câu có chịu ảnh hưởng của yếu tố phủ định hay không. Giải thuật nhận dữ liệu đầu vào là câu văn được nghi ngờ có sự phủ định và một cụm từ thuộc câu văn đó mà cần xác định xem có bị phủ định hay không. Sau quá trình xử lý, giải thuật đưa ra câu trả lời gồm: câu văn có tồn tại sự phủ định không, xác định từ phủ định trong câu và cụm từ được hỏi có bị phủ định hay không.\\ 
