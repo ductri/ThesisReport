@@ -137,7 +137,7 @@ Mô hình SVM dạng chuẩn như trên chỉ giúp phân loại dữ liệu th�
 \label{tab:svmclass} 
 \end{table}
 Bảng~\ref{tab:svmclass} minh họa phương pháp phân loại OvA: kết hợp nhiều mô hình SVM để phân loại dữ liệu. Trong đó, mỗi SVM giúp phân loại một lớp dữ liệu tương ứng với các lớp khác. Cụ thể với bài toán phân tích cảm xúc trong văn bản y khoa đã đề cập, ta cần ba mô hình SVM: SVM\textsubscript{1} phân loại dữ liệu thành lớp \tichcuc với lớp \textit{Không tích cực} (bao gồm \tieucuc và \trungtinh), SVM\textsubscript{2} phân loại dữ liệu thành lớp \tieucuc với lớp \textit{Không tiêu cực} (bao gồm \tichcuc và \trungtinh), và tương tự với SVM\textsubscript{3}. Khi xuất hiện một điểm dữ liệu mới, dữ liệu đó sẽ được phân loại qua tất cả những lớp SVM đã được xây dựng.
-\subsection{Thư viện y khoa UMLS Metathesaurus}
+
 \subsection{Phương pháp đánh giá độ đồng nhất Cohen's kappa}
 Hệ số \term{Cohen's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của 2 ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của 2 người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ có xem xét đến xác xuất ngẫu nhiên xảy ra sự đồng ý giữa 2 ý kiến đánh giá.\\
 
@@ -186,3 +186,45 @@ $0.61<\kappa<0.80$ & Mức độ tốt (\term{substantial}) \\ \hline
 $0.81<\kappa<0.99$ & Mức độ gần như hoàn hảo (\term{almost perfect}) \\ \hline
 \end{tabular}
 \end{table}
+
+\subsection{Các thư viện và công cụ hỗ trợ}
+\subsubsection*{Thư viện UMLS}
+UMLS (\term{Unified Medical Language System}) là hệ thống từ vựng y sinh do Thư viện Y khoa Quốc gia Hoa Kỳ xây dựng từ năm 1986 bao gồm tập dữ liệu lớn các thông tin y khoa đã được chuẩn hóa và những công cụ hỗ trợ tương tác với hệ thống máy tính. Tính đến năm 2004, bộ từ điển UMLS tích hợp hơn 2 triệu tên gọi cho khoảng 900.000 khái niệm y sinh và khoảng 12 triệu tên gọi cho quan hệ giữa các khái niệm này \cite{Bodenreider2004}. Hiện nay UMLS vẫn liên tục được câp nhật và cho phép sử dụng miễn phí phục vụ mục đích nghiên cứu khoa học.\\
+
+Hệ thống UMLS chứa 3 thành phần chính:
+\begin{itemize}
+\item Kho dữ liệu Metathesaurus\footnote{https://www.nlm.nih.gov/research/umls/knowledge\_sources/metathesaurus/}: là bộ từ điển y sinh lớn chứa các thông tin như mã số, ngữ nghĩa của các loại từ vựng, thuật ngữ y học và nhãn liên kết giữa các từ vựng khác nhau có cùng khái niệm. Metathesaurus là thành phần lớn nhất của UMLS, được tích hợp từ mạng ngữ nghĩa và các công cụ xử lý ngôn ngữ tự nhiên trong UMLS. Kho dữ liệu Metathesaurus bao gồm nhiều thư viện y khoa được sử dụng phổ biến như MeSH\footnote{https://www.ncbi.nlm.nih.gov/mesh}, SNOMED CT\footnote{https://www.nlm.nih.gov/healthit/snomedct/},...
+\item Mạng ngữ nghĩa (\term{Semantic Network}) chứa danh mục các loại ngữ nghĩa và mối quan hệ giữa chúng.
+\item Công cụ từ vựng (\term{SPECIALIST Lexicon and Lexical Tools}) bao gồm các công cụ xử lý ngôn ngữ tự nhiên được dùng để tích hợp Metathesaurus.
+\end{itemize}
+
+\subsubsection*{Công cụ MetaMap}
+MetaMap là công cụ hỗ trợ việc nhận dạng các khái niệm trong bộ từ điển UMLS-Metathesaurus từ văn bản y khoa. MetaMap nhận dữ liệu đầu vào là văn bản thuần ngôn ngữ tự nhiên như các loại báo cáo y khoa, văn bản khám lâm sàng,... Sau quá trình xử lý, đầu ra của MetaMap là văn bản có cấu trúc - định dạng XML hoặc các định dạng khác gần gũi với con người - chứa các khái niệm nhận dạng được trong kho dữ liệu Metathesaurus từ văn bản đầu vào. Kiến trúc tổng quát của MetaMap được mô tả như hình~\ref{fig:kientrucmetamap}.\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.52]{../hinh/KienTrucMetamap.png}
+\caption{Kiến trúc tổng quát của MetaMap \cite{Aronson2010}} \label{fig:kientrucmetamap}
+\end{figure}
+
+Quá trình xử lý của MetaMap có thể được tóm tắt qua 2 bước:
+\begin{enumerate}
+\item Phân tích từ vựng và cú pháp: dữ liệu đầu vào được áp dụng các tác vụ xử lý ngôn ngữ tự nhiên cơ bản như tách câu, tách từ, xác định từ loại, tra cứu từ vựng dùng công cụ từ vựng của UMLS và phân tích cú pháp câu. Sau những tác vụ này, kết quả thu được là tập hợp các cụm từ (\term{phrase}) được xác định từ văn bản đầu vào.
+\item Phân tích chuyên sâu: ứng với mỗi cụm từ đã tìm được, MetaMap tiến hành tìm tất cả những biến thể của cụm, xác định các ứng cử viên (candidate) từ các khái niệm trong UMLS khớp với các biến thể được sinh ra và đánh giá độ tin cậy của từng ứng viên. Kết quả thu được là tập hợp các cụm đã có từ bước 1, và thông tin các ứng cử viên tương ứng.
+\end{enumerate}
+
+Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of breath or cough.} Kết quả sau khi phân tích của MetaMap trả về như hình~\ref{fig:metamapsample}. Các ứng cử viên được gọi tên là Meta Mapping. Câu văn được tách thành các cụm: \myquote{He}, \myquote{denied}, \myquote{chest pain}, \myquote{shortness of breath}, \myquote{or}, \myquote{cough}. Trong đó:
+\begin{itemize}
+\item Các cụm \myquote{He}, \myquote{or} không có Meta Mapping do không tìm được ứng cử viên nào.
+\item Cụm \myquote{denied} có 2 Meta Mapping cùng số điểm tin cậy (1000), tương ứng với 2 khái niệm trong UMLS Metathesaurus với 2 mã định danh CUI (\term{Concept Unique Identifier}) là C0332319 và C2700401, kèm theo là định nghĩa, mô tả và nhóm của khái niệm đó. Với cụm \myquote{denied}, MetaMap xác định được 2 nhóm là Khái niệm định tính (\term{Qualitative Concept}) và Hành động (\term{Activity}).
+\item Tương tự như cụm \myquote{denied}, các cụm \myquote{chest pain}, \myquote{shortness of breath}, \myquote{chest pain} cũng có 2 Meta Mapping với đầy đủ mã số CUI, định nghĩa, mô tả và nhóm của từng khái niệm.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{../hinh/metamapsample.png}
+\caption{Ví dụ kết quả chạy MetaMap}
+\label{fig:metamapsample}
+\end{figure}
+
+Không chỉ xác định nhóm ngữ nghĩa của các khái niệm, MetaMap còn hỗ trợ phân tích các yếu tố phủ định có trong dữ liệu đầu vào. Khi chọn bộ lọc \textit{-negex}, kết quả phân tích sẽ thêm chữ \myquote{N} vào trước khái niệm bị phủ định. Ví dụ như hình~\ref{fig:metamapsample}, cụm \myquote{chest pain} có 1 Meta Mapping với mã khái niệm C0008031, thuộc nhóm Dấu hiện hoặc triệu chứng (\term{Sign or Symptom}) bị phủ định.
