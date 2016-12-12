@@ -1,16 +1,26 @@
 \section{Phương pháp đề xuất}	\label{sec:phuongphapdexuat}
 \subsection{Mô tả bài toán}
+Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu trong các báo cáo nghiên cứu thuộc lĩnh vực y khoa. Mỗi câu được hệ thống phân vào 1 trong 3 loại: \tichcuc,\tieucuc, hoặc \trungtinh. Bản thân việc xác định câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (Sentence boundary disambiguation), không nằm trong phạm vi đề tài. Chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{Kiss:2006:UMS:1245119.1245122} được hiện thực trong thư viện NLTK.\\
+
+Định nghĩa 3 loại cảm xúc như sau:
+\begin{description}
+\item[\tichcuc] là những câu thể hiện kết quả tốt hơn, cải thiện hơn hoặc kết quả tích cực vượt trội so với tổng thể dù vẫn có tác dụng phụ tiêu cực.\\
+\example{1}{\myquote{Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment.}}
+
+\item[\tieucuc] là những câu thể hiện kết quả xấu, tệ hơn hoặc thể hiện phương pháp không đem lại hiệu quả.\\
+\example{2}{\myquote{There is a suggestion that routine surgical interference may be harmful by increasing the risk of caesarean section, and this agrees with data from other trials.}}
+
+\item[\trungtinh] là những câu không thể hiện kết quả, không có khẳng định tốt hay xấu; hoặc đồng thời nhiều ý kiến tốt xấu mà không có sự lất át rõ ràng.\\
+\example{3}{\myquote{Data extraction and analyses and quality assessment were conducted according to the Cochrane standards.}}
+\end{description}
+
+
 \subsection{Kiến trúc tổng quan}
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.3]{../hinh/Tongquan.png}
-\end{figure}
-
-\subsubsection*{Tiền xử lý} \label{sec:tien-xu-ly}
+Hệ thống được xây dựng theo kiến trúc như Hình \ref{fig:tong-quan-xay-dung-he-thong}, gồm 5 khối:\\
+Khối \textbf{Thu thập và đánh nhãn dữ liệu:} Nhóm tiến hành thu thập dữ liệu từ nguồn web, lưu vào hệ cơ sở dữ liệu, sau đó tiến hành đánh nhãn. Chi tiết được trình bày tại Mục \ref{sec:thu-thap-va-danh-gia-du-lieu}\\
+Khối \textbf{Tiền xử lý:} Dữ liệu thu thập được có thể gặp lỗi và có định dạng không đúng, cần được xử lý trước khi trích xuất đặc trưng. 
 Đây là bước xử lý trước khi có thể rút trích đặc trưng. Trong bước này, chúng tôi xử lý dữ liệu theo thứ tự:
 \begin{itemize}
-\item[•] Tách câu: Từ dữ liệu thu thập được, chúng tôi cần tách thành các câu. Tách một đoạn văn thành câu có thể dựa vào các dấu câu như dấu chấm (.) hoặc dấu 2 chấm (:), \ldots
 \item[•] Chuyển tất cả các ký tự thành chữ thường.
 \item[•] Xóa các ký tự đặc biệt, gồm: ?, \%, @, \#, $\wedge$, \$, ., ,,  ;, :, /, ", (, ), +, -, =
 \item[•] Thay tất cả số bằng nhãn \term{DIGIT}.
@@ -21,6 +31,17 @@ Ví dụ: ``produced'' -> ``produce''.
 \item[•] \term{Stemming} Loại bỏ hầu hết các hậu tố của 1 từ, trả về gốc của một từ dù từ đó được dùng như động từ, tính từ, danh từ hay phó từ.\\
  Ví dụ:  ``produced'' hoặc ``production'' -> ``produc''.
 \end{itemize}
+Khối \textbf{Rút trích đặc trưng:} Có 4 đặc trưng được sử dụng: N-gram, change phrase, sự phủ định và SO-CAL được trình bày trong các Mục từ \ref{sec:ngram} đến \ref{sec:socal}. 
+Khối \textbf{Huấn luyện:} Thực hiện việc huấn luyện với giải thuật học máy SVM để tạo ra bộ phân loại.\\
+Khối \textbf{Phân loại:} Sử dụng bộ phân loại từ khối Huấn luyện, với mỗi dữ liệu đầu vào, bộ phân loại sẽ phân loại câu thuộc 1 trong 3 lớp: \tichcuc,\tieucuc, hoặc \trungtinh\\
+Khối \textbf{Đánh giá:} Sử dụng khối phân loại ở trên, áp dụng đầu vào là tập dữ liệu kiểm tra để đánh giá hiệu quả của bộ phân loại.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{../hinh/Tongquan.png}
+\caption{Kiến trúc tổng quan xây dựng hệ thống} \label{fig:tong-quan-xay-dung-he-thong}
+\end{figure}
+
+Trong phần còn lại, chúng tôi trình bày các đặc trưng theo cấu trúc 2 phần: Phần Mô tả trình bày ý tưởng, mô tả về đặc trưng, phần Rút trích trình bày cách sử dụng đặc trưng để có thể áp dụng vào hệ thống.
 \subsection{N-gram} \label{sec:ngram}
 \subsubsection*{Mô tả}
 Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
@@ -50,7 +71,7 @@ Một trong những công cụ đã được xây dựng hoàn chỉnh và sử 
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.32]{metamap.png}
+\includegraphics[scale=0.32]{../hinh/metamap.png}
 \caption{MetaMap sử dụng nguồn tài nguyên UMLS, giúp tra cứu tên kiểu của 1 thuật ngữ y học}
 \label{fig:metamap}
 \end{figure}
@@ -156,7 +177,7 @@ Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD
 
 Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
 
-\subsection{Sự phủ định}
+\subsection{Sự phủ định} \label{sec:su-phu-dinh}
 \subsubsection*{Mô tả}
 Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{sec:hienthuchethong}).\\
 %\footnote{https://code.google.com/archive/p/negex/}. \\
@@ -182,7 +203,34 @@ Một số ví dụ khi chạy giải thuật NegEx:
 
 \example{9}{``The patient is (tumor [free]).''\\Từ phủ định tìm được: ``free'' là thuật ngữ phủ định hậu điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``tumor''.}
 \subsubsection*{Rút trích}
-\subsection{Đặc trưng mở rộng SO-CAL}
+Sau khi đã xác định được từ phủ định và từ chịu ảnh hưởng phủ định trong câu, chúng tôi thực hiện rút trích đặc trưng phủ định theo 3 cách sau để áp dụng vào hệ thống:\\
+
+%The authors drew interesting results such as that adding negation as an explicit feature with uni- grams and using POS tags are not useful for polarity classification. They also reported that the most effective methodwas usingNBwith bigrams as features,which managed to achieve an accuracy of 82.7\%.
+
+Cách thứ nhất tham khảo từ nghiên cứu \cite{niu2005analysis}. Trong nghiên cứu đó, nhóm tác giả \\TODO <thêm tên> chỉ xem xét 1 từ phủ định ``no''. Đây có thể là sự thiếu sót của nhóm tác giả, vì kết quả trong báo cáo \cite{niu2005analysis} cho thấy yếu tố phủ định được thêm vào hầu như không giúp cải thiện độ chính xác. Tiếp theo, nhóm tác giả trên sử dụng công cụ Apple Pie parser để trích xuất các cụm từ, cụm từ nào có chứa từ ``no'' sẽ được gắn thêm hậu tố ``\_NO''. Với cách này, yếu tố phủ định không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến hệ thống thông qua đặc trưng n-gram. Chúng tôi thử nghiệm cách này nhưng thay vì chỉ quan tâm đến từ ``no'', chúng tôi xem xét đến tất cả các từ được xem là từ phủ định theo giải thuật được mô tả ở phần trước. Sau đó, các từ được xem là chịu ảnh hưởng phủ định được thêm hậu tố ``\_NEG''.
+
+\example{}{
+Câu: \myquote{
+Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or ([no] treatment)}\\
+sẽ được chuyển thành: \\
+\myquote{
+Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment\_NEG}
+}
+
+Cách thứ 2 chúng tôi thử nghiệm có tác dụng tương tự cách trên: không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến đặc trưng n-gram. Nhưng thay vì làm thay đổi từ bị ảnh hưởng phủ định, cách hiện thực này thay  đổi từ phủ định: thay tất cả các từ phủ định bằng nhãn đại diện ``NEGATION''\\
+
+\example{}{
+Câu: \myquote{
+Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or ([no] treatment)}\\
+sẽ được chuyển thành: \\
+\myquote{
+Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or NEGATION treatment}
+}
+
+Cách còn lại cũng chỉ quan tâm đến từ phủ định, nhưng khác 2 cách trên: cách hiện thực này tạo ra 1 vector đại diện chứ không làm ảnh hưởng đến đặc trưng n-gram. Mỗi câu sẽ được ánh xạ thành 1 số nhị phân: 0 nếu câu đó không chứa yếu tố phủ định nào, 1 nếu ngược lại.\\
+
+Ngoài ra, chúng tôi cũng tiến hành thử nghiệm kết hợp các cách hiện thực trên để tìm ra cách rút trích hiệu quả nhất.
+\subsection{Đặc trưng mở rộng SO-CAL} \label{sec:socal}
 \subsubsection*{Mô tả}
 Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic orientation Calculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
 

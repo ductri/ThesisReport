@@ -78,11 +78,21 @@ trong đó $raw\_documents$ là tập hợp các câu. Hàm trên trả về m�
 def training_change_phrase(raw_documents):
 \end{lstlisting}
 Hàm trả về mảng 2 chiều $n*4$ với $n$ là số lượng câu trong tập $raw\_documents$
-\subsubsection*{Đặc trưng phủ định}
-Chúng tôi sử dụng đồng thời 2 công cụ để trích xuất đặc trưng phủ định: MetaMap và NegEx. Việc này nhằm so sánh hiệu quả của 2 công cụ trên và chọn ra công cụ phù hợp hơn đối với nghiên cứu này.
+
+\subsubsection*{Sự phủ định}
+Như mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi sử dụng giải thuật NegEx để nhận dạng yếu tố phủ định trong câu. Trong phần này, chúng tôi sử dụng 2 phiên bản hiện thực giải thuật này: Neg1 và Neg2. Việc này nhằm so sánh hiệu quả của 2 công cụ trên và chọn ra công cụ phù hợp nhất.\\
+
+Với Neg1, công cụ hỗ trợ phiên bản local được cung cấp miễn phí. Một kết quả phân tích thử nghiệm như Hình\\
+HÌNH\\
+
+Với Neg2, chúng tôi sử dụng mã nguồn của/tại.. Tương tự, kết quả phân tích 1 câu như Hình \\
+HÌNH
+
+Kết quả của 2 cộng cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.
+
 \subsubsection*{SO-CAL}
 Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghiên cứu \cite{taboada2011lexicon}. Nhóm tác giả của nghiên cứu \cite{taboada2011lexicon} đã hiện thực công cụ online để tính điểm số cho 1 đoạn văn, giao diện được mô tả như Hình \ref{fig:socal}.
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[scale=0.3]{../hinh/socal.png}
@@ -96,7 +106,7 @@ Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghi
 \caption{Công cụ online để tính điểm SO-CAL} \label{fig:socal}
 \end{figure}
 
-Để tích hợp vào hệ thống, nhóm sử dụng package re trong Python, sử dụng phương thức HTTP POST để gửi yêu cầu lên trang web, sau đó parse phần kết quả trả về để lấy ra thông tin điểm số.
+Để tích hợp vào hệ thống, nhóm sử dụng package \code{re} trong Python, sử dụng phương thức \code{HTTP POST} để gửi yêu cầu lên trang web, sau đó \term{parser} phần kết quả trả về để lấy ra thông tin điểm số.
 \subsection{Hiện thực bộ phân loại SVM}
 \begin{figure}[H]
 \centering
