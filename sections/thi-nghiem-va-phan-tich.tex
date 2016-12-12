@@ -2,7 +2,7 @@
 \subsection{Thu thập và đánh giá dữ liệu} \label{sec:thu-thap-va-danh-gia-du-lieu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
-Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ trang web PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có cấu trúc các phần như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{niu2005analysis}, chúng tôi chỉ giữ lại phần Kết luận. Chúng tôi sử dụng công cụ tìm kiếm cùng bộ lọc để chỉ tìm các bài có loại xuất bản (publication type) là ``clinical trial''. Chúng tôi đã thu thập được 1182 câu.
+Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ trang web PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có cấu trúc các phần như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{niu2005analysis}, chúng tôi chỉ giữ lại phần Kết luận, và sử dụng công cụ tìm kiếm cùng bộ lọc để tìm các bài có loại xuất bản (\term{publication type}) là ``clinical trial''. Dữ liệu chúng tôi thu thập được gồm 1182 câu được gán mã số (\term{Id}) tuần tự và lưu trữ như Bảng \ref{table:data}.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.7]{../hinh/bai_bao_mau.png}
@@ -70,13 +70,6 @@ Thông tin chi tiết một câu được hiển thị như Hình \ref{fig:webse
 
 Quy trình gắn nhãn dữ liệu của trang web được mô hình hóa như Hình \ref{fig:updatedb}. Mỗi lần người dùng mới truy cập hoặc tải lại trang web, hệ thống lựa chọn ngẫu nhiên một câu trong dữ liệu để hiển thị. Khi người dùng đánh nhãn \tichcuc, \tieucuc hoặc \trungtinh cho câu, cơ sở dữ liệu sẽ cập nhật dữ liệu trong bảng \myquote{Sentence}: tăng thêm 1 cho số lần câu được đánh nhãn với mã số câu tương ứng, đồng thời thêm một bản ghi vào bảng \myquote{Submission} với mã số câu tương ứng kèm lựa chọn phân loại của người dùng (chỉ lưu các giá trị 0, 1, 2). Nếu người dùng chọn ``Đổi câu khác'' hệ thống không cập nhật mà chỉ hiển thị ngẫu nhiên một câu khác trong tập dữ liệu để người dùng tiến hành gán nhãn.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.27]{../hinh/UpdateDatabase.png}
-\caption{Quy trình xử lý gắn nhãn dữ liệu của trang web}
-\label{fig:updatedb}
-\end{figure}
-
 Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến hành gắn nhãn cho tập dữ liệu. Kết quả tập dữ liệu sau khi gắn nhãn được lưu lại như Bảng \ref{table:labeleddata}.
 
 %Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã nhờ 14 bạn hiện đang học tập và nghiên cứu tại trường Đại học Y Dược thành phố Hồ Chí Minh hỗ trợ gắn nhãn cho tập dữ liệu. Bước tiếp theo, chúng tôi tiến hành lọc kết quả đã gắn nhãn như sau:
@@ -98,13 +91,20 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
  \hline
  \textbf{Id} & \textbf{Sentence} & \textbf{Label} \\ 
  \hline
- 10 & This study was a negative study, though there was a suggestion of benefit of methylprednisolone acetate in a population of young adults with acute radicular low back pain. & 0\\ 
- 17 & Data extraction and analyses and quality assessment were conducted according to the Cochrane standards. & 1\\ 
+ 10 & This study was a negative study, though there was a suggestion of benefit of methylprednisolone acetate in a population of young adults with acute radicular low back pain. & 0\\ \hline
+ 17 & Data extraction and analyses and quality assessment were conducted according to the Cochrane standards. & 1\\ \hline
  36 & Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment. & 2\\ 
  \hline
 \end{tabular}
 \end{minipage}
 \end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.27]{../hinh/UpdateDatabase.png}
+\caption{Quy trình xử lý gắn nhãn dữ liệu của trang web}
+\label{fig:updatedb}
+\end{figure}
 
 \subsubsection*{Đánh giá dữ liệu}
 %Nhờ bao nhiêu người đánh nhãn...
