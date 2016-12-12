@@ -71,7 +71,7 @@ SVM được Vapnik lần đầu tiên giới thiệu vào năm 1992 và từ đ
 \label{fig:dataclassify}
 \end{figure}
 \pagebreak
-Mô hình SVM chuẩn là một mô hình học máy có giám sát sử dụng thuật toán phân loại nhị phân. SVM nhận đầu vào là một tập dữ liệu biết trước nhãn của mỗi phần tử thuộc tập dữ liệu đó. Ví dụ như ở hình~\ref{fig:dataclassify}, tập dữ liệu đầu vào gồm tập hợp các điểm biết trước phân lớp (hình tam giác, hình tròn). Nhiệm vụ của SVM là xây dựng một đường phân cách tuyến tính chia tập dữ liệu thành hai nhóm điểm thuộc hai lớp khác nhau, sao cho khi có một điểm mới xuất hiện chưa biết trước nhãn, từ vị trí của điểm này so với đường phân cách có thể dự đoán điểm mới thuộc nhóm phân lớp nào. Để giải quyết bài toán này, mô hình SVM sử dụng giải thuật tối ưu hóa khoảng cách giữa đường phân chia tuyến tính đến điểm dữ liệu gần nhất ở cả hai lớp.
+Mô hình SVM chuẩn là một mô hình học máy có giám sát sử dụng thuật toán phân loại nhị phân. SVM nhận đầu vào là một tập dữ liệu biết trước nhãn của mỗi phần tử thuộc tập dữ liệu đó. Ví dụ như ở Hình~\ref{fig:dataclassify}, tập dữ liệu đầu vào gồm tập hợp các điểm biết trước phân lớp (hình tam giác, hình tròn). Nhiệm vụ của SVM là xây dựng một đường phân cách tuyến tính chia tập dữ liệu thành hai nhóm điểm thuộc hai lớp khác nhau, sao cho khi có một điểm mới xuất hiện chưa biết trước nhãn, từ vị trí của điểm này so với đường phân cách có thể dự đoán điểm mới thuộc nhóm phân lớp nào. Để giải quyết bài toán này, mô hình SVM sử dụng giải thuật tối ưu hóa khoảng cách giữa đường phân chia tuyến tính đến điểm dữ liệu gần nhất ở cả hai lớp.
 \subsubsection*{Giải thuật tối ưu hóa khoảng cách}
 \begin{figure}[h] \centering
     \begin{subfigure}[b]{0.325\textwidth}    \centering
@@ -92,17 +92,17 @@ Mô hình SVM chuẩn là một mô hình học máy có giám sát sử dụng 
     \caption[Caption for LOF]{Minh họa giải thuật tối ưu hóa khoảng cách của mô hình SVM \cite{manning2009anintroduction}}
     \label{fig:svm}
 \end{figure}
-Với không gian dữ liệu tương đối đơn giản như hình~\ref{fig:svm1}, vấn đề đặt ra là có vô số đường tuyến tính có khả năng phân chia tập dữ liệu thành hai lớp phân biệt. Trong tập hợp các đường phân cách này, ta cần lựa chọn một đường tối ưu để tăng hiệu quả phân loại và giảm nhiễu cho tập dữ liệu bằng giải thuật tối ưu hóa khoảng cách của SVM.\\
+Với không gian dữ liệu tương đối đơn giản như Hình~\ref{fig:svm1}, vấn đề đặt ra là có vô số đường tuyến tính có khả năng phân chia tập dữ liệu thành hai lớp phân biệt. Trong tập hợp các đường phân cách này, ta cần lựa chọn một đường tối ưu để tăng hiệu quả phân loại và giảm nhiễu cho tập dữ liệu bằng giải thuật tối ưu hóa khoảng cách của SVM.\\
 
-Đầu tiên, đường phân cách cần nằm cách đều hai nhóm phân loại để đảm bảo xác suất phân loại điểm mới công bằng cho cả hai lớp (hình~\ref{fig:svm2}). Điều này có nghĩa là khoảng cách \textit{D} từ đường phân cách đến điểm gần nhất ở cả hai lớp  phải bằng nhau. Tuy nhiên, số lượng đường tuyến tính đảm bảo yêu cầu trên là vô số. Lúc này ta quan tâm đến độ lớn của \textit{D}: nếu \textit{D} nhỏ, xác suất phân loại sai sẽ cao hơn do sai số của dữ liệu đầu vào trên thực tế. Vì vậy mô hình SVM chọn đường phân loại có khoảng cách lớn nhất đến điểm gần nhất ở cả hai lớp (hình~\ref{fig:svm3}). Các điểm dữ liệu thuộc hai lớp có vị trí gần nhất với đường thẳng phân loại gọi là \textit{support vector}.
+Đầu tiên, đường phân cách cần nằm cách đều hai nhóm phân loại để đảm bảo xác suất phân loại điểm mới công bằng cho cả hai lớp (Hình~\ref{fig:svm2}). Điều này có nghĩa là khoảng cách \textit{D} từ đường phân cách đến điểm gần nhất ở cả hai lớp  phải bằng nhau. Tuy nhiên, số lượng đường tuyến tính đảm bảo yêu cầu trên là vô số. Lúc này ta quan tâm đến độ lớn của \textit{D}: nếu \textit{D} nhỏ, xác suất phân loại sai sẽ cao hơn do sai số của dữ liệu đầu vào trên thực tế. Vì vậy mô hình SVM chọn đường phân loại có khoảng cách lớn nhất đến điểm gần nhất ở cả hai lớp (Hình~\ref{fig:svm3}). Các điểm dữ liệu thuộc hai lớp có vị trí gần nhất với đường thẳng phân loại gọi là \textit{support vector}.
 
 \subsubsection*{Kĩ thuật Kernel}
 Dựa vào đặc trưng về vị trí điểm dữ liệu, tập dữ liệu đầu vào có thể được chia làm hai loại:
 \begin{itemize}
-\item[•] Khả phân cách tuyến tính: tồn tại ít nhất một đường thẳng thuộc không gian dữ liệu có thể phân chia tập dữ liệu xác định thành hai nhóm có nhãn khác nhau như hình~\ref{fig:dataclassify}.
+\item[•] Khả phân cách tuyến tính: tồn tại ít nhất một đường thẳng thuộc không gian dữ liệu có thể phân chia tập dữ liệu xác định thành hai nhóm có nhãn khác nhau như Hình~\ref{fig:dataclassify}.
 \item[•] Không khả phân cách tuyến tính: không tồn tại đường thẳng thuộc không gian tập dữ liệu có khả năng chia các điểm dữ liệu thành hai nhóm có nhãn khác nhau. Lúc này bài toán trở thành phân loại phi tuyến.
 \end{itemize}
-Trong trường hợp dữ liệu đầu vào không khả phân cách tuyến tính, cách giải quyết đầu tiên là biến đổi không gian dữ liệu trở thành khả phân cách tuyến tính. Nói cách khác, ta cần tìm một hàm ánh xạ sao cho với không gian dữ liệu sau khi ánh xạ tồn tại ít nhất một đường thẳng hoặc mặt phẳng tuyến tính có thể phân loại dữ liệu thành hai lớp. Để làm việc này ta có thể chỉnh sửa các đặc trưng của dữ liệu, hoặc suy diễn đặc trưng mới trên cơ sở những đặc trưng có sẵn. Ngoài ra, ta cũng có thể ánh xạ các điểm dữ liệu vào không gian có số chiều lớn hơn sao cho trong không gian đó có ít nhất một đường thẳng hay mặt phẳng tuyến tính có thể giúp phân loại các điểm dữ liệu (hình~\ref{fig:axkernel}). Hàm ánh xạ thường không cố định và được lựa chọn tùy theo đặc tính của dữ liệu và tính chất bài toán.
+Trong trường hợp dữ liệu đầu vào không khả phân cách tuyến tính, cách giải quyết đầu tiên là biến đổi không gian dữ liệu trở thành khả phân cách tuyến tính. Nói cách khác, ta cần tìm một hàm ánh xạ sao cho với không gian dữ liệu sau khi ánh xạ tồn tại ít nhất một đường thẳng hoặc mặt phẳng tuyến tính có thể phân loại dữ liệu thành hai lớp. Để làm việc này ta có thể chỉnh sửa các đặc trưng của dữ liệu, hoặc suy diễn đặc trưng mới trên cơ sở những đặc trưng có sẵn. Ngoài ra, ta cũng có thể ánh xạ các điểm dữ liệu vào không gian có số chiều lớn hơn sao cho trong không gian đó có ít nhất một đường thẳng hay mặt phẳng tuyến tính có thể giúp phân loại các điểm dữ liệu (Hình~\ref{fig:axkernel}). Hàm ánh xạ thường không cố định và được lựa chọn tùy theo đặc tính của dữ liệu và tính chất bài toán.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{hinh/kernel.png}
@@ -111,7 +111,7 @@ Trong trường hợp dữ liệu đầu vào không khả phân cách tuyến t
 \end{figure}
 \footnotetext{Tham khảo Figure 7 của \cite{pei2012using}}
 \subsubsection*{Phương pháp soft-margin}
-Trên thực tế, sai số của dữ liệu đầu vào là một trong những nguyên nhân dẫn đến bài toán phân loại phi tuyến. Trong trường hợp này, phương pháp \textit{soft-margin} thường được sử dụng để cải thiện giải thuật tối ưu hóa khoảng cách (hình~\ref{fig:softmargin}). Phương pháp này cho phép tồn tại một số điểm được phân chia sai lớp với một giới hạn sai số nhất định (gọi là độ lỗi).
+Trên thực tế, sai số của dữ liệu đầu vào là một trong những nguyên nhân dẫn đến bài toán phân loại phi tuyến. Trong trường hợp này, phương pháp \textit{soft-margin} thường được sử dụng để cải thiện giải thuật tối ưu hóa khoảng cách (Hình~\ref{fig:softmargin}). Phương pháp này cho phép tồn tại một số điểm được phân chia sai lớp với một giới hạn sai số nhất định (gọi là độ lỗi).
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.45]{hinh/SVM5.png}
@@ -198,7 +198,7 @@ Hệ thống UMLS chứa 3 thành phần chính:
 \end{itemize}
 
 \subsubsection*{Công cụ MetaMap}
-MetaMap là công cụ hỗ trợ việc nhận dạng các khái niệm trong bộ từ điển UMLS-Metathesaurus từ văn bản y khoa. MetaMap nhận dữ liệu đầu vào là văn bản phi cấu trúc, thuần ngôn ngữ tự nhiên như các loại báo cáo y khoa, văn bản khám lâm sàng,... Sau quá trình xử lý, đầu ra của MetaMap là văn bản có cấu trúc - chủ yếu ở định dạng XML hoặc một số định dạng khác như MMO, HR - chứa các khái niệm nhận dạng được trong kho dữ liệu Metathesaurus từ văn bản đầu vào. Kiến trúc tổng quát của MetaMap được mô tả như hình~\ref{fig:kientrucmetamap}.\\
+MetaMap là công cụ hỗ trợ việc nhận dạng các khái niệm trong bộ từ điển UMLS-Metathesaurus từ văn bản y khoa. MetaMap nhận dữ liệu đầu vào là văn bản phi cấu trúc, thuần ngôn ngữ tự nhiên như các loại báo cáo y khoa, văn bản khám lâm sàng,... Sau quá trình xử lý, đầu ra của MetaMap là văn bản có cấu trúc - chủ yếu ở định dạng XML hoặc một số định dạng khác như MMO, HR - chứa các khái niệm nhận dạng được trong kho dữ liệu Metathesaurus từ văn bản đầu vào. Kiến trúc tổng quát của MetaMap được mô tả như Hình~\ref{fig:kientrucmetamap}.\\
 
 \begin{figure}[h]
 \centering
@@ -212,7 +212,7 @@ Quá trình xử lý của MetaMap có thể được tóm tắt qua 2 bước:
 \item Phân tích chuyên sâu: ứng với mỗi cụm từ đã tìm được, MetaMap tiến hành tìm tất cả những biến thể của cụm, xác định các ứng cử viên (candidate) từ các khái niệm trong UMLS khớp với các biến thể được sinh ra và đánh giá độ tin cậy của từng ứng viên. Kết quả thu được là tập hợp các cụm đã có từ bước 1, và thông tin các ứng cử viên tương ứng.
 \end{enumerate}
 
-Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of breath or cough.} Kết quả sau khi phân tích của MetaMap trả về như hình~\ref{fig:metamapsample}. Các ứng cử viên được gọi tên là Meta Mapping. Câu văn được tách thành các cụm: \myquote{He}, \myquote{denied}, \myquote{chest pain}, \myquote{shortness of breath}, \myquote{or}, \myquote{cough}. Trong đó:
+Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of breath or cough.} Kết quả sau khi phân tích của MetaMap trả về như Hình~\ref{fig:metamapsample}. Các ứng cử viên được gọi tên là Meta Mapping. Câu văn được tách thành các cụm: \myquote{He}, \myquote{denied}, \myquote{chest pain}, \myquote{shortness of breath}, \myquote{or}, \myquote{cough}. Trong đó:
 \begin{itemize}
 \item Các cụm \myquote{He}, \myquote{or} không có Meta Mapping do không tìm được ứng cử viên nào.
 \item Cụm \myquote{denied} có 2 Meta Mapping cùng số điểm tin cậy (1000), tương ứng với 2 khái niệm trong UMLS Metathesaurus với 2 mã định danh CUI (\term{Concept Unique Identifier}) là C0332319 và C2700401, kèm theo là định nghĩa, mô tả và nhóm của khái niệm đó. Với cụm \myquote{denied}, MetaMap xác định được 2 nhóm là Khái niệm định tính (\term{Qualitative Concept}) và Hành động (\term{Activity}).
@@ -226,4 +226,4 @@ Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of
 \label{fig:metamapsample}
 \end{figure}
 
-Không chỉ xác định nhóm ngữ nghĩa của các khái niệm, MetaMap còn hỗ trợ phân tích các yếu tố phủ định có trong dữ liệu đầu vào. Khi chọn bộ lọc \myquote{-negex}, kết quả phân tích sẽ thêm ký tự \myquote{N} vào trước khái niệm bị phủ định. Ví dụ như hình~\ref{fig:metamapsample}, cụm \myquote{chest pain} có 1 Meta Mapping với mã khái niệm C0008031, thuộc nhóm Dấu hiện hoặc triệu chứng (\term{Sign or Symptom}) bị phủ định.
+Không chỉ xác định nhóm ngữ nghĩa của các khái niệm, MetaMap còn hỗ trợ phân tích các yếu tố phủ định có trong dữ liệu đầu vào. Khi chọn bộ lọc \myquote{-negex}, kết quả phân tích sẽ thêm ký tự \myquote{N} vào trước khái niệm bị phủ định. Ví dụ như Hình~\ref{fig:metamapsample}, cụm \myquote{chest pain} có 1 Meta Mapping với mã khái niệm C0008031, thuộc nhóm Dấu hiện hoặc triệu chứng (\term{Sign or Symptom}) bị phủ định.
