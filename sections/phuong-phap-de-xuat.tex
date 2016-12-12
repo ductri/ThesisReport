@@ -170,14 +170,15 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi xem xét y�
 Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm vi từ từ đó đến hết câu, nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE-GOOD. Tương tự như vậy đối với 3 mẫu còn lại.\\
 
 Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
-\subsection{Sự phủ định} \label{sec:su-phu-dinh}
+
+\subsection{Thành phần phủ định} \label{sec:su-phu-dinh}
 \subsubsection*{Mô tả}
 Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{sec:hienthuchethong}).\\
 %\footnote{https://code.google.com/archive/p/negex/}. \\
 
 Giải thuật NegEx dùng để xác định sự tồn tại của phủ định trong câu và xác định xem một cụm từ bất kỳ trong câu có chịu ảnh hưởng của yếu tố phủ định hay không. Giải thuật nhận dữ liệu đầu vào là câu văn được nghi ngờ có sự phủ định và một cụm từ thuộc câu văn đó mà cần xác định xem có bị phủ định hay không. Sau quá trình xử lý, giải thuật đưa ra câu trả lời gồm: câu văn có tồn tại sự phủ định không, xác định từ phủ định trong câu và cụm từ được hỏi có bị phủ định hay không.\\ 
 
-Trong quá trình xử lý, NegEx dùng danh sách thuật ngữ phủ định và danh sách thuật ngữ kết thúc để giải quyết bài toán. Bên cạnh đó, giải thuật xây dựng hai biểu thức chính quy (\term{regular expressions}) để xác định phạm vi phủ định trong câu. Biểu thức RE1 bao gồm tất cả các từ (từ đơn hoặc cụm từ) đứng sau thuật ngữ phủ định và sẽ kết thúc bởi một thuật ngữ kết thúc hoặc dấu kết thúc câu hoặc một thuật ngữ phủ định khác. Biểu thức RE2 chỉ xác định khoảng 5 từ (từ đơn hoặc cụm từ), ưu tiên lĩnh vực y khoa đứng trước thuật ngữ phủ định đang xét. \\
+Trong quá trình xử lý, NegEx dùng danh sách thuật ngữ phủ định và danh sách thuật ngữ kết thúc để giải quyết bài toán. Bên cạnh đó, giải thuật xây dựng hai biểu thức chính quy \myquote{RE} (\term{regular expressions}) để xác định phạm vi phủ định trong câu. Biểu thức \myquote{RE1} bao gồm tất cả các từ (từ đơn hoặc cụm từ) đứng sau thuật ngữ phủ định và sẽ kết thúc bởi một thuật ngữ kết thúc hoặc dấu kết thúc câu hoặc một thuật ngữ phủ định khác. Biểu thức \myquote{RE2} chỉ xác định khoảng 5 từ (từ đơn hoặc cụm từ), ưu tiên lĩnh vực y khoa đứng trước thuật ngữ phủ định đang xét. \\
 
 Áp dụng vào bài toán, với mỗi câu trong dữ liệu đầu vào, giải thuật NegEx lặp lại theo các bước sau:
 
@@ -185,16 +186,16 @@ Trong quá trình xử lý, NegEx dùng danh sách thuật ngữ phủ định v
 \item Xác định tất cả các từ phủ định có trong câu dựa trên danh sách thuật ngữ phủ định, ký hiệu là tập \textit{A}.
 \item Tìm từ phủ định đầu tiên trong câu, kí hiệu là \textit{Neg1}.
 \item Nếu \textit{Neg1} là từ phủ định giả, bỏ qua và thực hiện bước 6.
-\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy RE1 xác định vùng phủ định của \textit{Neg1}.
-\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy RE2 xác định vùng phủ định của \textit{Neg1}.
+\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy \myquote{RE1} xác định vùng phủ định của \textit{Neg1}.
+\item Nếu \textit{Neg1} là từ phủ định tiền điều kiện: dùng biểu thức chính quy \myquote{RE2} xác định vùng phủ định của \textit{Neg1}.
 \item Tìm từ phủ định kế tiếp (cho đến khi hết các từ trong tập \textit{A}), gán cho \textit{Neg1} và lặp lại bước 3.
 \end{enumerate}
 
 Một số ví dụ khi chạy giải thuật NegEx:
 
-\example{8}{``Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or ([no] treatment).''\\Từ phủ định tìm được: ``no'' là thuật ngữ phủ định tiền điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``treatment''.}
+\example{8}{\myquote{Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or ([no] treatment).}\\Từ phủ định tìm được: \myquote{no} là thuật ngữ phủ định tiền điều kiện, phạm vi phủ định được xác định, từ bị phủ định là \myquote{treatment}.}
 
-\example{9}{``The patient is (tumor [free]).''\\Từ phủ định tìm được: ``free'' là thuật ngữ phủ định hậu điều kiện, phạm vi phủ định được xác định, từ bị phủ định là ``tumor''.}
+\example{9}{\myquote{The patient is (tumor [free]).}\\Từ phủ định tìm được: \myquote{free} là thuật ngữ phủ định hậu điều kiện, phạm vi phủ định được xác định, từ bị phủ định là \myquote{tumor}.}
 \subsubsection*{Rút trích}
 Sau khi đã xác định được từ phủ định và từ chịu ảnh hưởng phủ định trong câu, chúng tôi thực hiện rút trích đặc trưng phủ định theo 3 cách sau để áp dụng vào hệ thống:\\
 
