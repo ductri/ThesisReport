@@ -1,11 +1,10 @@
 \section{Hiện thực hệ thống} \label{sec:hienthuchethong}
-Trong phần này, chúng tôi xin trình bày chi tiết về kỹ thuật cách rút trích các đặc trưng, hiện thực bộ phân loại cũng như tích hợp các yếu tố đó vào hệ thống. 
-Chúng tôi hiện thực hệ thống bằng ngôn ngữ lập trình Python, phiên bản 2.7
+Trong phần này, chúng tôi sẽ trình bày chi tiết về kỹ thuật cách rút trích các đặc trưng, hiện thực bộ phân loại cũng như tích hợp các yếu tố đó vào hệ thống. Ngôn ngữ lập trình được sử dụng là Python, phiên bản 2.7.
 
 \subsection{Thư viện và công cụ sử dụng}
-Chúng tôi sử dụng các thư viện: UMLS, NLTK và Scikit-learn, cùng một số thư viện khác. Tất cả các thư viện đều là mã nguồn mở và miễn phí.
+Chúng tôi dùng các thư viện hỗ trợ: UMLS-Metathesaurus, NLTK và Scikit-learn, cùng một số thư viện khác. Tất cả các thư viện đều là mã nguồn mở và miễn phí.
 \subsubsection*{MetaMap}
-MetaMap cung cấp 3 phương pháp cơ bản để sử dụng công cụ:
+MetaMap cung cấp 3 phương pháp cơ bản để nhận diện các khái niệm trong kho dữ liệu UMLS-Metathesaurus từ dữ liệu đầu vào:
 \begin{itemize}
 \item Tương tác trực tiếp thông qua giao diện web\footnote{https://ii.nlm.nih.gov/Interactive/UTS\_Required/metamap.shtml} (\term{Use MetaMap Interactively}): MetaMap cung cấp giao diện web (Hình~\ref{fig:mmweb}) giúp người dùng, đặc biệt là người mới sử dụng, có cái nhìn trực quan nhất về cách MetaMap hoạt động bao gồm cấu trúc dữ liệu đầu vào và đầu ra, những tùy chọn và cách các tùy chọn này ảnh hưởng đến kết quả phân tích. Tuy nhiên, mỗi lần gửi dữ liệu lên máy chủ MetaMap thông qua giao diện web này, MetaMap giới hạn dữ liệu đầu vào chỉ có một tập tin dữ liệu dạng text chứa không quá 10000 ký tự vì thế không thể sử dụng cách này cho những mẩu dữ liệu quá dài. Hơn nữa việc gửi và nhận kết quả trực tuyến thông qua mạng nên không đảm bảo tốc độ xử lý và bảo mật dữ liệu. Với những hạn chế vừa nêu, sau khi đã làm quen với cách hoạt động của MetaMap, người dùng có thể chọn 2 cách sau để tương tác với MetaMap.
 \item Gửi dữ liệu lên máy chủ MetaMap\footnote{https://ii.nlm.nih.gov/Batch/UTS\_Required/metamap.shtml} (\term{Use Batch MetaMap}): người dùng có thể gửi bộ dữ liệu lên máy chủ của MetaMap (Hình~\ref{fig:batchmm}), sau quá trình xử lý MetaMap sẽ trả kết quả về địa chỉ email người dùng cung cấp. Ưu điểm của phương pháp này là tốc độ xử lý nhanh do không có tương tác trong quá trình phân tích dữ liệu. Tuy nhiên khi xảy ra lỗi trong quá trình chạy thì khó phán đoán được lỗi xảy ra ở mẩu dữ liệu nào. 
@@ -28,7 +27,7 @@ Kết quả xử lý trả về như nhau khi dùng cả 3 phương pháp. Trong
 \label{fig:batchmm}
 \end{figure}
 
-Trong phạm vi luận văn, chúng tôi sử dụng công cụ MetaMap để xác định các nhãn y khoa tồn tại trong câu dữ liệu đầu vào. Chúng tôi đã tùy chọn bộ lọc nhãn từ vựng thuộc các nhóm ngữ nghĩa liên quan trực tiếp tới các triệu chứng, nguyên nhân, bệnh lý lâm sàng và cận lâm sàng gồm \term{Pathologic Function}, \term{Disease or Syndrome}, \term{Mental or Behavioral Dysfunction}, \term{Cell or Molecular Dysfunction}, \term{Virus}, \term{Neoplastic Process}, \term{Anatomical Abnormality}, \term{Acquired Abnormality}, \term{Congenital Abnormality}, \term{Injury or Poisoning}.
+Trong phạm vi luận văn, chúng tôi sử dụng công cụ MetaMap để xác định các nhãn y khoa tồn tại trong câu dữ liệu đầu vào. Chúng tôi đã tùy chọn bộ lọc nhãn từ vựng thuộc các nhóm ngữ nghĩa liên quan trực tiếp tới các triệu chứng, nguyên nhân, bệnh lý lâm sàng và cận lâm sàng gồm \term{Pathologic Function}, \term{Disease or Syndrome}, \term{Mental or Behavioral Dysfunction}, \term{Cell or Molecular Dysfunction}, \term{Virus}, \term{Neoplastic Process}, \term{Anatomical Abnormality}, \term{Acquired Abnormality}, \term{Congenital Abnormality}, \term{Injury or Poisoning}.\\
 
 Trong quá trình sử dụng MetaMap, chúng tôi chỉnh tùy chọn \myquote{-negex} để lấy được kết quả đầu ra có phân tích phủ định. Đồng thời chúng tôi cũng xây dựng một chương trình con gọi là NegEx sử dụng giải thuật phân tích phủ định NegEx\footnote{https://code.google.com/p/negex/wiki/NegExAlgorithmDescription} để so sánh với kết quả từ MetaMap.
 
@@ -79,13 +78,19 @@ def training_change_phrase(raw_documents):
 \end{lstlisting}
 Hàm trả về mảng 2 chiều $n*4$ với $n$ là số lượng câu trong tập $raw\_documents$
 
-\subsubsection*{Sự phủ định}
-Như mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi sử dụng giải thuật NegEx để nhận dạng yếu tố phủ định trong câu. Trong phần này, chúng tôi sử dụng 2 phiên bản hiện thực giải thuật này: Neg1 và Neg2. Việc này nhằm so sánh hiệu quả của 2 công cụ trên và chọn ra công cụ phù hợp nhất.\\
+\subsubsection*{Thành phần phủ định}
+Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 công cụ để xác định thành phần phủ định trong câu:
+\begin{itemize}
+\item Meta-NegEx: chỉnh tùy chọn \quote{-negex} để lấy được kết quả phân tích của MetaMap có chứa thành phần phủ định và phạm vi phủ định. Kết quả lưu lại dưới dạng JSON <Thêm ví dụ>
+\item Gen-NegEx: dựa vào giải thuật phân tích phủ định NegEx đã mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi xây dựng chương trình với kết quả đầu ra là câu dữ liệu đã được xác định thành phần và phạm vi phủ định. <Thêm ví dụ>
+\end{itemize}
 
-Với Neg1, công cụ hỗ trợ phiên bản local được cung cấp miễn phí. Một kết quả phân tích thử nghiệm như Hình\\
+Việc hiện thực song song hai công cụ phân tích phủ định nhằm so sánh hiệu quả của chúng và chọn ra công cụ phù hợp nhất.\\
+
+Với Meta-NegEx, công cụ hỗ trợ phiên bản local được cung cấp miễn phí. Một kết quả phân tích thử nghiệm như Hình\\
 HÌNH\\
 
-Với Neg2, chúng tôi sử dụng mã nguồn của/tại.. Tương tự, kết quả phân tích 1 câu như Hình \\
+Với Gen-NegEx, chúng tôi sử dụng mã nguồn của/tại.. Tương tự, kết quả phân tích 1 câu như Hình \\
 HÌNH
 
 Kết quả của 2 cộng cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.
