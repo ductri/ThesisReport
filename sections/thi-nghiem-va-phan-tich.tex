@@ -108,7 +108,7 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
 
 \subsection{Phương pháp đánh giá}
 Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \begin{minipage}{0.9\textwidth}
 \includegraphics[scale=0.35]{../hinh/phepdo.png}
@@ -200,7 +200,7 @@ Các thử nghiệm từ 1-10 cho thấy 2 xu hướng. Hình \ref{fig:mindf-p-f
 
 Hình \ref{fig:mindf-p-f} còn thể hiện một xu hướng khác. Kết quả của n-gram tốt hơn hẳn khi sử dụng phương pháp vector hóa nhị phân. Kết quả này phù hợp với báo cáo của \cite{pang2002thumbs}. Ngược lại, nghiên cứu \cite{sarker2011outcome} thực hiện phân tích cảm xúc trên đoạn văn bản, khẳng định không có sự khác biệt đáng kể giữa 2 cách vector hóa. Điều này có thể do việc lặp từ trên câu có ý nghĩa khác với lặp từ trên đoạn.\\
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.25]{../hinh/mindf_p_f.png}
 \caption{Mối quan hệ giữa tham số min\_df, cách vector hóa và độ đo F} \label{fig:mindf-p-f}
