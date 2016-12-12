@@ -70,10 +70,27 @@ Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghi
 
 Để tích hợp vào hệ thống, nhóm sử dụng package re trong Python, sử dụng phương thức HTTP POST để gửi yêu cầu lên trang web, sau đó parse phần kết quả trả về để lấy ra thông tin điểm số.
 \subsection{Hiện thực bộ phân loại SVM}
-\begin{figure}
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{../hinh/ket_hop_dac_trung.png}
-\caption{Kết hợp các đặc trưng trước khi đưa vào SVM huấn luyện} \label{ket-hop-dac-trung}
+\caption{Kết hợp các đặc trưng trước khi đưa vào SVM huấn luyện} \label{fig:ket-hop-dac-trung}
 \end{figure}
-Trước khi đưa vào giải thuật học máy SVM, các đặc trưng sau khi được rút trích như đã mô tả sẽ được kết hợp lại để với mỗi câu, chỉ có 1 vector đại diện. Mô hình kết hợp các đặc trưng được miêu tả như Hình \ref{fig:ket-hop-dac-trung}
+Các đặc trưng sau khi được rút trích như đã mô tả sẽ được kết hợp lại để với mỗi câu, chỉ có 1 vector đại diện. Mô hình kết hợp các đặc trưng được miêu tả như Hình \ref{fig:ket-hop-dac-trung}
 
+Chúng tôi sử dụng lớp SVM.SVC của thư viện Scikit-learn để hiện thực giải thuật học máy SVM.\\
+\begin{minipage}{0.95\textwidth}
+\begin{lstlisting}
+clf = svm.SVC(decision_function_shape = 'ovr', C = c,           kernel = 'rbf', class_weight = 'balanced')
+clf.fit(data_x, data_y)
+\end{lstlisting}
+\end{minipage}
+
+Hàm khởi tạo SVM.SVC ở dòng 1 có các tham số được sử dụng như sau:
+\begin{description}
+\item[decision\_function\_shape] Định nghĩa cách SVC hiện thực bộ phân loại đa lớp. Nếu decision\_function\_shape='ovr' (one-vs-rest), SVC tạo ra 3 hàm quyết định (decision function): Một câu có thuộc lớp \tichcuc hay không, một câu có thuộc lớp \tieucuc hay không và một câu có thuộc lớp \trungtinh hay không. Nếu decision\_function\_shape='ovo' (one-vs-one), SVC tạo ra 3 hàm quyết định: Một câu thuộc lớp \tichcuc hay thuộc lớp \tieucuc, một câu thuộc lớp \tieucuc hay thuộc lớp \trungtinh và một câu thuộc lớp \trungtinh hay thuộc lớp \tichcuc
+\item[C] là hệ số được định nghĩa trong mô hình soft-margin của giải thuật SVM. Hệ số này đánh đổi giữa việc chấp nhận 1 vài dữ liệu bị phân loại sai, bù lại việc mặt phẳng hàm quyết định (decision surface) trở nên phức tạp, ít tuyến tính. C cao thì SVC càng phân loại chính xác các dữ liệu trong tập huấn luyện, ngược lại C thấp thì mặt phẳng hàm quyết định càng đơn giản.
+\item[kernel] Định nghĩa loại \term{kernel} SVC sử dụng: linear, poly, rbf, sigmoid, precomputed
+\item[class\_weight] Tùy chọn cách xử lý khi số lượng các lớp trong tập huấn luyện bị chêch lệch
+\end{description}
+
+Sau khi khởi tạo, hàm clf.fit(data\_x, data\_y) được gọi với data\_x là dữ liệu tập huấn luyện sau khi đã qua các bước rút trính đặc trưng để ánh xạ từ 1 câu sang 1 vector, data\_y là vector chứa nhãn tương ứng.
