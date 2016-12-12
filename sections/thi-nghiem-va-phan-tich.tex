@@ -2,20 +2,16 @@
 \subsection{Thu thập và đánh giá dữ liệu} \label{sec:thu-thap-va-danh-gia-du-lieu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
-
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
-\caption{Tập dữ liệu thu thập được} 
-\label{table:data}
-\begin{tabular}{ |c|c|c| } 
- \hline
- id & sen \\ 
- \hline
- idsample & sensample \\ 
- idsample & sensample \\ 
- idsample & sensample \\ 
- \hline
+\caption{Một số mẫu từ tập dữ liệu sau khi thu thập} \label{table:data}
+\begin{tabular}{|l| m{0.9\textwidth} | } 
+\hline
+\textbf{Id} & \textbf{Câu} \\ \hline
+10 & This study was a negative study, though there was a suggestion of benefit of methylprednisolone acetate in a population of young adults with acute radicular low back pain. \\ \hline
+17 & Data extraction and analyses and quality assessment were conducted according to the Cochrane standards. \\ \hline
+36 & Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment. \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
@@ -89,15 +85,15 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
-\caption{Tập dữ liệu sau khi đánh nhãn} 
-\label{table:labeleddata}
-\begin{tabular}{ |c|c|c| } 
+\caption{Một số mẫu từ tập dữ liệu sau khi đánh nhãn} \label{table:labeleddata}
+\begin{tabular}{|l| m{0.8\textwidth} | l| } 
+
  \hline
- id & sen & label \\ 
+ Id & Câu & Nhãn \\ 
  \hline
- idsample & sensample & 0 \\ 
- idsample & sensample & 1 \\ 
- idsample & sensample & 2 \\ 
+ 10 & This study was a negative study, though there was a suggestion of benefit of methylprednisolone acetate in a population of young adults with acute radicular low back pain. & 0\\ 
+ 17 & Data extraction and analyses and quality assessment were conducted according to the Cochrane standards. & 1\\ 
+ 36 & Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment. & 2\\ 
  \hline
 \end{tabular}
 \end{minipage}
