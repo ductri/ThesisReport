@@ -110,7 +110,7 @@ Trong trường hợp dữ liệu đầu vào không khả phân cách tuyến t
 \caption[Caption for LOF]{Minh họa ánh xạ tập dữ liệu không khả phân cách tuyến tính \footnotemark}
 \label{fig:axkernel}
 \end{figure}
-\footnotetext{Tham khảo Figure 7 của \cite{pei2012using}}
+\footnotetext{Tham khảo Figure 7 của \cite{Pei2012}}
 \subsubsection*{Phương pháp soft-margin}
 Trên thực tế, sai số của dữ liệu đầu vào là một trong những nguyên nhân dẫn đến bài toán phân loại phi tuyến. Trong trường hợp này, phương pháp \textit{soft-margin} thường được sử dụng để cải thiện giải thuật tối ưu hóa khoảng cách (hình~\ref{fig:softmargin}). Phương pháp này cho phép tồn tại một số điểm được phân chia sai lớp với một giới hạn sai số nhất định (gọi là độ lỗi).
 \begin{figure}[h]
@@ -148,7 +148,7 @@ Phương pháp hệ số \term{kappa} có 3 phiên bản:
 \item[•] Phiên bản \term{Fleiss' kappa} có thể đo độ đồng nhất với số lượng người đánh nhãn không giới hạn, trong khi phiên bản gốc chỉ có thể đánh giá khi có đúng 2 người đánh nhãn.
 \end{itemize}
 Mỗi người đánh nhãn được yêu cầu phân loại mỗi câu thuộc vào 1 trong 3 loại: \tichcuc, \tieucuc hoặc \trungtinh. Từ đó, các câu đã đánh nhãn được thống kê như Bảng \ref{table:kappa}.
-\begin{table}[H]
+\begin{table}[t]
 \caption{Thống kê các câu được đánh nhãn} \label{table:kappa}
 \begin{tabular}{|m{2cm}|l|l|l|l|l|}
 \hline
@@ -164,20 +164,21 @@ Hệ số kappa được tính bởi công thức:
 $$\kappa = \dfrac{p_o - p_e}{1 - p_e} = 1 - \dfrac{1-p_o}{1-p_e}$$
 Trong đó:
 \begin{itemize}
-\item[•] $p_o$ là tỉ lệ đồng ý tương đối giữa 2 người đánh nhãn. $p_o = \dfrac{p_{11}+p_{22}+p_{33}}{p}$
-\item[•] $p_e$ là giả thiết xác suất 2 người đánh nhãn đồng ý ngẫu nhiên. Xét các câu được đánh nhãn \tichcuc, xác suất để người thứ nhất đánh 1 câu thuộc nhãn \tichcuc là $p_{1b}/p$, xác suất để người thú 2 đánh 1 câu thuộc nhãn \tieucuc là $p_{1a}/p$, do đó, xác xuất ngẫu nhiên 2 người cùng đánh 1 câu thuộc nhãn \tichcuc là: 
+\item[•] $p_o$ là tỉ lệ đồng ý tương đối giữa 2 người đánh nhãn. \\
+$$p_o = \dfrac{p_{11}+p_{22}+p_{33}}{p}$$
+\item[•] $p_e$ là giả thiết xác suất ngẫu nhiên 2 người đánh nhãn có chung 1 ý kiến. Xét các câu được đánh nhãn \tichcuc, xác suất để người thứ nhất phân loại 1 câu thuộc lớp \tichcuc là $p_{1b}/p$, xác suất để người thứ 2 phân loại 1 câu thuộc lớp \tieucuc là $p_{1a}/p$, do đó, xác xuất ngẫu nhiên 2 người cùng phân loại 1 câu thuộc lớp \tichcuc là: 
 $$\dfrac{p_{1b}}{p} * \dfrac{p_{1a}}{p}$$
 Từ đó, $p_e$ là tổng xác suất ngẫu nhiên 2 người cùng đánh 1 câu thuộc nhãn \tichcuc, \tieucuc, \trungtinh:
 $$p_e = \frac{p_{1a}}{p}*\frac{p_{1b}}{p} + \frac{p_{2a}}{p}*\frac{p_{2b}}{p} + \frac{p_{3a}}{p}*\frac{p_{3b}}{p}$$
 \end{itemize}
 
-Nếu 2 người đánh nhãn hoàn toàn đồng ý với nhau, $p_o=1$ và $p_e = 0$, suy ra $\kappa=1$. Ngược lại, $\kappa<0$ nếu tỉ lệ đồng ý giữa 2 người đánh nhãn thấp hơn cả xác xuất đồng ý ngẫu nhiên. Theo nghiên cứu \cite{Viera2005}, độ đồng nhất giữa 2 người đánh nhãn được đánh giá như Bảng \ref{table:thang-do-kappa}
+Nếu 2 người đánh nhãn hoàn toàn đồng ý với nhau, $p_o=1$ và $p_e = 0$, suy ra $\kappa=1$ là giá trị lớn nhất có thể có. Ngược lại, $\kappa<0$ nếu tỉ lệ đồng ý giữa 2 người đánh nhãn thấp hơn cả xác xuất đồng ý ngẫu nhiên. Theo nghiên cứu \cite{Viera2005}, độ đồng nhất giữa 2 người đánh nhãn được đánh giá như Bảng \ref{table:thang-do-kappa}.
 \begin{table}[H]
 \centering
 \caption{Thang đo đánh giá độ đồng nhất dựa trên giá trị $\kappa$} \label{table:thang-do-kappa}
 \begin{tabular}{|c|l|}
 \hline
-Giá trị & Mức độ đồng nhất \\ \hline
+\textbf{Giá trị} & \textbf{Mức độ đồng nhất} \\ \hline
 $\kappa<0$ & Thấp hơn xác xuất đồng ý ngẫu nhiên \\ \hline
 $0.1<\kappa<0.2$ & Hơi đồng ý (\term{slight}) \\ \hline
 $0.21<\kappa<0.40$ & Mức độ khá (\term{fair}) \\ \hline

@@ -2,19 +2,25 @@
 \subsection{Thu thập và đánh giá dữ liệu} \label{sec:thu-thap-va-danh-gia-du-lieu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
+Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ trang web PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có cấu trúc các phần như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{niu2005analysis}, chúng tôi chỉ giữ lại phần Kết luận. Chúng tôi sử dụng công cụ tìm kiếm cùng bộ lọc để chỉ tìm các bài có loại xuất bản (publication type) là ``clinical trial''. Chúng tôi đã thu thập được 1182 câu.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{../hinh/bai_bao_mau.png}
+\caption{Tóm tắt của 1 bài báo} \label{fig:bai-bao-mau}
+\end{figure}
 
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
 \caption{Tập dữ liệu thu thập được} 
 \label{table:data}
-\begin{tabular}{ |c|c|c| } 
+\begin{tabular}{ |c|p{0.9\textwidth}| }
  \hline
- id & sen \\ 
+\textbf{id}  & \textbf{sen} \\ 
  \hline
- idsample & sensample \\ 
- idsample & sensample \\ 
- idsample & sensample \\ 
+ 510 & \myquote{High-flow conditioned oxygen therapy may offer advantages for these patients.} \\ 
+ 512 & \myquote{Standard practice in pupillary monitoring yields inaccurate data.}\\ 
+ 539 & \myquote{Dynamic multiple pelvic angiography has significant advantage in the diagnosis of pelvic peritoneal hernia, and can provide a more objective basis for the diagnosis of functional defecation disorder.} \\ 
  \hline
 \end{tabular}
 \end{minipage}
@@ -91,13 +97,13 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
 \begin{minipage}{1.0\textwidth}
 \caption{Tập dữ liệu sau khi đánh nhãn} 
 \label{table:labeleddata}
-\begin{tabular}{ |c|c|c| } 
+\begin{tabular}{ |c|p{0.85\textwidth}|c| } 
  \hline
  id & sen & label \\ 
  \hline
- idsample & sensample & 0 \\ 
- idsample & sensample & 1 \\ 
- idsample & sensample & 2 \\ 
+510 & \myquote{High-flow conditioned oxygen therapy may offer advantages for these patients.} & 2 \\ 
+512 & \myquote{Standard practice in pupillary monitoring yields inaccurate data.} & 0\\ 
+ 539 & \myquote{Dynamic multiple pelvic angiography has significant advantage in the diagnosis of pelvic peritoneal hernia, and can provide a more objective basis for the diagnosis of functional defecation disorder.} & 1\\
  \hline
 \end{tabular}
 \end{minipage}

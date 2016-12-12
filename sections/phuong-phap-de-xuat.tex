@@ -1,24 +1,21 @@
 \section{Phương pháp đề xuất}	\label{sec:phuongphapdexuat}
 \subsection{Mô tả bài toán}
-Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu trong các báo cáo nghiên cứu thuộc lĩnh vực y khoa. Mỗi câu được hệ thống phân vào 1 trong 3 loại: \tichcuc,\tieucuc, hoặc \trungtinh. Bản thân việc xác định câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (Sentence boundary disambiguation), không nằm trong phạm vi đề tài. Chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{Kiss:2006:UMS:1245119.1245122} được hiện thực trong thư viện NLTK.\\
+Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu trong các báo cáo nghiên cứu thuộc lĩnh vực y khoa. Mỗi câu được hệ thống phân vào 1 trong 3 loại: \tichcuc,\tieucuc, hoặc \trungtinh. Bản thân việc xác định câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (\term{Sentence boundary disambiguation}), không nằm trong phạm vi đề tài. Chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{kiss2006unsupervised} được hiện thực trong thư viện NLTK.\\
 
 Định nghĩa 3 loại cảm xúc như sau:
-\begin{description}
-\item[\tichcuc] là những câu thể hiện kết quả tốt hơn, cải thiện hơn hoặc kết quả tích cực vượt trội so với tổng thể dù vẫn có tác dụng phụ tiêu cực.\\
+\begin{itemize}
+\item[•] \tichcuc là những câu thể hiện kết quả tốt hơn, cải thiện hơn hoặc kết quả tích cực vượt trội so với tổng thể dù vẫn có tác dụng phụ tiêu cực.\\
 \example{1}{\myquote{Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment.}}
-
-\item[\tieucuc] là những câu thể hiện kết quả xấu, tệ hơn hoặc thể hiện phương pháp không đem lại hiệu quả.\\
+\item[•] \tieucuc là những câu thể hiện kết quả xấu, tệ hơn hoặc thể hiện phương pháp không đem lại hiệu quả.\\
 \example{2}{\myquote{There is a suggestion that routine surgical interference may be harmful by increasing the risk of caesarean section, and this agrees with data from other trials.}}
-
-\item[\trungtinh] là những câu không thể hiện kết quả, không có khẳng định tốt hay xấu; hoặc đồng thời nhiều ý kiến tốt xấu mà không có sự lất át rõ ràng.\\
+\item[•] \trungtinh là những câu không thể hiện kết quả, không có khẳng định tốt hay xấu; hoặc đồng thời nhiều ý kiến tốt xấu mà không có sự lất át rõ ràng.\\
 \example{3}{\myquote{Data extraction and analyses and quality assessment were conducted according to the Cochrane standards.}}
-\end{description}
-
-
+\end{itemize}
 \subsection{Kiến trúc tổng quan}
 Hệ thống được xây dựng theo kiến trúc như Hình \ref{fig:tong-quan-xay-dung-he-thong}, gồm 5 khối:\\
-Khối \textbf{Thu thập và đánh nhãn dữ liệu:} Nhóm tiến hành thu thập dữ liệu từ nguồn web, lưu vào hệ cơ sở dữ liệu, sau đó tiến hành đánh nhãn. Chi tiết được trình bày tại Mục \ref{sec:thu-thap-va-danh-gia-du-lieu}\\
-Khối \textbf{Tiền xử lý:} Dữ liệu thu thập được có thể gặp lỗi và có định dạng không đúng, cần được xử lý trước khi trích xuất đặc trưng. 
+
+\textbf{Thu thập và đánh nhãn dữ liệu:} Nhóm tiến hành thu thập dữ liệu từ nguồn web, lưu vào hệ cơ sở dữ liệu, sau đó tiến hành đánh nhãn. Chi tiết được trình bày tại Mục \ref{sec:thu-thap-va-danh-gia-du-lieu}\\
+\textbf{Tiền xử lý:} Dữ liệu thu thập được có thể gặp lỗi và có định dạng không đúng, cần được xử lý trước khi trích xuất đặc trưng. 
 Đây là bước xử lý trước khi có thể rút trích đặc trưng. Trong bước này, chúng tôi xử lý dữ liệu theo thứ tự:
 \begin{itemize}
 \item[•] Chuyển tất cả các ký tự thành chữ thường.
@@ -31,41 +28,40 @@ Ví dụ: ``produced'' -> ``produce''.
 \item[•] \term{Stemming} Loại bỏ hầu hết các hậu tố của 1 từ, trả về gốc của một từ dù từ đó được dùng như động từ, tính từ, danh từ hay phó từ.\\
  Ví dụ:  ``produced'' hoặc ``production'' -> ``produc''.
 \end{itemize}
-Khối \textbf{Rút trích đặc trưng:} Có 4 đặc trưng được sử dụng: N-gram, change phrase, sự phủ định và SO-CAL được trình bày trong các Mục từ \ref{sec:ngram} đến \ref{sec:socal}. 
-Khối \textbf{Huấn luyện:} Thực hiện việc huấn luyện với giải thuật học máy SVM để tạo ra bộ phân loại.\\
-Khối \textbf{Phân loại:} Sử dụng bộ phân loại từ khối Huấn luyện, với mỗi dữ liệu đầu vào, bộ phân loại sẽ phân loại câu thuộc 1 trong 3 lớp: \tichcuc,\tieucuc, hoặc \trungtinh\\
-Khối \textbf{Đánh giá:} Sử dụng khối phân loại ở trên, áp dụng đầu vào là tập dữ liệu kiểm tra để đánh giá hiệu quả của bộ phân loại.
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.3]{../hinh/Tongquan.png}
-\caption{Kiến trúc tổng quan xây dựng hệ thống} \label{fig:tong-quan-xay-dung-he-thong}
-\end{figure}
+\textbf{Rút trích đặc trưng:} Có 4 đặc trưng được sử dụng: N-gram, change phrase, sự phủ định và SO-CAL được trình bày trong các Mục từ \ref{sec:ngram} đến \ref{sec:socal}. 
+\textbf{Huấn luyện:} Thực hiện việc huấn luyện với giải thuật học máy SVM để tạo ra bộ phân loại.\\
+\textbf{Phân loại:} Sử dụng bộ phân loại từ khối Huấn luyện, với mỗi dữ liệu đầu vào, bộ phân loại sẽ phân loại câu thuộc 1 trong 3 lớp: \tichcuc,\tieucuc, hoặc \trungtinh\\
+\textbf{Đánh giá:} Sử dụng khối phân loại ở trên, áp dụng đầu vào là tập dữ liệu kiểm tra để đánh giá hiệu quả của bộ phân loại.\\
 
 Trong phần còn lại, chúng tôi trình bày các đặc trưng theo cấu trúc 2 phần: Phần Mô tả trình bày ý tưởng, mô tả về đặc trưng, phần Rút trích trình bày cách sử dụng đặc trưng để có thể áp dụng vào hệ thống.
+
+
 \subsection{N-gram} \label{sec:ngram}
 \subsubsection*{Mô tả}
 Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
 %Định nghĩa
-N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng n-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng n-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng n-gram như \term{baseline}, kết quả tốt nhất tăng 20.58\% so với \term{baseline}. \\
-
-Ví dụ câu: ``Standard practice in pupillary monitoring yields inaccurate data''
+N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng n-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng n-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng n-gram như \term{baseline}, kết quả tốt nhất tăng 20.58\% so với \term{baseline}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{../hinh/Tongquan.png}
+\caption{Kiến trúc tổng quan xây dựng hệ thống} \label{fig:tong-quan-xay-dung-he-thong}
+\end{figure}
+Ví dụ câu: \myquote{Standard practice in pupillary monitoring yields inaccurate data}
 \begin{itemize}
 \item[•]Với $n=1$, n-gram được gọi là uni-gram. Câu trên sẽ được chuyển thành các n-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data.
 \item[•]Với $n=2$, n-gram được gọi là bi-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data.
 \item[•]Với $n=3$, n-gram được gọi là tri-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
 \item[•]Với $n>3$, tần suất xuất hiện các n-gram thấp, dễ làm mô hình học máy bị học quá khớp (overfitting)
 \end{itemize}
-
+	
 Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp khác nhau của n-gram để tìm ra kết quả tốt nhất.\\
 
 %\subsubsection*{Mở rộng}
 TODO Việc áp dụng các kiến thức liên quan đến lĩnh vực đang xem xét giúp tăng độ chính xác khi phân loại. Tác giả Kerstin Denecke trong nghiên cứu \cite{denecke2015sentiment} khẳng định rằng áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại cảm xúc. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa.\\
 
-\example{}{\myquote{``Elevated troponin level after acute stroke is common and is associated with ECG changes suggestive of myocardial ischemia and increased risk of death''}\\
-Từ \myquote{stroke} xét trong ngữ cảnh y học nghĩa là đột quỵ. Nhưng đối với việc phân loại cảm xúc, chúng tôi chỉ quan tâm tới ý nghĩa khái quát của từ này: \myquote{stroke} mô tả một loại bệnh. Tương tự các từ \myquote{diarrhoea, abdominal pain, nausea} chỉ cần được hiểu như vấn đề về bụng mà không cần hiểu cụ thể như thế nào.}
-
-Như vậy, các thuật ngữ y khoa thuộc cùng 1 kiểu (triệu chứng, loại bệnh, tên thuốc, ...) đều được xem là một. Từ đó, giảm thiểu khả năng bộ phân loại bị nhiễu hoặc bị học lệch (\term{overfitting}).\\
+\example{}{\myquote{Elevated troponin level after acute stroke is common and is associated with ECG changes suggestive of myocardial ischemia and increased risk of death}}
+Từ \myquote{stroke} xét trong ngữ cảnh y học nghĩa là đột quỵ. Nhưng đối với việc phân loại cảm xúc, chúng tôi chỉ quan tâm tới ý nghĩa khái quát của từ này: \myquote{stroke} mô tả một loại bệnh. Tương tự các từ \myquote{diarrhoea, abdominal pain, nausea} chỉ cần được hiểu như vấn đề về bụng mà không cần hiểu cụ thể như thế nào. Như vậy, các thuật ngữ y khoa thuộc cùng 1 kiểu (triệu chứng, loại bệnh, tên thuốc, ...) đều được xem là một. Từ đó, giảm thiểu khả năng bộ phân loại bị nhiễu hoặc bị học lệch (\term{overfitting}).\\
 
 Một trong những công cụ đã được xây dựng hoàn chỉnh và sử dụng phổ biến trong các bài toán liên quan đến y khoa trên dữ liệu tiếng Anh là UMLS. Đây là một hệ thống tích hợp các thuật ngữ y khoa cùng các mã chuẩn hóa nhằm tạo tiền đề cho việc xây dựng và phát triển các hệ thống thông tin y khoa cũng như các dịch vụ chăm sóc y tế khác. Để hiện thực nhiệm vụ trên, chúng tôi sử dụng công cụ MetaMap kết hợp hệ thống UMLS. UMLS phân các thuật ngữ y học ra làm 136 kiểu \footnote{Chi tiết các kiểu tham khảo tại \texttt{https://metamap.nlm.nih.gov/Docs/SemanticTypes\_2013AA.txt}}. MetaMap là một công cụ cho phép tra cứu tên kiểu của 1 thuật ngữ y học bất kỳ (Hình \ref{fig:metamap}).\\
 
@@ -79,16 +75,15 @@ Một trong những công cụ đã được xây dựng hoàn chỉnh và sử 
 \example{1}{
 \myquote{Elevated troponin level after acute \underline{stroke} is common and is associated with ECG changes suggestive of myocardial \underline{ischemia} and increased risk of death}\\
 $\xrightarrow{MetaMap}$ \\
-\myquote{Elevated troponin level after acute \underline{DSYN} is common and is associated with ECG changes suggestive of myocardial \underline{DSYN} and increased risk of death}\\
-Từ \underline{\myquote{stroke}} và \underline{\myquote{ischemia}} đều thuộc kiểu loại bệnh hoặc triệu chứng, nên được thay bằng nhãn DSYN (Disease or Syndrome)
-}
-\example{2}{
-\myquote{
-In addition, regardless of psychiatric status, \underline{ADHD} placed children at relative risk for educational and vocational disadvantage}\\
-$\xrightarrow{MetaMap}$ \\
-\myquote{In addition, regardless of psychiatric status, \underline{MOBD} placed children at relative risk for educational and vocational disadvantage}\\
-Từ \underline{\myquote{ADHD}} chỉ một dạng rối loạn về thần kinh, nên được thay bằng nhãn MOBD (Mental or Behavioral Dysfunction)\\
-}
+\myquote{Elevated troponin level after acute \underline{DSYN} is common and is associated with ECG changes suggestive of myocardial \underline{DSYN} and increased risk of death}}
+Từ {\myquote{stroke}} và {\myquote{ischemia}} đều thuộc kiểu loại bệnh hoặc triệu chứng, nên được thay bằng nhãn DSYN (Disease or Syndrome)
+%\example{2}{
+%\myquote{
+%In addition, regardless of psychiatric status, \underline{ADHD} placed children at relative risk for educational and vocational disadvantage}\\
+%$\xrightarrow{MetaMap}$ \\
+%\myquote{In addition, regardless of psychiatric status, \underline{MOBD} placed children at relative risk for educational and vocational disadvantage}\\
+%Từ \underline{\myquote{ADHD}} chỉ một dạng rối loạn về thần kinh, nên được thay bằng nhãn MOBD (Mental or Behavioral Dysfunction)\\
+%}
 \subsubsection*{Rút trích}
 Giải thuật trích xuất đặc trưng n-gram trải qua 2 bước, được mô tả như Hình \ref{fig:mo-hinh-ngram}\\
 \begin{figure}[H]
@@ -97,16 +92,18 @@ Giải thuật trích xuất đặc trưng n-gram trải qua 2 bước, được
 \caption{Giải thuật trích xuất đặc trưng n-gram} \label{fig:mo-hinh-ngram}
 \end{figure}
 
-Ở bước đầu tiên (1), giải thuật nhận vào tập hợp các câu. Mỗi câu sẽ được tách ra thành các n-gram. Tất cả các n-gram từ các câu sẽ được tổng hợp lại thành tập từ vựng T. Tuy nhiên, không phải tất cả các n-gram đều được thêm vào tập từ vựng T. Giải thuật quy định 1 mức ngưỡng $min\_df$ là số câu tối thiểu cùng chứa 1 n-gram thì n-gram đó mới được thêm vào tập T. Nếu $min\_df=1$ thì tập từ vựng T chứa tất cả các n-gram. Nghiên cứu \cite{sarker2011outcome} sử dụng $min\_df = 5$, trong khi nghiên cứu \cite{niu2005analysis} dùng $min\_df=4$. Tuy nhiên cả 2 nghiên cứu trên đều không giải thích về cách chọn các giá trị trên. Trong nghiên cứu này, chúng tôi tiến hành các thí nghiệm để phân tích và chọn ra giá trị $min\_df$ tối ưu nhất.\\
+Ở bước đầu tiên (1), giải thuật nhận vào tập hợp các câu. Mỗi câu sẽ được tách ra thành các n-gram. Tất cả các n-gram từ các câu sẽ được tổng hợp lại thành tập từ vựng T. Tuy nhiên, không phải tất cả các n-gram đều được thêm vào tập từ vựng T. Giải thuật quy định 1 mức ngưỡng $min\_df$ là số câu tối thiểu cùng chứa 1 n-gram thì n-gram đó mới được thêm vào tập T. Nếu $min\_df=1$ thì tập từ vựng T chứa tất cả các n-gram. \\
 
-Bước còn lại là vector hóa câu: chuyển 1 câu từ dạng \term{text} sang dạng vector đại diện cho câu đó. Đầu tiền, cần sắp xếp các n-gram trong tập từ vựng T ở bước (1). Việc sắp xếp này là tùy ý, nhưng sau khi đã sắp xếp phải giữ nguyên thứ tự các n-gram trong tập T. Giả sử $T=\{\text{n-gram}_1, \text{n-gram}_2, \text{n-gram}_3, \ldots, \text{n-gram}_n\}$. Khi đó, mỗi câu $s_i$ sẽ được chuyển thành vector $v_i$ có n chiều. Có 2 cách hiện thực để xác định giá trị tại chiều thứ $k$ của vector $v_i$
-\begin{enumerate}
-\item Giá trị tại chiều thứ $k$ của vector $v_i$ là giá trị nhị phân, bằng 0 nếu câu đó không chứa $\text{n-gram}_k$, bằng 1 nếu câu đó chứa $\text{n-gram}_k$.
-\item Giá trị tại chiều thứ $k$ của vector $v_i$ là số nguyên, thể hiện số lần xuất hiện $\text{n-gram}_k$ trong câu đó.
-\end{enumerate}
+Nghiên cứu \cite{sarker2011outcome} sử dụng $min\_df = 5$, trong khi nghiên cứu \cite{niu2005analysis} dùng $min\_df=4$. Tuy nhiên cả 2 nghiên cứu trên đều không giải thích về cách chọn các giá trị trên. Trong nghiên cứu này, chúng tôi tiến hành các thí nghiệm để phân tích và chọn ra giá trị $min\_df$ tối ưu nhất.\\
+
+Bước còn lại (2) là \term{vector} hóa câu: ánh xạ 1 câu từ dạng \term{text} sang dạng \term{vector} đại diện cho câu đó. Các n-gram trong tập từ vựng T ở bước (1) được tiến hành sắp xếp. Việc sắp xếp này là tùy ý, nhưng sau khi đã sắp xếp phải giữ nguyên thứ tự. Giả sử $T=\{\text{n-gram}_1, \text{n-gram}_2, \text{n-gram}_3, \ldots, \text{n-gram}_n\}$. Khi đó, mỗi câu $s_i$ sẽ được chuyển thành \term{vector} $v_i$ có n chiều. Có 2 cách hiện thực để xác định giá trị tại chiều thứ $k$ của \term{vector} $v_i$:
+\begin{itemize}
+\item[•] Giá trị tại chiều thứ $k$ của vector $v_i$ là giá trị nhị phân, bằng 0 nếu câu đó không chứa $\text{n-gram}_k$, bằng 1 nếu câu đó chứa $\text{n-gram}_k$.
+\item[•] Giá trị tại chiều thứ $k$ của vector $v_i$ là số nguyên, thể hiện số lần xuất hiện $\text{n-gram}_k$ trong câu đó.
+\end{itemize}
 Để thuận tiện khi gọi tên trong các thử nghiệm, chúng tôi quy ước đặt tên cách hiện thực thứ nhất là \term{vector nhị phân}, cách hiện thực thứ 2 là \term{vector số nguyên}. \\
 \example{3}{
-Giả sử sau khi qua bước (1), thu được tập từ vựng T gồm các n-gram như sau: drug, risk, disturbances, associated with, disadvantage, evidence. Khi đó, nếu sử dụng cách vector hóa dùng \term{vector nhị phân}, các câu ở ví dụ 1 và 2 được chuyển thành dạng vector như sau:
+Giả sử sau khi qua bước (1), thu được tập từ vựng T gồm các n-gram: drug, risk, disturbances, associated with, disadvantage, evidence. Khi đó, nếu sử dụng cách vector hóa dùng \term{vector nhị phân}, các câu ở ví dụ 1 và 2 được chuyển thành dạng vector như sau:
 }
 \begin{tabular}{| c | c | c | c | c | c | c | c |}
 \hline
@@ -122,9 +119,9 @@ Khi đó, $v_1 = (0, 1, 0, 1, 0, 0) $ và $v_2=(0, 1, 0, 0, 1, 0)$
 \subsubsection*{Mô tả}
 Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al. có một số thay đổi và mở rộng đặc trưng này.\\
 
-\textit{Change phrase} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh. \\
-
-\example{}{Câu \myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia} thể hiện một tình trạng tệ hơn: Sử dụng \myquote{Atypical antipsychotic} làm tăng nguy cơ chết so với không sử dụng \myquote{Atypical antipsychoti'}.}
+\textit{Change phrase} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh.
+\example{}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
+Câu trên thể hiện tình trạng tệ hơn: Sử dụng \myquote{Atypical antipsychotic} làm tăng nguy cơ chết so với không sử dụng \myquote{Atypical antipsychoti}.
 Chúng tôi sử dụng 4 nhóm để mô tả \textit{Change phrase}:
 \begin{itemize}
 \item[•]Nhóm thể hiện sự thay đổi tình trạng, gồm 2 nhóm:\\
@@ -134,12 +131,10 @@ MORE: Có ý nghĩa ngược lại, làm tăng thêm (hoặc duy trì). Một s�
 GOOD: Mang ý nghĩa tích cực. Một số ví dụ như: ``benefit'', ``improvement'', ``advantage'', ``accuracy'', ``great'', \ldots\\
 BAD: Mang ý nghĩa tiêu cực. Một số ví dụ như: ''suffer``, ''adverse``, ''hazards``, ''risk``, ''death``,\ldots
 \end{itemize}
-Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp thủ công. Kết hợp 4 nhóm trên, ta có 4 đặc trưng giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{Bảng~\ref{tab:changphrase}}. \\
-
-\example{1}{
-\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}\\
-Từ \myquote{increased} sẽ được gán nhãn MORE, \myquote{risk} được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ \myquote{increased} là \myquote{risk}. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.}
-
+Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp thủ công. Kết hợp 4 nhóm trên, ta có 4 đặc trưng giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{Bảng~\ref{tab:changphrase}}.
+\example{}{
+\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
+Từ \myquote{increased} sẽ được gán nhãn MORE, \myquote{risk} được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ \myquote{increased} là \myquote{risk}. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.
 \begin{table}[H]
 \centering
 \caption{Các đặc trưng \textit{Change phrase}}
@@ -169,14 +164,12 @@ Với yếu tố thứ nhất, trong nghiên cứu này, chúng tôi sử dụng
 Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi xem xét yếu tố thứ 2: hiện thực giải thuật nhận dạng xem 1 câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD. Giải thuật nhận dạng câu thuộc mẫu nào được thực hiện qua 2 bước.\\
 
 Ở bước 1, giải thuật nhận dạng những từ mô tả sự thay đổi, bằng cách so trùng các từ trong 2 nhóm LESS và MORE với các từ trong câu. Để có thể so trùng thành công, trước tiên các từ trong 2 nhóm này được xử lý \term{lemmatization} và \term{stemming} như ở mục \ref{sec:tien-xu-ly}. Sau đó mỗi từ trong câu được so sánh với các từ trong 2 nhóm trên. Nếu từ $w$ thuộc 1 trong 2 nhóm trên, giải thuật thêm \term{tag} ``\_LESS'' hoặc ``\_MORE'' vào cuối các từ thuộc phạm vi từ từ $w$ đến dấu chấm câu (\term{punctuation}) gần nhất (về phía cuối câu). Dấu chấm câu (\term{punctuation}) có thể là dấu chấm (.), dấu phẩy (,), dấu hai chấm (:) hoặc dấu chấm phẩy (;). Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành risk\_MORE, từ đó thay đổi tập từ vựng T của đặc trưng n-gram . Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
-
-\example{1}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}\\
-Giải thuật sẽ đánh dấu \term{tag} \_MORE từ từ increased đến hến câu:  \myquote{Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE}}
+%\example{}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
+%Giải thuật sẽ đánh dấu \term{tag} \_MORE từ từ increased đến hến câu:  \myquote{Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE}\\
 
 Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm vi từ từ đó đến hết câu, nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE-GOOD. Tương tự như vậy đối với 3 mẫu còn lại.\\
 
 Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
-
 \subsection{Sự phủ định} \label{sec:su-phu-dinh}
 \subsubsection*{Mô tả}
 Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{sec:hienthuchethong}).\\
@@ -232,9 +225,9 @@ Cách còn lại cũng chỉ quan tâm đến từ phủ định, nhưng khác 2
 Ngoài ra, chúng tôi cũng tiến hành thử nghiệm kết hợp các cách hiện thực trên để tìm ra cách rút trích hiệu quả nhất.
 \subsection{Đặc trưng mở rộng SO-CAL} \label{sec:socal}
 \subsubsection*{Mô tả}
-Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic orientation Calculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
+Trong nghiên cứu này, chúng tôi sử dụng đặc trưng SO-CAL dựa trên bài báo \cite{taboada2011lexicon}, tên của đặc trưng xuất phát từ tên hệ thống mà bài báo trên đã xây dựng. Theo ý nhóm tác giả \cite{taboada2011lexicon}, SO-CAL là chữ viết tắt của Semantic Orientation CALculator. Đây là một phương pháp phân tích cảm xúc dựa trên từ vựng.\\
 
-Phân tích cảm xúc dựa trên từ vựng là một phương pháp khác, tránh được bất lợi của phương pháp học máy là không cần qua quá trình huấn luyện. Tuy nhiên đa số các nghiên cứu này đều phân tích cảm xúc trên văn bản thông thường, không tập trung vào 1 lĩnh vực cụ thể nào \cite{taboada2011lexicon}\cite{Zhang2011}\cite{ohana2009sentiment}\cite{Giachanou2016}. \\
+Phân tích cảm xúc dựa trên từ vựng là một phương pháp khác, tránh được bất lợi của phương pháp học máy là không cần qua quá trình huấn luyện. Tuy nhiên đa số các nghiên cứu này đều phân tích cảm xúc trên văn bản thông thường, không tập trung vào 1 lĩnh vực cụ thể nào \cite{taboada2011lexicon,Zhang2011,ohana2009sentiment,Giachanou2016}. \\
 
 Phương pháp này ngầm định 2 giả thiết sau đã được thỏa mãn:
 \begin{itemize}
@@ -250,9 +243,7 @@ Rút trích đặc trưng SO-CAl chính là giải thuật tính điểm số ch
 \paragraph*{Từ điển}
 Đây là công cụ giúp tra cứu điểm số của mỗi từ. Các từ điển hiện nay thuộc 2 loại: xây dựng thủ công hoặc xây dựng bán tự động. Từ điển xây dựng thủ công điển hình được sử dụng nhiều trong các nghiên cứu là bộ từ điển General Inquirer. Lợi thế của loại tự điển này là được con người đánh điểm số, vì vậy giảm thiếu sai sót. Các nghiên cứu có thể dựa trên bộ từ điển này để tự mở rộng thành bộ từ điển của mình. Tuy nhiên, bất lợi của loại này là kích thước thường nhỏ. Bộ từ điển thuộc loại thứ 2 được sử dụng phổ biến là WordNet. Từ điển thuộc loại bán tự động được xây dựng bằng cách sử dụng một tập từ hạt giống có tính phân cực cao. Các từ này có thể được tập hợp thủ công hoặc được lấy từ từ điển General Inquirer. Từ đó, điểm của các từ khác được sinh ra dựa trên tần số xuất hiện của chúng so với các từ hạt giống. Lợi thế của loại từ điển này là kích thước lớn, tạo độ bao phủ cao, từ đó nhiều từ được gán điểm số hơn. Tuy nhiên độ chính xác của loại từ điển này không cao, và kích thước lớn thường đi kèm với nhiễu. \\
 
-Nghiên cứu \cite{taboada2011lexicon} vì thế chọn phương án xây dựng một bộ từ điển thủ công dựa trên một số nguồn text như các bình luận về phim, sách, máy tính, khách sạn,... và các từ thuộc nhóm tích cực, tiêu cực từ từ điển General Inquirer. 
-
-Điểm số mỗi từ trong từ điển được xây dựng có giá trị từ -5 đến 5 với ý nghĩa: Giá trị càng nhỏ thể hiện tính phân cực về phía tiêu cực càng nhiều, và ngược lại. 
+Nghiên cứu \cite{taboada2011lexicon} vì thế chọn phương án xây dựng một bộ từ điển thủ công dựa trên một số nguồn text như các bình luận về phim, sách, máy tính, khách sạn,... và các từ thuộc nhóm tích cực, tiêu cực từ từ điển General Inquirer. Điểm số mỗi từ trong từ điển được xây dựng có giá trị từ -5 đến 5 với ý nghĩa: Giá trị càng nhỏ thể hiện tính phân cực về phía tiêu cực càng nhiều, và ngược lại. 
 \begin{table}[H]
 \begin{tabular}{l l}
 \hline
@@ -290,12 +281,12 @@ masterpiece & 5
 Hầu hết các nghiên cứu ban đầu về phân tích cảm xúc dựa trên từ vừng đều chỉ tập trung vào tính từ. Điểm số của cả văn bản chỉ phụ thuộc vào điểm số của tính từ trong câu và những từ liên quan. 
 Xét 2 ví dụ sau: 
 \begin{itemize}
-\item[•] The young man strolled+ purposefully+ through his neighborhood+
-\item[•] The teenaged male strutted- cockily- through his turf-
+\item[•] \myquote{The young man strolled+ purposefully+ through his neighborhood+}
+\item[•] \myquote{The teenaged male strutted- cockily- through his turf-}
 \end{itemize}
 Các dấu + ở câu thứ nhất thể hiện xu hướng bổ sung tích tích cực vào độ phân cực của cả câu, trong khi dấu - ở ví dụ thứ 2 ngược lại. Từ đó cho thấy, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng có tác động đến điểm số phân cực của cả câu. Các nghiên cứu sau này đã mở rộng hơn, ngoài tính từ, các từ loại động từ, danh từ và phó từ cũng được xem xét tới. \\
 
-Điều này không những giúp đánh giá tốt hơn trong trường hợp ví dụ trên, ngoài ra còn giúp giải quyết một số trường hợp đặc biệt khi một từ có thể thuộc nhiều loại từ loại. Ví dụ: từ ``novel'' nếu xét theo từ loại danh từ thì chỉ mang ý nghĩa trung tính, nếu xét theo từ loại tính từ lại có ý nghĩa tích cực. Từ ``plot'' mang ý nghĩa tiêu cực nếu là động từ, nhưng mang tính nghĩa trung tính nếu xem là danh từ. Trong nghiên cứu \cite{taboada2011lexicon}, bộ từ điển được xây dựng gồm 2252 tính từ, 1142 danh từ, 903 động từ, and 745 phó từ. \\
+Điều này không những giúp đánh giá tốt hơn trong trường hợp ví dụ trên, ngoài ra còn giúp giải quyết một số trường hợp đặc biệt khi một từ có thể thuộc nhiều loại từ loại. Ví dụ: từ \myquote{novel} nếu xét theo từ loại danh từ thì chỉ mang ý nghĩa trung tính, nếu xét theo từ loại tính từ lại có ý nghĩa tích cực. Từ \myquote{plot} mang ý nghĩa tiêu cực nếu là động từ, nhưng mang tính nghĩa trung tính nếu xem là danh từ. Trong nghiên cứu \cite{taboada2011lexicon}, bộ từ điển được xây dựng gồm 2252 tính từ, 1142 danh từ, 903 động từ, and 745 phó từ. \\
 
 Tất cả các động từ và danh từ trong từ điển đều được xử lý \term{lemmatized}, vì vậy các động từ ở các dạng thể hiện khác nhau đều cùng 1 điểm số. Các động từ, danh từ và tính từ đều được đánh điểm thủ công, riêng phó từ được đánh điểm tự động dựa trên tính từ. Phó từ được bỏ đuôi ``-ly'', sau đó so trùng với các tính từ. Ví dụ: từ \myquote{purposefully} sẽ được gán điểm số của tính từ \myquote{purposefull}. Tuy nhiên, một số ngoại lệ như các phó từ \myquote{fast} được xử lý thủ công. 
 \paragraph*{Tính tăng cường (intensification)}
@@ -315,6 +306,7 @@ Nghiên cứu \cite{taboada2011lexicon} sử dụng công thức (\ref{equa:inte
 Polarity (\text{cụm từ}) = Polarity(\text{từ bị tác động}) * (100\% - \text{tỉ lệ tác động})
 \end{equation}
 \begin{table}[H]
+\centering
 \caption{Tỉ lệ tác động của một số từ} \label{table:intensive}
 \begin{tabular}{l l}
 \hline
@@ -339,7 +331,7 @@ extraordinarily & +50\%
 \example{}{
 \myquote{good} có điểm số là 3.0, từ đó \myquote{very good} có điểm số là: 3.0 * (100\% + 25\%) =  3.75}
 Trong trường hợp có hơn 1 từ có tính tăng cường, điểm số được tính tương tự theo cách đệ quy. \\
-\example{2}{\myquote{really very good}: (3 * [100\% + 25\%]) * (100\% + 15\%) = 4.3}
+\example{}{\myquote{really very good}: (3 * [100\% + 25\%]) * (100\% + 15\%) = 4.3}
 
 Trong trường hợp một tính từ bổ sung nghĩa cho một danh từ theo sau nó, tính từ đó được coi như là một từ có tính tăng cường. Vì vậy, bản thân tính từ đó không có điểm số, và chỉ làm thay đổi điểm số của danh từ theo sau. \\
 
