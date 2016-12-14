@@ -8,3 +8,5 @@ del main.synctex.gz
 del main.tex.bak
 del main.toc
 del main-blx.bib
+del main.lof
+del main.lot
