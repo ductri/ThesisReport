@@ -3,7 +3,11 @@
 \subsection{Thu thập và đánh giá dữ liệu} \label{sec:thu-thap-va-danh-gia-du-lieu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
-Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ trang web PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có cấu trúc các phần như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{niu2005analysis}, chúng tôi chỉ giữ lại phần Kết luận, và sử dụng công cụ tìm kiếm cùng bộ lọc để tìm các bài có loại xuất bản (\term{publication type}) là ``clinical trial''. Dữ liệu chúng tôi thu thập được gồm 1182 câu được gán mã số (\term{Id}) tuần tự và lưu trữ như Bảng \ref{table:data}.
+Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ \term{website} PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có chứa phần kết luận (\term{Conclusion}) như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{sarker2011outcome} gợi ý rằng sử dụng những câu kết luận giúp tăng hiệu quả phân loại, chúng tôi chỉ giữ lại phần Kết luận, và sử dụng công cụ tìm kiếm cùng bộ lọc để tìm các bài có loại xuất bản (\term{publication type}) là ``clinical trial''.\\
+
+Vì \term{website} PubMed không chính thức hỗ trợ cung cấp dữ liệu, chúng tôi tự hiện thực công cụ phục vụ nhu cầu này. TODO mô tả thêm\\
+
+Sau khi chạy công cụ trên, kết quả thu được là những đoạn văn thuộc phần kết luận. Bản thân việc phân tách câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (\term{Sentence boundary disambiguation}), không nằm trong phạm vi đề tài. Trong luận án này, chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{kiss2006unsupervised} được hiện thực trong thư viện NLTK. Dữ liệu chúng tôi thu thập được gồm 1182 câu được gán mã số (\term{Id}) tuần tự và lưu trữ như Bảng \ref{table:data}.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.7]{../hinh/bai_bao_mau.png}
@@ -166,7 +170,7 @@ Với mỗi lần chạy, chúng tôi sử dụng k-fold với $k=5$. Tuy nhiên
 
 Trong mục này chúng tôi trình bày 4 nhóm thử nghiệm: Thử nghiệm với đặc trưng n-gram, thử nghiệm với đặc trưng phủ định, thử nghiệm kết hợp các đặc trưng cơ bản và thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL
 \subsubsection*{Thử nghiệm với đặc trưng n-gram}
-Chúng tôi tiến hành thử nghiệm với đặc trưng n-gram trước tiên vì như đã phân tích ở mục \ref{subsec:ngram}, n-gram được xem như đặc trưng nền tảng (baseline). Kết quả thử nghiệm thể hiện ở Bảng \ref{table:ngram}
+Chúng tôi tiến hành thử nghiệm với đặc trưng n-gram trước tiên vì như đã phân tích ở mục \ref{sec:ngram}, n-gram được xem như đặc trưng nền tảng (baseline). Kết quả thử nghiệm thể hiện ở Bảng \ref{table:ngram}
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
@@ -272,28 +276,62 @@ Các thử nghiệm trong phần này đều dùng kết hợp với đặc trư
 \hline
 \textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
 1 & N-gram & 68.76 & 68.09 & 67.96  \\ \hline
-2 & N-gram + \term{Change phrase} & 70.15 & 69.42 & 69.35 \\ \hline
-\textbf{3} & \textbf{N-gram} + \textbf{\term{Change phrase}} + \textbf{Phủ định} & \textbf{71.09} & \textbf{70.11} & \textbf{70.11} \\ \hline
-4 & N-gram + \term{Change phrase} + Phủ định + Metamap & 70.95 & 69.99 & 70.01 \\ \hline
+2 & N-gram + \term{Change phrase} & 69.97 & 69.29 & 69.17\\ \hline
+\textbf{3} & \textbf{N-gram + \term{Change phrase} + Phủ định} & \textbf{71.01} & \textbf{70.00} & \textbf{70.05}\\ \hline
+4 & N-gram + \term{Change phrase} + Phủ định + Metamap & 70.88 & 70.00  & 69.99 \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
-Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp các đặc trưng cơ bản với nhau. \term{Change phrase} có hiệu quả rõ rệt khi giúp tăng 1.39\% so với \term{baseline} n-gram. Đặc trưng Phủ định cũng góp phần cải thiện kết quả. Kết quả khi sử dụng n-gram với Metamap lại không cho kết quả tốt. Điều này trái ngược với kết quả của nghiên cứu \cite{sarker2011outcome} và \cite{niu2005analysis}.
+Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp các đặc trưng cơ bản với nhau. \term{Change phrase} có hiệu quả rõ rệt khi giúp tăng 1.39\% so với \term{baseline} n-gram. Có thêm đặc trưng Phủ định góp phần cải thiện kết quả 2.15\%. Kết quả khi sử dụng n-gram với Metamap lại không cho kết quả tốt.
 \subsubsection*{Thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
 \begin{table}[H]
 \centering
 \begin{minipage}{1\textwidth}
-\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
+\caption{Các thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL} \label{table:socal-ket-hop-dac-trung-khac}
 \begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
 \hline
 \textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
-1 & N-gram + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
-3 & N-gram + Change\_Phrase + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
-4 & N-gram + Change\_Phrase + Negation + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
-5 & N-gram + Change\_Phrase + Negation + UMLS + SO-CAL& 23.45\% & 23.45\% & 23.45\% \\ \hline
+1 & N-gram + SO-CAL& 69.13 & 68.22 & 68.27 \\ \hline
+2 & N-gram + Change\_Phrase + SO-CAL& 70.84 & 70.05 & 70.03 \\ \hline
+\textbf{3} & \textbf{N-gram + Change\_Phrase + Negation + SO-CAL}& \textbf{71.64} & \textbf{70.70} & \textbf{70.74} \\ \hline
+4 & N-gram + Change\_Phrase + Negation + UMLS + SO-CAL& 71.49 & 70.54 & 70.60 \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
+Chúng tôi tiến hành thử nghiệm kết hợp đặc trưng mở rộng SO-CAL với các đặc trưng cơ bản, kết quả thể hiện ở Bảng \ref{table:socal-ket-hop-dac-trung-khac}. Xu hướng vẫn giống kết quả của Bảng \ref{table:ket-hop-dac-trung}: 2 đặc trưng Change\_Phrase và Negation khi kết hợp cùng SO-CAL đều giúp cải thiện kết quả (lần lượt là 1.76\% và 2.47\% so với n-gram kết hợp SO-CAL), tuy nhiên khi sử dụng n-gram kết hợp Metamap kết quả không có sự khác biệt.\\
+
+Điểm khác biệt so với Bảng \ref{table:ket-hop-dac-trung} là có sự cải thiện trong từng lần thử nghiệm giữa tập các đặc trưng có SO-CAL và không có SO-CAL (Hình \ref{fig:socal-vs-co-ban}). Kết quả tốt nhất trong các thử nghiệm này, cũng là kết quả tốt nhất mà hệ thống chúng tôi đạt được là \textbf{70.74\%}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{../hinh/socal_vs_dac_trung_co_ban.png}
+\caption{Hiệu quả của đặc trưng SO-CAL} \label{fig:socal-vs-co-ban}
+\end{figure}
 \subsection{Các phân tích mở rộng}
 \subsubsection*{Sự phụ thuộc hiệu quả đặc trưng ngram với kích thước tập huấn luyện}
+Đặc trưng n-gram được sử dụng trong luận án này như đặc trưng \term{baseline}, tuy nhiên kết quả sử dụng đặc trưng này thấp hơn nhiều so với một số nghiên cứu liên quan. ( trong nghiên cứu \cite{niu2005analysis}, 74.2\% trong nghiên cứu ). Nghiên cứu  \cite{niu2005analysis} là nghiên cứu liên quan gần nhất đến luận án này. Trong nghiên cứu đó, nhóm tác giả sử dụng tập dữ liệu gồm 1509 câu, trong đó 1208 câu dùng để huấn luyện, đạt độ chính xác 77.87\% với đặc trưng n-gram. Nghiên cứu \cite{sarker2011outcome} cùng lĩnh vực nhưng phân tích trên đoạn, sử dụng tập dữ liệu gồm 520 tài liệu, chứa 9221 câu.\\
+
+Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đến độ chính xác thông qua kích thước tập từ vựng T. Khi kích thước tập dữ liệu huấn luyện tăng, kích thước tập từ vựng T có xu hướng tăng, từ đó có tính bao quát cao hơn, nghĩa là đặc trưng n-gram ``học'' được nhiều hơn (tập từ vựng T chứa nhiều từ trong tập kiểm tra hơn).  Độ chính xác nhờ vậy cũng tăng lên. \\
+
+Để kiểm chứng giả thuyết này, chúng tôi thực hiện thử nghiệm huấn luyện bộ phân loại chỉ với đặc trưng n-gram, sử dụng tập dữ liệu huấn luyện có kích thước khác nhau. Kết quả được trình bày ở Hình \ref{fig:so-cau-vs-ngram}. Giả thuyết của chúng tôi cũng đồng nhất với kết luận trong nghiên cứu \cite{sarker2011outcome}. Kết luận của \cite{Mate2016} cũng cho rằng hiệu suất phân loại không thể đạt kết quả tốt nếu dữ liệu không đủ.
+\begin{figure}
+\begin{subfigure}[h]{0.45\textwidth}
+\centering
+\includegraphics[scale=0.15]{../hinh/socau_vs_tuvung.png}
+\caption{Mối quan hệ giữa kích thước tập dữ liệu huấn luyện và kích thước tập từ vựng T} \label{fig:so-cau-vs-tu-vung}
+\end{subfigure}
+~
+\begin{subfigure}[h]{0.45\textwidth}
+\centering
+\includegraphics[scale=0.15]{../hinh/socau_vs_f.png}
+\caption{Mối quan hệ giữa kích thước tập dữ liệu huấn luyện và độ đo F} \label{fig:so-cau-vs-f}
+\end{subfigure}
+\caption{Ảnh hưởng của kích thước tập dữ liệu huấn luyện đến đặc trưng n-gram} \label{fig:so-cau-vs-ngram}
+\end{figure}
+
 \subsubsection*{So sánh kết quả đối với từng lớp}
+Chúng tôi tiến hành phân tích kết quả cụ thể đối với từng lớp. Kết quả Hình \ref{fig:p-r-f-class} sử dụng lần thử nghiệm đạt kết quả tối ưu nhất, sử dụng các đặc trưng: n-gram, change phrase, phủ định và SO-CAL. Kết quả 2 lớp \tichcuc và \trungtinh khá đồng nhất, trong khi lớp \tieucuc lại cho kết quả thấp hơn rõ rệt. Vì vậy, một trong những cách để cải thiện hiệu quả của hệ thống là phân tích thêm các câu thuộc lớp \tieucuc.
+\begin{figure}
+\centering
+\includegraphics[scale=0.25]{./hinh/class.png}
+\caption{Độ chính xác, độ bao phủ và F-measure trong từng lớp} \label{fig:p-r-f-class}
+\end{figure}
