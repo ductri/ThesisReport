@@ -34,8 +34,7 @@
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \usepackage{csquotes}
 \usepackage[backend=bibtex,
-%style=numeric,
-style=ieee,
+style=numeric,
 bibencoding=ascii
 %style=alphabetic
 %style=reading
@@ -65,19 +64,19 @@ showstringspaces=false,
     breaklines=true,
     breakatwhitespace=false
 }
+
 \usepackage{chngcntr}
 \usepackage{amsmath}
 \newcommand*{\Comb}[2]{{}^{#1}C_{#2}}% 
  
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
+
 \renewcommand{\ttdefault}{pcr}
 \newcommand{\myquote}[1]{{\ttfamily #1}}
 
 \renewcommand{\headrulewidth}{1pt}
 \setlength\parindent{0pt} % noindent for all paragraph
-
-
 \addbibresource{reference/my_ref.bib}
 
 \captionsetup[figure]{labelfont=sc, font={sf}}

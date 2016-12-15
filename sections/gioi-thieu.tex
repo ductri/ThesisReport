@@ -7,7 +7,7 @@ Trong hơn 10 năm trở lại đây, cuộc cách mạng mang tên ``Y học th
 
 Việc tự tổng hợp và đánh giá kết quả của một lượng lớn báo cáo y khoa tiêu tốn không ít thời gian và kém hiệu quả tại thời điểm ra quyết định lâm sàng. Các nghiên cứu gần đây trong \cite{medhat2014sentiment} đã ghi nhận tầm quan trọng của việc phát triển hệ thống tự động phân tích tính phân cực cảm xúc bởi những lý do sau \cite{niu2005analysis}: 
 \begin{itemize}
-\item Đầu tiên, tính phân cực của cảm xúc trong báo cáo y khoa giúp trả lời câu hỏi về lợi ích hay tác hại của một can thiệp y tế (có thể là một phương pháp điều trị hay một loại thuốc,...).
+\item Đầu tiên, tính phân cực của cảm xúc trong báo cáo y khoa giúp trả lời câu hỏi về lợi ích hay tác hại của một can thiệp y tế (có thể là một phương pháp điều trị hay một loại thuốc,\ldots).
 \item Thứ hai, những trường hợp nghiên cứu không đưa ra kết quả nào giúp lọc bỏ những thông tin không cần thiết khi có câu hỏi về kết quả của một can thiệp y tế.
 \item Thứ ba, kết quả \tieucuc mô tả tác dụng phụ có thể rất quan trọng cho một quyết định lâm sàng ngay cả khi không được hỏi tới.
 \item Cuối cùng, từ một loạt các kết quả \tichcuc hay \tieucuc của một can thiệp y tế vào một bệnh lý cụ thể, người điều trị có thể có cái nhìn tổng quát hơn về độ phù hợp khi sử dụng can thiệp đó cho quyết định lâm sàng.
@@ -22,11 +22,11 @@ Tuy nhiên, cùng với sự phát triển mạnh mẽ của ngành Công nghệ
 
 Hiện nay, rào cản lớn nhất của phương pháp y học thực chứng là tình trạng quá tải thông tin y khoa, bởi nó đòi hỏi người điều trị phải xem xét các tài liệu liên quan trước khi đưa ra quyết định lâm sàng. Việc tự tổng hợp một lượng lớn báo cáo y khoa tiêu tốn không ít thời gian và kém hiệu quả tại thời điểm chẩn bệnh. Trong khi đó, để đánh giá một bằng chứng y khoa, người điều trị thường chỉ cần quan tâm đến kết quả và kết luận được nêu ra trong bài báo. Để giải quyết vấn đề này, các hệ thống tự động phân tích tính phân cực của cảm xúc trong văn bản y khoa đã được phát triển ở nhiều nước trên thế giới \cite{medhat2014sentiment}.\\
 
-Hệ thống nhận dữ liệu đầu vào dưới dạng văn bản y khoa thuần ngôn ngữ tự nhiên. Sau quá trình xử lý, hệ thống sẽ trả về kết quả phân cực cảm xúc dưới dạng các nhãn phân cực. Cực của cảm xúc (\term{sentiment polarity}) trong văn bản y khoa có thể là \tichcuc (ví dụ như nghiên cứu cho thấy rằng thuốc \textit{X} mang lại hiệu quả tốt cho bệnh nhân bị bệnh \textit{Y}), \tieucuc (ví dụ như nghiên cứu cho thấy rằng thuốc \textit{X} không nên áp dụng cho bệnh nhân bị bệnh \textit{Y}), hoặc \trungtinh (ví dụ như nghiên cứu chỉ ra rằng thuốc \textit{X} có hiệu quả nhưng đi kèm với nhiều tác dụng phụ không mong muốn, hoặc bài báo không đưa ra kết luận nào).\\
+Hệ thống nhằm xây dựng bộ phân loại cảm xúc nhận dữ liệu đầu vào dưới dạng văn bản y khoa thuần ngôn ngữ tự nhiên. Sau quá trình xử lý, bộ phân loại sẽ trả về kết quả phân cực cảm xúc dưới dạng các nhãn phân cực. Cực của cảm xúc (\term{sentiment polarity}) trong văn bản y khoa có thể là \tichcuc (ví dụ như nghiên cứu cho thấy rằng thuốc \textit{X} mang lại hiệu quả tốt cho bệnh nhân bị bệnh \textit{Y}), \tieucuc (ví dụ như nghiên cứu cho thấy rằng thuốc \textit{X} không nên áp dụng cho bệnh nhân bị bệnh \textit{Y}), hoặc \trungtinh (ví dụ như nghiên cứu chỉ ra rằng thuốc \textit{X} có hiệu quả nhưng đi kèm với nhiều tác dụng phụ không mong muốn, hoặc bài báo không đưa ra kết luận nào).\\
 
 Tầm quan trọng của hệ thống phân tích tính phân cực cảm xúc trong văn bản y khoa đã được ghi nhận bởi \cite{niu2005analysis} với những lý do sau : 
 \begin{itemize}
-\item Đầu tiên, tính phân cực của cảm xúc trong báo cáo y khoa giúp trả lời câu hỏi về lợi ích hay tác hại của một can thiệp y tế (có thể là một phương pháp điều trị hay một loại thuốc,...).
+\item Đầu tiên, tính phân cực của cảm xúc trong báo cáo y khoa giúp trả lời câu hỏi về lợi ích hay tác hại của một can thiệp y tế (có thể là một phương pháp điều trị hay một loại thuốc,\ldots).
 \item Thứ hai, những trường hợp nghiên cứu không đưa ra kết quả nào giúp lọc bỏ những thông tin không cần thiết khi có câu hỏi về kết quả của một can thiệp y tế.
 \item Thứ ba, kết quả \tieucuc mô tả tác dụng phụ có thể rất quan trọng cho một quyết định lâm sàng ngay cả khi không được hỏi tới.
 \item Cuối cùng, từ một loạt các kết quả \tichcuc hay \tieucuc của một can thiệp y tế vào một bệnh lý cụ thể, người điều trị có thể có cái nhìn tổng quát hơn về độ phù hợp khi sử dụng can thiệp đó cho quyết định lâm sàng.
@@ -35,18 +35,32 @@ Tầm quan trọng của hệ thống phân tích tính phân cực cảm xúc t
 Bên cạnh đó, hệ thống phân tích tính phân cực cảm xúc ngoài mục đích hỗ trợ cho việc ra quyết định lâm sàng còn tạo nền tảng cho các hệ thống liên quan khác rút trích, tổng hợp nhằm phát hiện ra những tri thức mới tiềm ẩn trong kho dữ liệu y học to lớn của nhân loại. Đó là lý do chúng tôi quyết định chọn đề tài ``Phân tích cảm xúc trong văn bản y khoa'' làm đề tài luận văn tốt nghiệp.
 
 \subsection{Mục tiêu và phạm vi đề tài}
-Với đề tài ``Phân tích cảm xúc trong văn bản y khoa'', mục tiêu chính của chúng tôi là xây dựng thành công một hệ thống phân tích tính phân cực cảm xúc trong văn bản y khoa, với kết quả sau khi phân tích là nhãn phân loại (\tichcuc, \tieucuc, \trungtinh).....<Thêm gì thì thêm ở đây>.\\
+Với đề tài ``Phân tích cảm xúc trong văn bản y khoa'', mục tiêu chính của chúng tôi là xây dựng bộ phân loại cảm xúc nhận dữ liệu đầu vào là một câu trong văn bản y khoa và cho kết quả đầu ra là nhãn phân loại cảm xúc (\tichcuc, \tieucuc, \trungtinh) của câu đó. Chúng tôi cũng đề ra mục tiêu cụ thể trong từng giai đoạn như sau:
 
-Vì nguồn dữ liệu y học ở Việt Nam còn hạn chế nên chúng tôi quyết định dùng tập các văn bản y khoa tiếng Anh làm nguồn dữ liệu đầu vào của hệ thống. Trong giai đoạn nghiên cứu đề tài này, chúng tôi xây dựng hệ thống phân tích cảm xúc ở mức độ câu, nghĩa là dữ liệu đầu vào là một câu trong báo cáo y khoa. Chúng tôi hy vọng kết quả của luận văn sẽ làm nền tảng cho hệ thống phân tích cảm xúc trên văn bản y khoa tiếng Việt trong tương lai.
+\begin{itemize}
+\item Nghiên cứu và hiện thực các bước rút trích đặc trưng dữ liệu.
+\item Lựa chọn và kết hợp các đặc trưng để tối ưu hiệu quả của hệ thống.
+\end{itemize}
+
+Trong lĩnh vực y khoa, hướng tiếp cận của những nghiên cứu về phân tích cảm xúc có thể chia theo nhiều tiêu chí khác nhau như: nguồn dữ liệu (trang web, báo cáo y khoa, ghi chú lâm sàng), mức tài liệu phân tích (cụm từ, câu, đoạn văn, toàn bộ tài liệu), phương pháp (dựa trên luật, dùng các giải thuật học máy),\ldots \\
+
+Về mức tài liệu phân tích, trong phạm vi luận án, chúng tôi xây dựng hệ thống phân tích cảm xúc ở mức độ câu, nghĩa là dữ liệu đầu vào là một câu trong báo cáo y khoa. Về phương pháp phân loại, chúng tôi chọn phương pháp học máy có giám sát \term{Support Vector Machine} bởi độ hiệu quả của phương pháp này đã được ghi nhận trong nhiều nghiên cứu như \cite{manning2009anintroduction}, \cite{chandrakala2012opinion}.\\
+
+Về nguồn dữ liệu, chúng tôi chọn các báo cáo y khoa làm tập dữ liệu đầu vào bởi tính phân cực cảm xúc rõ ràng thể hiện ở loại văn bản y khoa này. Vì nguồn dữ liệu y học ở Việt Nam còn hạn chế nên chúng tôi quyết định hiện thực hệ thống phân tích tính phân cực cảm xúc trên tập các báo cáo y khoa tiếng Anh. Chúng tôi đã sử dụng công cụ PubMed\footnote{https://www.ncbi.nlm.nih.gov/pubmed} để thu thập dữ liệu và tự xây dựng trang web để đánh nhãn dữ liệu đầu vào. Chúng tôi hy vọng kết quả của luận văn sẽ làm nền tảng để xây dựng hệ thống phân tích cảm xúc trên văn bản y khoa tiếng Việt trong tương lai.\\
+ 
 
 \subsection{Cấu trúc luận văn}
-Luận án được chia làm 7 chương, bao gồm những khái niệm, kiến thức nền tảng và mô tả chi tiết phương pháp chúng tôi đề xuất để giải quyết bài toán ``Phân tích cảm xúc trong văn bản y khoa''. Chúng tôi cũng trình bày các bước xây dựng hệ thống phân tích tính phân cực cảm xúc trong văn bản y khoa, kết quả và đánh giá hệ thống. Cụ thể nội dung chính của mỗi chương như sau:
+Luận văn được chia làm 7 chương, bao gồm những khái niệm, kiến thức nền tảng và mô tả chi tiết phương pháp chúng tôi đề xuất để giải quyết bài toán ``Phân tích cảm xúc trong văn bản y khoa''. Trong chương 1 (chương hiện tại), chúng tôi giới thiệu khái quát về đề tài luận văn, nêu rõ mục tiêu và phạm vi đề tài. Chương này giúp cho người đọc có cái nhìn toàn cảnh về luận án. Ở những chương sau, chúng tôi trình bày các bước xây dựng hệ thống phân tích tính phân cực cảm xúc trong văn bản y khoa, kết quả và đánh giá hệ thống. Cụ thể nội dung chính của mỗi chương như sau:
 
-\subsubsection*{Chương 1: Tổng quan}
-Trong chương 1 (chương hiện tại), chúng tôi giới thiệu khái quát về đề tài luận văn, nêu rõ mục tiêu và phạm vi đề tài. Chương này giúp cho người đọc có cái nhìn toàn cảnh về ...
 \subsubsection*{Chương 2: Các công trình liên quan}
+Trong Chương 2, chúng tôi mô tả bối cảnh các công trình liên quan đến đề tài luận văn, giới thiệu hướng tiếp cận đề tài và xác định hướng đi của chúng tôi để giải quyết bài toán đã nêu.
 \subsubsection*{Chương 3: Kiến thức nền tảng}
+Trong Chương 3, chúng tôi trình bày ngắn gọn các kiến thức, công nghệ nền, cùng một số thư viện và công cụ được sử dụng trong suốt quá trình nghiên cứu và phát triển hệ thống.
 \subsubsection*{Chương 4: Phương pháp đề xuất}
+Trong Chương 4, chúng tôi mô tả chi tiết yêu cầu bài toán ``Phân tích cảm xúc trong văn bản y khoa'' và đề xuất phương pháp cụ thể để giải quyết bài toán. Chúng tôi cũng mô hình hóa kiến trúc tổng quan của hệ thống và mô tả các giải thuật rút trích đặc trưng để xây dựng hệ thống.
 \subsubsection*{Chương 5: Hiện thực hệ thống}
+Trong Chương 5, chúng tôi trình bày các chi tiết kỹ thuật của hệ thống và cách thức hiện thực từng khối chức năng của hệ thống.
 \subsubsection*{Chương 6: Thí nghiệm và đánh giá}
+Trong Chương 6, chúng tôi trình bày cách thu thập và đánh nhãn bộ dữ liệu đầu vào, mô tả và phân tích các thí nghiệm đã thực hiện trên bộ phân loại cảm xúc có được từ hệ thống. Chúng tôi cũng giới thiệu các phương pháp đánh giá hệ thống và đưa ra kết quả đánh giá sau cùng.
 \subsubsection*{Chương 7: Tổng kết}
+Trong Chương 7, chúng tôi tóm tắt kết quả đạt được trong quá trình làm luận án, trình bày những đóng góp và hạn chế của hệ thống phân loại, và đề xuất hướng phát triển tiếp theo.
