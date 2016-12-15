@@ -84,9 +84,12 @@ Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả v�
 \caption{Hiện thực đặc trưng Thay đổi trạng thái} \label{fig:hien-thuc-changephrase}
 \end{figure}
 \subsubsection*{Đặc trưng phủ định}
-Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 công cụ để xác định thành phần phủ định trong câu:
+Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 chương trình con để xác định cấu trúc phủ định trong câu:
 \begin{itemize}
-\item Meta-NegEx: dùng tùy chọn \myquote{-negex} để lấy được kết quả phân tích của MetaMap có chứa từ phủ định và phạm vi phủ định. Kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}.
+\item Meta-NegEx: dùng tùy chọn \myquote{-negex} để lấy được kết quả phân tích của MetaMap có chứa từ phủ định và phạm vi phủ định.
+
+Ví dụ như khi áp dụng Meta-NegEx với câu \myquote{In this trial of apparently healthy persons without hyperlipidemia but with elevated high-sensitivity C-reactive protein levels, rosuvastatin significantly reduced the incidence of major cardiovascular events}, kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}. Trong đó, thuộc tính \myquote{id} là mã số câu, thuộc tính \myquote{negations} là mảng chứa các cấu trúc phủ định trong câu, bao gồm từ phủ định chứa trong thuộc tính \myquote{negex} và mảng các từ bị phủ định chứa trong thuộc tính \myquote{effectedWords}.
+
 \item Gen-NegEx: dựa vào giải thuật phân tích phủ định NegEx đã mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi xây dựng chương trình với kết quả đầu ra là câu dữ liệu đã được xác định thành phần và phạm vi phủ định. <Thêm ví dụ>
 \end{itemize}
 
