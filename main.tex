@@ -86,16 +86,21 @@ showstringspaces=false,
 \newtheorem{exmp}{Ví dụ}[section]
 \renewcommand{\thefootnote}{\arabic{footnote}}
 \newcommand{\refformat}[1]{#1}
-\newcommand{\example}[2]{
+\newcounter{example}[section]
 
-	Ví dụ #1
-	\vspace{5px}
+\newcommand{\example}[2]{
+	\begin{minipage}{\textwidth}
+	\vspace{6px}
+	Ví dụ [section]
+	
 	\begin{adjustwidth}{0.08\textwidth}{0cm}
 	\begin{minipage}{0.86\textwidth}
 	 #2
 	\end{minipage}
 	 
-	\end{adjustwidth}\vspace{10px}}
+	\end{adjustwidth}\vspace{10px}
+	\end{minipage}
+	}
 %\newcommand{\myquote}[1]{#1}
 % Constant
 \newcommand{\tichcuc}{\textit{tích cực}\xspace}
