@@ -1,5 +1,5 @@
 \section{Hiện thực hệ thống} \label{sec:hienthuchethong}
-Trong phần này, chúng tôi sẽ trình bày chi tiết về kỹ thuật cách rút trích các đặc trưng, hiện thực bộ phân loại cũng như tích hợp các yếu tố đó vào hệ thống. Ngôn ngữ lập trình được sử dụng là Python, phiên bản 2.7.
+Trong chương này, chúng tôi sẽ trình bày chi tiết về kỹ thuật cách rút trích các đặc trưng, hiện thực bộ phân loại cũng như cách tích hợp các yếu tố đó vào hệ thống. Ngôn ngữ lập trình được sử dụng là Python, phiên bản 2.7.
 
 \subsection{Thư viện và công cụ sử dụng}
 \subsubsection*{MetaMap}
@@ -86,9 +86,16 @@ Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả v�
 \subsubsection*{Đặc trưng phủ định}
 Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 công cụ để xác định thành phần phủ định trong câu:
 \begin{itemize}
-\item Meta-NegEx: chỉnh tùy chọn \quote{-negex} để lấy được kết quả phân tích của MetaMap có chứa thành phần phủ định và phạm vi phủ định. Kết quả lưu lại dưới dạng JSON <Thêm ví dụ>
+\item Meta-NegEx: dùng tùy chọn \myquote{-negex} để lấy được kết quả phân tích của MetaMap có chứa từ phủ định và phạm vi phủ định. Kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}.
 \item Gen-NegEx: dựa vào giải thuật phân tích phủ định NegEx đã mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi xây dựng chương trình với kết quả đầu ra là câu dữ liệu đã được xác định thành phần và phạm vi phủ định. <Thêm ví dụ>
 \end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{../hinh/JSON.png}
+\caption{Ví dụ kết quả phân tích phủ định dùng công cụ MetaMap}
+\label{fig:Meta-NegEx}
+\end{figure}
 
 Việc hiện thực song song hai công cụ phân tích phủ định nhằm so sánh hiệu quả của chúng và chọn ra công cụ phù hợp nhất.\\
 

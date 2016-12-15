@@ -54,15 +54,20 @@ bibencoding=ascii
 \usepackage{import} %For section from another file
 \usepackage[intlimits]{amsmath}
 \usepackage{multirow}
+\usepackage{color}
 \usepackage{listings}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{textcolour}{rgb}{0,0,0}
 \lstset {
 language=Python,
+backgroundcolor=\color{backcolour},
 numbers=right,
 stepnumber=1,
 showstringspaces=false,
     tabsize=1,
+    numberstyle=\tiny\color{textcolour},
     breaklines=true,
-    breakatwhitespace=false
+    breakatwhitespace=false,
 }
 
 \usepackage{chngcntr}
@@ -178,7 +183,7 @@ Nguyễn Diệp Phương Linh (51201899)\\[1.5cm]
 \section*{Lời cảm ơn}
 \pagebreak
 \section*{Tóm tắt luận văn}
-
+Nhận biết sự phân cực của các báo cáo y khoa rất quan trọng trong việc sàng lọc, tiếp thu và tổng hợp tri thức y học của y bác sĩ trước khi ra quyết định lâm sàng. Chúng tôi đã xem xét vấn đề này như một bài toán phân loại với dữ liệu đầu vào là một câu trong báo cáo y khoa và đầu ra là kết quả phân cực của câu: \tichcuc, \tieucuc hoặc \trungtinh. Để giải quyết bài toán này, chúng tôi kết hợp các kỹ thuật xử lý ngôn ngữ tự nhiên và học máy để xây dựng bộ phân loại cảm xúc trên câu. Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành rút trích 3 đặc trưng gồm có N-GRAM (kết hợp cả unigram và bigram), CHANGE PHRASE và đặc trưng phủ định để phục vụ xây dựng hệ thống phân tích tính phân cực cảm xúc. Đồng thời chúng tôi đề xuất kết hợp thêm một đặc trưng mở rộng SO-CAL vào hệ thống. Kết quả thí nghiệm cho thấy đặc trưng SO-CAL giúp cải thiện hiệu quả phân loại. Hệ thống phân loại chúng tôi xây dựng đạt độ chính xác 70.7\% trên tập dữ liệu 600 câu. Từ kết quả đạt được, chúng tôi hy vọng đề tài sẽ là cung cấp nhiều thông tin hữu ích, làm nền tảng cho các nghiên cứu sau này.
 % START MAIN DOCUMENT
 
 \pagebreak
