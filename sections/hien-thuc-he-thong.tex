@@ -137,3 +137,5 @@ Hàm khởi tạo SVM.SVC ở dòng 1 có các tham số được sử dụng nh
 \end{description}
 
 Sau khi khởi tạo, hàm clf.fit(data\_x, data\_y) được gọi với data\_x là dữ liệu tập huấn luyện sau khi đã qua các bước rút trính đặc trưng để ánh xạ từ 1 câu sang 1 vector, data\_y là vector chứa nhãn tương ứng.
+\subsection{Hiện thực phương pháp cross-validation}
+Chúng tôi sử dụng cross-validation để điều chỉnh tham số $C$ trong giải thuật SVM. Với các thử nghiệm, chúng tôi thử nghiệm với giá trị $C$ lần lượt 1, 10, 100, 500, 1000. Sau đó, chúng tôi co hẹp dần khoảng giá trị $C$ và nhận thấy $C \in [25, 35]$ đạt hiệu quả tốt nhất. Từ đó, với mỗi thử nghiệm được trình bày ở mục \ref{subsec:ket-qua-thi-nghiem}, chúng tôi thử các giá trị $C \in [25, 35]$ và chọn ra $C$ với kết quả tốt nhất. Một ví dụ thể hiện sự phụ thuộc độ đo F vào $C$ được mô tả như Hình \
