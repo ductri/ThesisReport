@@ -1,27 +1,27 @@
 \section{Tổng kết}
 \subsection{Kết quả đạt được}
-Trong luận án này, chúng tôi đã hiện thực hệ thống phân loại cảm xúc. Hệ thống đã xây dựng có khả năng phân loại câu trong những bài báo cáo nghiên cứu thuộc lĩnh vực y khoa vào 1 trong 3 lớp: \tichcuc, \tieucuc hoặc \trungtinh. \\
+Trong luận án này, chúng tôi đã hiện thực thành công hệ thống phân tích tính phân cực cảm xúc trong văn bản y khoa. Hệ thống đã xây dựng có khả năng phân loại câu trong những bài báo cáo nghiên cứu thuộc lĩnh vực y khoa vào 1 trong 3 lớp: \tichcuc, \tieucuc hoặc \trungtinh. \\
 
-Tập dữ liệu chúng tôi thu thập được gồm 552 câu, được đánh nhãn thủ công bởi 16 sinh viên (2 thành viên trong nhóm và 14 bạn sinh viên khác ) với hệ số \term{kappa} được đánh giá là khá tốt (\term{substantial agreement}) $\kappa=72.54\%$.\\
+Tập dữ liệu chúng tôi thu thập được gồm 552 câu, được đánh nhãn thủ công bởi 16 sinh viên (2 thành viên trong nhóm và 14 bạn sinh viên khác đang theo học tại Trường Đại Học Y dược TP. Hồ Chí Minh) với hệ số \term{kappa} được đánh giá là khá tốt (\term{substantial agreement}) $\kappa=72.54\%$.\\
 
-Chúng tôi thực hiện các thử nghiệm trên các đặc trưng N-gram và đặc trưng Phủ định để tìm ra các thông số cho kết quả tối ưu nhất. Với đặc trưng N-gram, kết quả của chúng tôi cho thấy:
+Chúng tôi đã thực hiện các thí nghiệm trên các đặc trưng N-gram và đặc trưng Phủ định để tìm ra các thông số điều kiện để hệ thống đạt kết quả tối ưu nhất. Với đặc trưng N-gram, kết quả của chúng tôi cho thấy:
 \begin{itemize}
 \item[•] Sử dụng thông tin về sự có mặt của một n-gram trong câu cho kết quả tốt hơn so với sử dụng thông tin về số lượng một n-gram trong câu.
 \item[•] Sử dụng tham số ngưỡng $min\_df=3$ để giới hạn những n-gram nào được thêm vào tập từ vựng T, cho kết quả tốt nhất.
 \item[•] Sử dụng kết hợp uni-gram, bi-gram, tri-gram và 4-gram cho kết quả tốt nhất.
 \end{itemize}
-Với đặc trưng Phủ định, chúng tôi thử nghiệm 3 hướng hiện thực (cùng các cách kết hợp) với 2 công cụ Neg1 và Neg2, kết quả cho thấy:
+Với đặc trưng Phủ định, chúng tôi thí nghiệm 3 hướng hiện thực với công cụ Meta-NegEx, Gen-NegEx và kết hợp 2 công cụ này, kết quả cho thấy:
 \begin{itemize}
-\item[•] Sử dụng công cụ Gen-NegEx cho kết quả tốt hơn đối với tất cả các cách hiện thực.
+\item[•] Sử dụng công cụ Gen-NegEx cho kết quả tốt trong tất cả các cách hiện thực.
 \item[•] Cách hiện thực sử dụng nhãn NEGATION thay cho các từ/cụm từ phủ định cho kết quả tốt hơn cả.
 \end{itemize}
 
-Chúng tôi sử dụng kết hợp phương pháp dựa trên học máy và dựa trên từ vựng. Với phương pháp dựa trên học máy, hệ thống sử dụng giải thuật SVM với các đặc trưng cơ bản: đặc trưng N-gram, đặc trưng N-gram kết hợp Metamap, đặc trưng Thay đổi trạng thái, đặc trưng Phủ định. Kết quả cho thấy 2 đặc trưng Thay đổi trạng thái và Phủ định giúp cải thiện kết quả phân loại, trong khi việc sử dụng N-gram kết hợp Metamap có xu hướng làm giảm độ chính xác, mặc dù sự khác biệt không lớn.
+Chúng tôi sử dụng kết hợp mô hình học máy và phương pháp dựa trên từ vựng. Với mô hình học máy, hệ thống sử dụng giải thuật SVM với các đặc trưng cơ bản: đặc trưng N-gram, đặc trưng N-gram kết hợp MetaMap, đặc trưng Thay đổi trạng thái, đặc trưng Phủ định. Kết quả cho thấy 2 đặc trưng Thay đổi trạng thái và Phủ định giúp cải thiện kết quả phân loại, trong khi việc sử dụng N-gram kết hợp Metamap có xu hướng làm giảm độ chính xác, mặc dù sự khác biệt không lớn.\\
 
-Với phương pháp dựa trên từ vựng hệ thống sử dụng đặc trưng mở rộng SO-CAL. Qua các thử nghiệm cho thấy sự cải thiện tích cực khi kết hợp SO-CAL với các đặc trưng cơ bản. Kết quả tốt nhất chúng tôi đạt được là $F=70.7\%$ khi kết hợp các đặc trưng N-gram, đặc trưng Thay đổi trạng thái, đặc trưng Phủ định và đặc trưng SO-CAL.
+Với phương pháp dựa trên từ vựng, hệ thống sử dụng đặc trưng mở rộng SO-CAL. Qua các thử nghiệm cho thấy sự cải thiện tích cực khi kết hợp SO-CAL với các đặc trưng cơ bản. Kết quả tốt nhất chúng tôi đạt được là $F=70.74\%$ khi kết hợp các đặc trưng N-gram, đặc trưng Thay đổi trạng thái, đặc trưng Phủ định và đặc trưng SO-CAL.
 \subsection{Hạn chế và hướng phát triển}
 Sau khi tiến hành các phân tích mở rộng (Mục \ref{subsec:phan-tich-mo-rong}), chúng tôi nhận thấy kết quả phân loại khi chỉ sử dụng đặc trưng N-gram phụ thuộc vào kích thước tập dữ liệu. Trong khi đó, đặc trưng N-gram là đặc trưng chính cơ bản. Đây có thể là yếu tố chính giúp cải thiện kết quả toàn hệ thống. \\
 
-Một nhân tố khác có thể xem xét để cải thiện hệ thống là phân tích thêm lớp \tieucuc. So với 2 lớp \tichcuc và \trungtinh, các kết quả về độ chính xác, độ bao phủ và F của lớp \tieucuc đều thấp hơn rõ rệt. Từ đó, cần thêm các phân tích tìm hiểu để nhận dạng tốt hơn câu thuộc lớp \tieucuc.\\
+Một nhân tố khác có thể xem xét để cải thiện hệ thống là phân tích thêm lớp \tieucuc. So với 2 lớp \tichcuc và \trungtinh, các kết quả về độ chính xác, độ bao phủ và độ $F$ của lớp \tieucuc đều thấp hơn rõ rệt. Từ đó, cần thêm các phân tích tìm hiểu để nhận dạng tốt hơn câu thuộc lớp \tieucuc.\\
 
-Đặc trưng mở rộng SO-CAL trong luận án này được sử dụng thông qua phiên bản hiện thực của nhóm tác giả bài báo \cite{taboada2011lexicon}. Điều này phần nào ảnh hưởng đến kết quả, vì mặc dù trong báo cáo \cite{taboada2011lexicon} kết luận rằng SO-CAL cho kết quả tốt khi thử nghiệm với các văn bản thuộc các lĩnh vực khác nhau, nhưng các văn bản này vẫn thuộc loại văn bản thông thường (các bình luận về phim hoặc sản phẩm). Trong khi hệ thống phân tích cảm xúc trên loại văn bản báo cáo nghiên cứu y khoa, nhiều từ có ý nghĩa \tieucuc hoặc \trungtinh trong văn bản thông thường lại mang ý nghĩa \tichcuc trong báo cáo nghiên cứu y khoa. Vì vậy, cần nghiên cứu để tùy chỉnh SO-CAL phù hợp hơn với mục tiêu bài toán.
+Đặc trưng mở rộng SO-CAL trong luận án này được sử dụng thông qua phiên bản hiện thực của nhóm tác giả bài báo \cite{taboada2011lexicon}. Điều này phần nào ảnh hưởng đến kết quả, vì mặc dù trong báo cáo \cite{taboada2011lexicon} kết luận rằng SO-CAL cho kết quả tốt khi thử nghiệm với các văn bản thuộc các lĩnh vực khác nhau, nhưng các văn bản này vẫn thuộc loại văn bản thông thường (các bình luận về phim hoặc sản phẩm). Trong khi hệ thống phân tích cảm xúc trên loại văn bản báo cáo nghiên cứu y khoa, nhiều từ có ý nghĩa \tieucuc hoặc \trungtinh trong văn bản thông thường lại mang ý nghĩa \tichcuc trong báo cáo nghiên cứu y khoa. Vì vậy, cần thêm nhiều nghiên cứu tùy chỉnh SO-CAL sao cho phù hợp hơn với mục tiêu bài toán.

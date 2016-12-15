@@ -80,6 +80,7 @@ showstringspaces=false,
 \renewcommand{\ttdefault}{pcr}
 \newcommand{\myquote}[1]{{``#1''}}
 \newcommand{\xquote}[1]{{\ttfamily #1}}
+
 \renewcommand{\headrulewidth}{1pt}
 \setlength\parindent{0pt} % noindent for all paragraph
 \addbibresource{reference/my_ref.bib}
@@ -96,7 +97,7 @@ showstringspaces=false,
 \newcommand{\example}[2]{
 	\begin{minipage}{\textwidth}
 	\vspace{6px}
-	Ví dụ #1
+	Ví dụ [section]
 	
 	\begin{adjustwidth}{0.08\textwidth}{0cm}
 	\begin{minipage}{0.86\textwidth}
@@ -205,7 +206,7 @@ Nhóm tác giả
 \section*{Tóm tắt luận văn}
 Việc nhận biết được sự phân cực cảm xúc trong báo cáo y khoa là rất quan trọng để các y bác sĩ sàng lọc, tiếp thu và tổng hợp tri thức trước khi đưa ra quyết định lâm sàng. Chúng tôi đã xem xét vấn đề này như một bài toán phân loại với dữ liệu đầu vào là một câu trong báo cáo y khoa và đầu ra là kết quả phân cực của câu: \tichcuc, \tieucuc hoặc \trungtinh. Để giải quyết bài toán này, chúng tôi kết hợp các kỹ thuật xử lý ngôn ngữ tự nhiên và học máy vào hệ thống xây dựng bộ phân loại cảm xúc trên câu.\\
 
-Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành rút trích 3 đặc trưng gồm có đặc trưng n-gram, đặc trưng chuyển đổi trạng thái và đặc trưng phủ định để xây dựng hệ thống phân tích tính phân cực cảm xúc. Đồng thời chúng tôi đề xuất kết hợp thêm đặc trưng SO-CAL vào hệ thống. Các thí nghiệm cho thấy đặc trưng SO-CAL giúp cải thiện đáng kể hiệu quả phân loại. Kết quả hệ thống chúng tôi xây dựng đạt độ chính xác 70.74\% trên tập dữ liệu 552 câu trích từ phần tóm tắt của các báo cáo y khoa. Từ kết quả đạt được, chúng tôi hy vọng đề tài sẽ cung cấp nhiều thông tin hữu ích, làm nền tảng cho các nghiên cứu sau này.
+Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành rút trích 3 đặc trưng gồm có đặc trưng n-gram, đặc trưng chuyển đổi trạng thái và đặc trưng phủ định để xây dựng hệ thống phân tích tính phân cực cảm xúc. Đồng thời chúng tôi đề xuất kết hợp thêm đặc trưng SO-CAL vào hệ thống. Các thí nghiệm cho thấy đặc trưng SO-CAL giúp cải thiện đáng kể hiệu quả phân loại. Kết quả hệ thống chúng tôi xây dựng đạt độ chính xác $F=70.74\%$ trên tập dữ liệu 552 câu trích từ phần tóm tắt của các báo cáo y khoa. Từ kết quả đạt được, chúng tôi hy vọng đề tài sẽ cung cấp nhiều thông tin hữu ích, làm nền tảng cho các nghiên cứu sau này.
 % START MAIN DOCUMENT
 
 \pagebreak
