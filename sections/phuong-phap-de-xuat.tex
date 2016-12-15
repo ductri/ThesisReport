@@ -1,9 +1,19 @@
 \section{Phương pháp đề xuất}	\label{sec:phuongphapdexuat}
 Trong phần này chúng tôi sẽ đặc tả chi tiết bài toán và mô hình hóa phương pháp đề xuất để xây dựng hệ thống phân tích cảm xúc trong văn bản y khoa. Đồng thời chúng tôi cũng trình bày cụ thể các thành phần trong hệ thống và cách sử dụng các thành phần này để giải quyết bài toán.
 \subsection{Mô tả bài toán}
-Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu trong các báo cáo nghiên cứu thuộc lĩnh vực y khoa. Mỗi câu được hệ thống phân vào 1 trong 3 loại: \tichcuc,\tieucuc, hoặc \trungtinh. Bản thân việc xác định câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (\term{Sentence boundary disambiguation}), không nằm trong phạm vi đề tài. Chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{kiss2006unsupervised} được hiện thực trong thư viện NLTK.\\
-
-Định nghĩa 3 loại cảm xúc như sau:
+Trong luận án này, chúng tôi giải quyết bài toán sau:
+Cho câu thuộc 1 bài báo nghiên cứu trong lĩnh vực y khoa, xác định câu đó thuộc 1 trong 3 loại cảm xúc \tichcuc, \tieucuc hoặc \trungtinh. Bài toán gồm 3 yếu tố (Hình \ref{fig:mo-ta-bai-toan}):
+\begin{itemize}[noitemsep]
+\item[•] Dữ liệu đầu vào: 1 câu trong bài báo nghiên cứu thuộc lĩnh vực y khoa.
+\item[•] Kết quả phân tích: \tichcuc, \tieucuc hoặc \trungtinh.
+\item[•] Hệ thống phân tích: là phần luận án này xây dựng.
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{../hinh/mo_ta_bai_toan.png}
+\caption{Mô tả bài toán} \label{fig:mo-ta-bai-toan}
+\end{figure}
+Cảm xúc trong luận án này được hiểu như kết quả của 1 phương pháp hay 1 can thiệp, cụ thể:
 \begin{itemize}
 \item[•] \tichcuc là những câu thể hiện kết quả tốt hơn, cải thiện hơn hoặc kết quả tích cực vượt trội so với tổng thể dù vẫn có tác dụng phụ tiêu cực.\\
 \example{1}{\myquote{Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment.}}
@@ -12,7 +22,8 @@ Nghiên cứu này giải quyết bài toán: Phân loại cảm xúc của câu
 \item[•] \trungtinh là những câu không thể hiện kết quả, không có khẳng định tốt hay xấu; hoặc đồng thời nhiều ý kiến tốt xấu mà không có sự lất át rõ ràng.\\
 \example{3}{\myquote{Data extraction and analyses and quality assessment were conducted according to the Cochrane standards.}}
 \end{itemize}
-\subsection{Kiến trúc tổng quan}
+
+\subsection{Kiến trúc tổng quan} \label{subsec:kien-truc-tong-quan}
 Chúng tôi đề xuất xây dựng hệ thống phân tích cảm xúc trong báo cáo y khoa theo kiến trúc được mô tả ở Hình \ref{fig:tong-quan-xay-dung-he-thong}. Hệ thống gồm 5 thành phần (\term{modules}) chính: \\
 
 \begin{figure}[H]
@@ -48,7 +59,7 @@ Ví dụ: ``produced'' -> ``produce''.
 Trong phần còn lại, chúng tôi trình bày các đặc trưng theo cấu trúc 2 phần: Phần Mô tả trình bày ý tưởng, mô tả về đặc trưng, phần Rút trích trình bày cách sử dụng đặc trưng để có thể áp dụng vào hệ thống.
 
 
-\subsection{N-gram} \label{sec:ngram}
+\subsection{Đặc trưng n-gram} \label{sec:ngram}
 \subsubsection*{Mô tả}
 Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
@@ -66,7 +77,7 @@ Ví dụ câu: \myquote{Standard practice in pupillary monitoring yields inaccur
 Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp khác nhau của n-gram để tìm ra kết quả tốt nhất.\\
 
 %\subsubsection*{Mở rộng}
-TODO Việc áp dụng các kiến thức liên quan đến lĩnh vực đang xem xét giúp tăng độ chính xác khi phân loại. Tác giả Kerstin Denecke trong nghiên cứu \cite{denecke2015sentiment} khẳng định rằng áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại cảm xúc. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa.\\
+Tác giả Kerstin Denecke trong nghiên cứu \cite{denecke2015sentiment} khẳng định rằng áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại cảm xúc. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa.\\
 
 \example{}{\myquote{Elevated troponin level after acute stroke is common and is associated with ECG changes suggestive of myocardial ischemia and increased risk of death}}
 Từ \myquote{stroke} xét trong ngữ cảnh y học nghĩa là đột quỵ. Nhưng đối với việc phân loại cảm xúc, chúng tôi chỉ quan tâm tới ý nghĩa khái quát của từ này: \myquote{stroke} mô tả một loại bệnh. Tương tự các từ \myquote{diarrhoea, abdominal pain, nausea} chỉ cần được hiểu như vấn đề về bụng mà không cần hiểu cụ thể như thế nào. Như vậy, các thuật ngữ y khoa thuộc cùng 1 kiểu (triệu chứng, loại bệnh, tên thuốc, ...) đều được xem là một. Từ đó, giảm thiểu khả năng bộ phân loại bị nhiễu hoặc bị học lệch (\term{overfitting}).\\
@@ -123,7 +134,7 @@ Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
 \\ \hline
 \end{tabular}
 Khi đó, $v_1 = (0, 1, 0, 1, 0, 0) $ và $v_2=(0, 1, 0, 0, 1, 0)$
-\subsection{Change Phrase}
+\subsection{Đặc trưng chuyển đổi trạng thái (\term{Change Phrase})}
 \subsubsection*{Mô tả}
 Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al. có một số thay đổi và mở rộng đặc trưng này.\\
 
@@ -171,7 +182,9 @@ Với yếu tố thứ nhất, trong nghiên cứu này, chúng tôi sử dụng
 
 Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi xem xét yếu tố thứ 2: hiện thực giải thuật nhận dạng xem 1 câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD. Giải thuật nhận dạng câu thuộc mẫu nào được thực hiện qua 2 bước.\\
 
-Ở bước 1, giải thuật nhận dạng những từ mô tả sự thay đổi, bằng cách so trùng các từ trong 2 nhóm LESS và MORE với các từ trong câu. Để có thể so trùng thành công, trước tiên các từ trong 2 nhóm này được xử lý \term{lemmatization} và \term{stemming} như ở mục \ref{sec:tien-xu-ly}. Sau đó mỗi từ trong câu được so sánh với các từ trong 2 nhóm trên. Nếu từ $w$ thuộc 1 trong 2 nhóm trên, giải thuật thêm \term{tag} ``\_LESS'' hoặc ``\_MORE'' vào cuối các từ thuộc phạm vi từ từ $w$ đến dấu chấm câu (\term{punctuation}) gần nhất (về phía cuối câu). Dấu chấm câu (\term{punctuation}) có thể là dấu chấm (.), dấu phẩy (,), dấu hai chấm (:) hoặc dấu chấm phẩy (;). Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành risk\_MORE, từ đó thay đổi tập từ vựng T của đặc trưng n-gram . Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
+Ở bước 1, giải thuật nhận dạng những từ mô tả sự thay đổi, bằng cách so trùng các từ trong 2 nhóm LESS và MORE với các từ trong câu. Để có thể so trùng thành công, trước tiên các từ trong 2 nhóm này được xử lý \term{lemmatization} và \term{stemming} như ở mục \ref{subsec:kien-truc-tong-quan}. Sau đó mỗi từ trong câu được so sánh với các từ trong 2 nhóm trên.  Nếu từ $w$ thuộc 1 trong 2 nhóm trên, chuyển sang bước 2, ngược lại tiếp tục với từ tiếp theo.\\
+
+%Nếu từ $w$ thuộc 1 trong 2 nhóm trên, giải thuật thêm \term{tag} ``\_LESS'' hoặc ``\_MORE'' vào cuối các từ thuộc phạm vi từ từ $w$ đến dấu chấm câu (\term{punctuation}) gần nhất (về phía cuối câu). Dấu chấm câu (\term{punctuation}) có thể là dấu chấm (.), dấu phẩy (,), dấu hai chấm (:) hoặc dấu chấm phẩy (;). Ở bước này, đặc trưng Change phrase không thực sự tạo ra một đặc trưng mới, nó chỉ làm thay đổi các n-gram: từ risk thành risk\_MORE, từ đó thay đổi tập từ vựng T của đặc trưng n-gram . Bằng cách này, thông qua đặc trưng n-gram, Change phrase không chỉ nhận biết được trong câu có sự mô tả về thay đổi, mà còn biết được phạm vi ảnh hưởng của sự thay đổi đó.\\
 %\example{}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
 %Giải thuật sẽ đánh dấu \term{tag} \_MORE từ từ increased đến hến câu:  \myquote{Atypical antipsychotic use is associated with an increased risk\_MORE for\_MORE death\_MORE compared\_MORE with\_MORE nonuse\_MORE among\_MORE older\_MORE adults\_MORE with\_MORE dementia\_MORE}\\
 
@@ -179,7 +192,7 @@ Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD
 
 Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
 
-\subsection{Thành phần phủ định} \label{sec:su-phu-dinh}
+\subsection{Đặc trưng phủ định} \label{sec:su-phu-dinh}
 \subsubsection*{Mô tả}
 Bài toán phân tích phủ định bao gồm hai nhiệm vụ chính là (1) xác định yếu tố phủ định cùng với phạm vi phủ định trong câu và (2) phân tích ảnh hưởng cũng như hiệu quả của yếu tố phủ định lên ý nghĩa phân loại tính phân cực của cả câu. Để giải quyết bài toán này chúng tôi đã tìm hiểu và hiện thực lại giải thuật phân tích phủ định NegEx\cite{Tanushi2013} (chi tiết hiện thực được mô tả cụ thể ở chương \ref{sec:hienthuchethong}).\\
 %\footnote{https://code.google.com/archive/p/negex/}. \\
@@ -209,7 +222,7 @@ Sau khi đã xác định được từ phủ định và từ chịu ảnh hư�
 
 %The authors drew interesting results such as that adding negation as an explicit feature with uni- grams and using POS tags are not useful for polarity classification. They also reported that the most effective methodwas usingNBwith bigrams as features,which managed to achieve an accuracy of 82.7\%.
 
-Cách thứ nhất tham khảo từ nghiên cứu \cite{niu2005analysis}. Trong nghiên cứu đó, nhóm tác giả \\TODO <thêm tên> chỉ xem xét 1 từ phủ định ``no''. Đây có thể là sự thiếu sót của nhóm tác giả, vì kết quả trong báo cáo \cite{niu2005analysis} cho thấy yếu tố phủ định được thêm vào hầu như không giúp cải thiện độ chính xác. Tiếp theo, nhóm tác giả trên sử dụng công cụ Apple Pie parser để trích xuất các cụm từ, cụm từ nào có chứa từ ``no'' sẽ được gắn thêm hậu tố ``\_NO''. Với cách này, yếu tố phủ định không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến hệ thống thông qua đặc trưng n-gram. Chúng tôi thử nghiệm cách này nhưng thay vì chỉ quan tâm đến từ ``no'', chúng tôi xem xét đến tất cả các từ được xem là từ phủ định theo giải thuật được mô tả ở phần trước. Sau đó, các từ được xem là chịu ảnh hưởng phủ định được thêm hậu tố ``\_NEG''.
+Cách thứ nhất tham khảo từ nghiên cứu \cite{niu2005analysis}. Trong nghiên cứu đó, nhóm tác giả Niu, Yun, et al. chỉ xem xét 1 từ phủ định ``no''. Đây có thể là sự thiếu sót của nhóm tác giả, vì kết quả trong báo cáo \cite{niu2005analysis} cho thấy yếu tố phủ định được thêm vào hầu như không giúp cải thiện độ chính xác. Tiếp theo, nhóm tác giả trên sử dụng công cụ Apple Pie parser để trích xuất các cụm từ, cụm từ nào có chứa từ ``no'' sẽ được gắn thêm hậu tố ``\_NO''. Với cách này, yếu tố phủ định không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến hệ thống thông qua đặc trưng n-gram. Chúng tôi thử nghiệm cách này nhưng thay vì chỉ quan tâm đến từ ``no'', chúng tôi xem xét đến tất cả các từ được xem là từ phủ định theo giải thuật được mô tả ở phần trước. Sau đó, các từ được xem là chịu ảnh hưởng phủ định được thêm hậu tố ``\_NEG''.
 
 \example{}{
 Câu: \myquote{
