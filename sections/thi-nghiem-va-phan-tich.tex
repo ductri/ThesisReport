@@ -163,19 +163,20 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
 \end{figure}
 
 \subsubsection*{Đánh giá dữ liệu}
-TODO nhờ bao nhiêu người...
-Sau khi xây dựng trang web hỗ trợ đánh nhãn, chúng tôi đã thu thập được 161 câu được đánh nhãn. Chúng tôi sử dụng phương pháp đánh giá độ đồng nhất Flessi Kappa với các tham số: $m=2, n=46, k=3$, kết quả $\kappa = 36.91\% $. Điểm số này thể hiện độ đồng nhất thuộc mức vừa (\term{fair argreement}). Kết quả này còn thấp so với nghiên cứu \cite{sarker2011outcome} (70.6\%). Điều này xảy ra vì sự nhập nhằng về ý nghĩa của 1 số câu và sự hiểu không đồng nhất trong quy ước về tính \tichcuc, \tieucuc, \trungtinh giữa các bạn đánh nhãn. Để giải quyết, 2 thành viên trong nhóm chúng tôi tự đánh nhãn các câu còn lại.  Kết quả $\kappa=72.54\%$ được tính trên 100 câu được 2 người đánh nhãn. Kết quả trên được xem khá tốt (\term{substantial agreement})
+Sau khi xây dựng trang web hỗ trợ đánh nhãn, chúng tôi nhờ 14 bạn sinh viên đánh nhãn, với các câu được lựa chọn ngẫu nhiên. Kết quả thu được 161 câu được đánh nhãn. Để đánh giá tập dữ liệu, chúng tôi sử dụng phương pháp đánh giá độ đồng nhất Fleiss's Kappa trên tập gồm 46 câu, mỗi câu được đánh nhãn bởi 2 người bất kỳ, khi đó $m=2, n=46, k=3$, kết quả $\kappa = 36.91\% $. Điểm số này thể hiện độ đồng nhất thuộc mức vừa (\term{fair argreement}). \\
+
+Kết quả này còn thấp so với một số nghiên cứu tự xây dựng tập dữ liệu (nghiên cứu \cite{sarker2011outcome} đạt 70.6\%, trong khi \cite{ali2013can} đạt 65\%). Điều này xảy ra vì sự nhập nhằng về ý nghĩa của 1 số câu và sự hiểu không đồng nhất trong quy ước về tính \tichcuc, \tieucuc, \trungtinh giữa những người đánh nhãn. Để giải quyết, 2 thành viên trong nhóm chúng tôi tự đánh nhãn các câu còn lại. Tổng số câu được đánh nhãn là 552, trong đó có 100 câu, mỗi câu được 2 người bất kỳ đánh nhãn. Kết quả \term{kappa} trên tập này là $\kappa=72.54\%$. Kết quả này được xem là khá tốt (\term{substantial agreement}).
 
 \subsection{Kết quả thí nghiệm} \label{subsec:ket-qua-thi-nghiem}
 Với mỗi lần chạy, chúng tôi sử dụng k-fold với $k=5$. Tuy nhiên, do tập dữ liệu không đủ lớn, kết quả các lần chạy có sự dao động, vì vậy, với mỗi lần thử nghiệm, chúng tôi lặp lại việc chạy k-fold 30 lần, sau đó lấy điểm số trung bình xem như kết quả cuối cùng. Đối với giải thuật học máy SVM, có 2 tham số cần được tùy chỉnh thích hợp. Để xác định tham số c, hệ thống chạy nhiều lần với c thuộc 1 khoảng cho trước (trong nghiên cứu này, c chạy từ 20 đến 30), từ đó chọn ra giá trị c tương ứng với độ đo f lớn nhất. Như vậy, với mỗi thử nghiệm, giá trị độ do f luôn là giá trị cao nhất được chọn từ những lần chạy với giá trị c thay đổi từ 20 đến 30. \\
 
-Trong mục này chúng tôi trình bày 4 nhóm thử nghiệm: Thử nghiệm với đặc trưng n-gram, thử nghiệm với đặc trưng phủ định, thử nghiệm kết hợp các đặc trưng cơ bản và thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL
-\subsubsection*{Thử nghiệm với đặc trưng n-gram}
-Chúng tôi tiến hành thử nghiệm với đặc trưng n-gram trước tiên vì như đã phân tích ở mục \ref{sec:ngram}, n-gram được xem như đặc trưng nền tảng (baseline). Kết quả thử nghiệm thể hiện ở Bảng \ref{table:ngram}
+Trong mục này chúng tôi trình bày 4 nhóm thử nghiệm: Thử nghiệm với đặc trưng N-gram, thử nghiệm với đặc trưng phủ định, thử nghiệm kết hợp các đặc trưng cơ bản và thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL
+\subsubsection*{Thử nghiệm với đặc trưng N-gram}
+Chúng tôi tiến hành thử nghiệm với đặc trưng N-gram trước tiên vì như đã phân tích ở mục \ref{sec:ngram}, N-gram được xem như đặc trưng nền tảng (baseline). Kết quả thử nghiệm thể hiện ở Bảng \ref{table:ngram}
 \begin{table}[H]
 \centering
 \begin{minipage}{1.0\textwidth}
-\caption{Các thử nghiệm nhằm tối ưu hóa đặc trưng n-gram} \label{table:ngram}
+\caption{Các thử nghiệm nhằm tối ưu hóa đặc trưng N-gram} \label{table:ngram}
 \begin{tabular}{|l| m{0.5\textwidth} | >{\centering\arraybackslash} m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | >{\centering\arraybackslash}m{0.1\textwidth} | } 
 
 \hline
@@ -199,15 +200,15 @@ Chúng tôi tiến hành thử nghiệm với đặc trưng n-gram trước tiê
 \begin{description}[noitemsep]
 \item[P] Chỉ quan tâm đến việc có xuất hiện hay không n-gram trong câu, nhận 2 giá trị: 1 hoặc 0
 \item[F] Quan tâm đến số lần xuất hiện n-gram trong câu
-\item[min\_df] Số câu có n-gram đó để n-gram đó được thêm vào bộ từ vừng
+\item[min\_df] Số câu có n-gram đó để được thêm vào bộ từ vừng
 \end{description}
 \par}
 \end{minipage}
 \end{table}
 
-Các thử nghiệm từ 1-10 cho thấy 2 xu hướng. Hình \ref{fig:mindf-p-f} thể hiện sự phụ thuộc của độ đo F vào tham số $min\_df$ và cách vector hóa đặc trưng n-gram. $min\_df$ là tham số ngưỡng, chỉ những n-gram nào có số lần xuất hiện từ $min\_df$ trở lên mới được thêm vào tập từ vựng S. Qua biểu đồ có thể thấy, với $min\_df$ quá nhỏ hoặc quá lớn đều làm giảm giá trị độ đo F. Khi $min\_df$ quá nhỏ, số lượng từ vựng quá lớn dẫn tới số lượng ngram gây nhiễu nhiều. Ngược lại khi $min\_df$ quá lớn, tập từ vựng quá nhỏ dẫn tới có quá ít thông tin trong câu được giữ lại, không đủ thông tin để phân loại. Từ biểu đồ, $min\_df=2$ hay $min\_df=3$ không có sự khác biệt rõ rệt giá trị độ đo F. Trong nghiên cứu này, chúng tôi chọn tham số $min\_df=3$ cho các thử nghiệm còn lại.\\
+Các thử nghiệm từ 1-10 cho thấy 2 xu hướng. Hình \ref{fig:mindf-p-f} thể hiện sự phụ thuộc của độ đo F vào tham số $min\_df$ và cách vector hóa đặc trưng N-gram. $min\_df$ là tham số ngưỡng, chỉ những n-gram nào có số lần xuất hiện từ $min\_df$ trở lên mới được thêm vào tập từ vựng S. Qua biểu đồ có thể thấy, với $min\_df$ quá nhỏ hoặc quá lớn đều làm giảm giá trị độ đo F. Khi $min\_df$ quá nhỏ, số lượng từ vựng quá lớn dẫn tới số lượng ngram gây nhiễu nhiều. Ngược lại khi $min\_df$ quá lớn, tập từ vựng quá nhỏ dẫn tới có quá ít thông tin trong câu được giữ lại, không đủ thông tin để phân loại. Từ biểu đồ, $min\_df=2$ hay $min\_df=3$ không có sự khác biệt rõ rệt giá trị độ đo F. Trong nghiên cứu này, chúng tôi chọn tham số $min\_df=3$ cho các thử nghiệm còn lại.\\
 
-Hình \ref{fig:mindf-p-f} còn thể hiện một xu hướng khác. Kết quả của n-gram tốt hơn hẳn khi sử dụng phương pháp vector hóa nhị phân. Kết quả này phù hợp với báo cáo của \cite{pang2002thumbs}. Ngược lại, nghiên cứu \cite{sarker2011outcome} thực hiện phân tích cảm xúc trên đoạn văn bản, khẳng định không có sự khác biệt đáng kể giữa 2 cách vector hóa. Điều này có thể do việc lặp từ trên câu có ý nghĩa khác với lặp từ trên đoạn.\\
+Hình \ref{fig:mindf-p-f} còn thể hiện một xu hướng khác. Kết quả của đặc trưng N-gram tốt hơn hẳn khi sử dụng phương pháp vector hóa nhị phân. Kết quả này phù hợp với báo cáo của \cite{pang2002thumbs}. Ngược lại, nghiên cứu \cite{sarker2011outcome} thực hiện phân tích cảm xúc trên đoạn văn bản, khẳng định không có sự khác biệt đáng kể giữa 2 cách vector hóa. Điều này có thể do việc lặp từ trên câu có ý nghĩa khác với lặp từ trên đoạn.\\
 
 \begin{figure}[H]
 \centering
@@ -215,26 +216,26 @@ Hình \ref{fig:mindf-p-f} còn thể hiện một xu hướng khác. Kết quả
 \caption{Mối quan hệ giữa tham số min\_df, cách vector hóa và độ đo F} \label{fig:mindf-p-f}
 \end{figure}
 
-Hình \ref{fig:ket-hop-ngram} thể hiện ảnh hưởng của cách kết hợp các n-gram. Theo đó, có sự cải thiện khi chuyển từ việc chỉ dùng Unigram sang dùng kết hợp Unigram và Bigram. Khi mở rộng việc kết hợp đến $n=3$ và $n=4$, mặc dù chỉ số F có tăng không thực sự đáng kể. Khi kết hợp đến $n=5$, chỉ số F bắt đầu giảm. Với n càng lớn, mặc dù số lượng ngram không khác nhau nhiều (giả sử 1 câu có 20 từ, với $n=1$ tạo ra 20 ngram, $n=3$ tạo ra 18 ngram) nhưng các n-gram có tần suất xuất hiện càng thấp. Trong khi đó, hệ thống chỉ thêm ngram vào tập từ vựng S chỉ khi từ đó xuất hiện từ 3 lần trở lên. Vì vậy, việc kết hợp với các ngram (n lớn, $n=5$ chẳng hạn) không giúp bổ sung thêm vào tập từ vựng S. Ngược lại, với $n=2, 3, 4$ giúp hệ thống nhận thêm các cụm từ như: no evidence, improve quality life, reduce risk,... Trong các thử nghiệm tiếp theo, chúng tôi dùng đặc trưng n-gram là sự kết hợp của Unigram, Bigram, Trigram và 4-gram (ngram với $n=4$).
+Hình \ref{fig:ket-hop-ngram} thể hiện ảnh hưởng của cách kết hợp các đặc trưng N-gram. Theo đó, có sự cải thiện khi chuyển từ việc chỉ dùng Uni-gram sang dùng kết hợp Uni-gram và Bi-gram. Khi mở rộng việc kết hợp đến $n=3$ và $n=4$, mặc dù chỉ số F có tăng không thực sự đáng kể. Khi kết hợp đến $n=5$, chỉ số F bắt đầu giảm. Với n càng lớn, mặc dù số lượng ngram không khác nhau nhiều (giả sử 1 câu có 20 từ, với $n=1$ tạo ra 20 ngram, $n=3$ tạo ra 18 ngram) nhưng các n-gram có tần suất xuất hiện càng thấp. Trong khi đó, hệ thống chỉ thêm n-gram vào tập từ vựng S chỉ khi từ đó xuất hiện từ 3 lần trở lên. Vì vậy, việc kết hợp với các n-gram (n lớn, $n=5$ chẳng hạn) không giúp bổ sung thêm vào tập từ vựng S. Ngược lại, với $n=2, 3, 4$ giúp hệ thống nhận thêm các cụm từ như: no evidence, improve quality life, reduce risk,... Trong các thử nghiệm tiếp theo, chúng tôi dùng đặc trưng n-gram là sự kết hợp của Uni-gram, Bi-gram, Tri-gram và 4-gram (N-gram với $n=4$).
 \begin{figure}[H]
 \centering
 \begin{minipage}{0.7\textwidth}
 \includegraphics[scale=0.25]{../hinh/ket_hop_ngram.png}
 {\footnotesize \\
-Tên mỗi cột chỉ là đặc trưng ngram đại diện. Ví dụ: Trigram đại diện cho thử nghiệm thứ 12, là kết hợp cả Unigram, Bigram và Trigram \par}
-\caption{Kết hợp các n-gram} \label{fig:ket-hop-ngram}
+Tên mỗi cột chỉ là đặc trưng N-gram đại diện. Ví dụ: Tri-gram đại diện cho thử nghiệm thứ 12, là kết hợp cả Uni-gram, Bi-gram và Tri-gram \par}
+\caption{Kết hợp các N-gram} \label{fig:ket-hop-ngram}
 \end{minipage}
 \end{figure}
 
 \subsubsection*{Thử nghiệm với đặc trưng Phủ định}
-Các thử nghiệm trong phần này đều dùng kết hợp với đặc trưng n-gram. Bảng \ref{table:negation} thể hiện hiệu quả của việc rút trích yếu tố phủ định qua 7 cách khác nhau, so sánh giữa 2 công cụ: Metamap sử dụng giải thuật NegEx và bản gốc NegEx. Trong 7 cách tích hợp yếu tố phủ định vào hệ thống, cách dùng của thí nghiệm 2 cho kết quả tốt nhất, xét cho cả 2 công cụ. Trong đó, NegEx bản gốc cho kết quả cao hơn. Chúng tôi sử dụng cách dùng như thí nghiệm 2 và công cụ NegEx bản gốc cho thí nghiệm ở phần sau.
+Các thử nghiệm trong phần này đều dùng kết hợp với đặc trưng N-gram. Bảng \ref{table:negation} thể hiện hiệu quả của việc rút trích yếu tố phủ định qua 7 cách khác nhau, so sánh giữa 2 công cụ: Metamap sử dụng giải thuật NegEx và bản gốc NegEx. Trong 7 cách tích hợp yếu tố phủ định vào hệ thống, cách dùng của thí nghiệm 2 cho kết quả tốt nhất, xét cho cả 2 công cụ. Trong đó, NegEx bản gốc cho kết quả cao hơn. Chúng tôi sử dụng cách dùng như thí nghiệm 2 và công cụ NegEx bản gốc cho thí nghiệm ở phần sau.
 \begin{table}[H]
 \centering
 \begin{minipage}{1\textwidth}
 \caption{Các thử nghiệm nhằm tối ưu đặc trưng Phủ định} \label{table:negation}
 \begin{tabular}{|l|m{0.3\textwidth}|ccc|ccc|}
 \hline
-\multirow{2}{*}{\textbf{STT}} & \multirow{2}{*}{\textbf{Đặc trưng}} & \multicolumn{3}{c|}{\textbf{Negation tu metamap}} & \multicolumn{3}{c|}{\textbf{Negation 2}}  \\ \cline{3-8}
+\multirow{2}{*}{\textbf{STT}} & \multirow{2}{*}{\textbf{Đặc trưng}} & \multicolumn{3}{c|}{\textbf{Metamap-NegEx}} & \multicolumn{3}{c|}{\textbf{Gen-NegEx}}  \\ \cline{3-8}
                      &                            & \textbf{P}           & \textbf{R}           & \textbf{F}           & \textbf{P}        & \textbf{R}        & \textbf{F}        \\
 \hline
 1 & Kiểm tra trong câu có yếu tố phủ định hay không& 69.36 & 68.53 & 68.45 &
@@ -277,13 +278,13 @@ Các thử nghiệm trong phần này đều dùng kết hợp với đặc trư
 \hline
 \textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
 1 & N-gram & 68.76 & 68.09 & 67.96  \\ \hline
-2 & N-gram + \term{Change phrase} & 69.97 & 69.29 & 69.17\\ \hline
-\textbf{3} & \textbf{N-gram + \term{Change phrase} + Phủ định} & \textbf{71.01} & \textbf{70.00} & \textbf{70.05}\\ \hline
-4 & N-gram + \term{Change phrase} + Phủ định + Metamap & 70.88 & 70.00  & 69.99 \\ \hline
+2 & N-gram + Chuyển đổi trạng thái & 69.97 & 69.29 & 69.17\\ \hline
+\textbf{3} & \textbf{N-gram + Chuyển đổi trạng thái + Phủ định} & \textbf{71.01} & \textbf{70.00} & \textbf{70.05}\\ \hline
+4 & N-gram + Chuyển đổi trạng thái + Phủ định + Metamap & 70.88 & 70.00  & 69.99 \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
-Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp các đặc trưng cơ bản với nhau. \term{Change phrase} có hiệu quả rõ rệt khi giúp tăng 1.39\% so với \term{baseline} n-gram. Có thêm đặc trưng Phủ định góp phần cải thiện kết quả 2.15\%. Kết quả khi sử dụng n-gram với Metamap lại không cho kết quả tốt.
+Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp các đặc trưng cơ bản với nhau. Đặc trưng Chuyển đổi trạng thái có hiệu quả rõ rệt khi giúp tăng 1.39\% so với đặc trưng nền tảng N-gram. Có thêm đặc trưng Phủ định góp phần cải thiện kết quả 2.15\%. Kết quả khi sử dụng N-gram với Metamap lại không cho kết quả tốt.
 \subsubsection*{Thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL}
 \begin{table}[H]
 \centering
@@ -293,13 +294,13 @@ Bảng \ref{table:ket-hop-dac-trung} thể hiện kết quả khi kết hợp c�
 \hline
 \textbf{STT} & \textbf{Đặc trưng} & \textbf{P} & \textbf{R} & \textbf{F} \\ \hline
 1 & N-gram + SO-CAL& 69.13 & 68.22 & 68.27 \\ \hline
-2 & N-gram + Change\_Phrase + SO-CAL& 70.84 & 70.05 & 70.03 \\ \hline
-\textbf{3} & \textbf{N-gram + Change\_Phrase + Negation + SO-CAL}& \textbf{71.64} & \textbf{70.70} & \textbf{70.74} \\ \hline
-4 & N-gram + Change\_Phrase + Negation + UMLS + SO-CAL& 71.49 & 70.54 & 70.60 \\ \hline
+2 & N-gram + Chuyển đổi trạng thái + SO-CAL& 70.84 & 70.05 & 70.03 \\ \hline
+\textbf{3} & \textbf{N-gram + Chuyển đổi trạng thái + Phủ định + SO-CAL}& \textbf{71.64} & \textbf{70.70} & \textbf{70.74} \\ \hline
+4 & N-gram + Chuyển đổi trạng thái + Phủ định + Metamap + SO-CAL& 71.49 & 70.54 & 70.60 \\ \hline
 \end{tabular}
 \end{minipage}
 \end{table}
-Chúng tôi tiến hành thử nghiệm kết hợp đặc trưng mở rộng SO-CAL với các đặc trưng cơ bản, kết quả thể hiện ở Bảng \ref{table:socal-ket-hop-dac-trung-khac}. Xu hướng vẫn giống kết quả của Bảng \ref{table:ket-hop-dac-trung}: 2 đặc trưng Change\_Phrase và Negation khi kết hợp cùng SO-CAL đều giúp cải thiện kết quả (lần lượt là 1.76\% và 2.47\% so với n-gram kết hợp SO-CAL), tuy nhiên khi sử dụng n-gram kết hợp Metamap kết quả không có sự khác biệt.\\
+Chúng tôi tiến hành thử nghiệm kết hợp đặc trưng mở rộng SO-CAL với các đặc trưng cơ bản, kết quả thể hiện ở Bảng \ref{table:socal-ket-hop-dac-trung-khac}. Xu hướng vẫn giống kết quả của Bảng \ref{table:ket-hop-dac-trung}: 2 đặc trưng Chuyển đổi trạng thái và Negation khi kết hợp cùng SO-CAL đều giúp cải thiện kết quả (lần lượt là 1.76\% và 2.47\% so với N-gram kết hợp SO-CAL), tuy nhiên khi sử dụng N-gram kết hợp Metamap kết quả không có sự khác biệt, có phần giảm xuống.\\
 
 Điểm khác biệt so với Bảng \ref{table:ket-hop-dac-trung} là có sự cải thiện trong từng lần thử nghiệm giữa tập các đặc trưng có SO-CAL và không có SO-CAL (Hình \ref{fig:socal-vs-co-ban}). Kết quả tốt nhất trong các thử nghiệm này, cũng là kết quả tốt nhất mà hệ thống chúng tôi đạt được là \textbf{70.74\%}.
 \begin{figure}[H]
@@ -307,13 +308,13 @@ Chúng tôi tiến hành thử nghiệm kết hợp đặc trưng mở rộng SO
 \includegraphics[scale=0.35]{../hinh/socal_vs_dac_trung_co_ban.png}
 \caption{Hiệu quả của đặc trưng SO-CAL} \label{fig:socal-vs-co-ban}
 \end{figure}
-\subsection{Các phân tích mở rộng}
+\subsection{Các phân tích mở rộng} \label{subsec:phan-tich-mo-rong}
 \subsubsection*{Sự phụ thuộc hiệu quả đặc trưng ngram với kích thước tập huấn luyện}
-Đặc trưng n-gram được sử dụng trong luận án này như đặc trưng \term{baseline}, tuy nhiên kết quả sử dụng đặc trưng này thấp hơn nhiều so với một số nghiên cứu liên quan. ( trong nghiên cứu \cite{niu2005analysis}, 74.2\% trong nghiên cứu ). Nghiên cứu  \cite{niu2005analysis} là nghiên cứu liên quan gần nhất đến luận án này. Trong nghiên cứu đó, nhóm tác giả sử dụng tập dữ liệu gồm 1509 câu, trong đó 1208 câu dùng để huấn luyện, đạt độ chính xác 77.87\% với đặc trưng n-gram. Nghiên cứu \cite{sarker2011outcome} cùng lĩnh vực nhưng phân tích trên đoạn, sử dụng tập dữ liệu gồm 520 tài liệu, chứa 9221 câu.\\
+Đặc trưng n-gram được sử dụng trong luận án này như đặc trưng \term{baseline}, tuy nhiên kết quả sử dụng đặc trưng này thấp hơn nhiều so với một số nghiên cứu liên quan. ( trong nghiên cứu \cite{niu2005analysis}, 74.2\% trong nghiên cứu ). Nghiên cứu  \cite{niu2005analysis} là nghiên cứu liên quan gần nhất đến luận án này. Trong nghiên cứu đó, nhóm tác giả sử dụng tập dữ liệu gồm 1509 câu, trong đó 1208 câu dùng để huấn luyện, đạt độ chính xác 77.87\% với đặc trưng N-gram. Nghiên cứu \cite{sarker2011outcome} cùng lĩnh vực nhưng phân tích trên đoạn, sử dụng tập dữ liệu gồm 520 tài liệu, chứa 9221 câu.\\
 
-Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đến độ chính xác thông qua kích thước tập từ vựng T. Khi kích thước tập dữ liệu huấn luyện tăng, kích thước tập từ vựng T có xu hướng tăng, từ đó có tính bao quát cao hơn, nghĩa là đặc trưng n-gram ``học'' được nhiều hơn (tập từ vựng T chứa nhiều từ trong tập kiểm tra hơn).  Độ chính xác nhờ vậy cũng tăng lên. \\
+Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đến độ chính xác thông qua kích thước tập từ vựng T. Khi kích thước tập dữ liệu huấn luyện tăng, kích thước tập từ vựng T có xu hướng tăng, từ đó có tính bao quát cao hơn, nghĩa là đặc trưng N-gram ``học'' được nhiều hơn (tập từ vựng T chứa nhiều từ trong tập kiểm tra hơn).  Độ chính xác nhờ vậy cũng tăng lên. \\
 
-Để kiểm chứng giả thuyết này, chúng tôi thực hiện thử nghiệm huấn luyện bộ phân loại chỉ với đặc trưng n-gram, sử dụng tập dữ liệu huấn luyện có kích thước khác nhau. Kết quả được trình bày ở Hình \ref{fig:so-cau-vs-ngram}. Giả thuyết của chúng tôi cũng đồng nhất với kết luận trong nghiên cứu \cite{sarker2011outcome}. Kết luận của \cite{Mate2016} cũng cho rằng hiệu suất phân loại không thể đạt kết quả tốt nếu dữ liệu không đủ.
+Để kiểm chứng giả thuyết này, chúng tôi thực hiện thử nghiệm huấn luyện bộ phân loại chỉ với đặc trưng N-gram, sử dụng tập dữ liệu huấn luyện có kích thước khác nhau. Kết quả được trình bày ở Hình \ref{fig:so-cau-vs-ngram}. Giả thuyết của chúng tôi cũng đồng nhất với kết luận trong nghiên cứu \cite{sarker2011outcome}. Kết luận của \cite{Mate2016} cũng cho rằng hiệu suất phân loại không thể đạt kết quả tốt nếu dữ liệu không đủ.
 \begin{figure}[h]
 \begin{subfigure}[h]{0.45\textwidth}
 \centering
@@ -326,11 +327,11 @@ Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đế
 \includegraphics[scale=0.15]{../hinh/socau_vs_f.png}
 \caption{Mối quan hệ giữa kích thước tập dữ liệu huấn luyện và độ đo F} \label{fig:so-cau-vs-f}
 \end{subfigure}
-\caption{Ảnh hưởng của kích thước tập dữ liệu huấn luyện đến đặc trưng n-gram} \label{fig:so-cau-vs-ngram}
+\caption{Ảnh hưởng của kích thước tập dữ liệu huấn luyện đến đặc trưng N-gram} \label{fig:so-cau-vs-ngram}
 \end{figure}
 
 \subsubsection*{So sánh kết quả đối với từng lớp}
-Chúng tôi tiến hành phân tích kết quả cụ thể đối với từng lớp. Kết quả Hình \ref{fig:p-r-f-class} sử dụng lần thử nghiệm đạt kết quả tối ưu nhất, sử dụng các đặc trưng: n-gram, change phrase, phủ định và SO-CAL. Kết quả 2 lớp \tichcuc và \trungtinh khá đồng nhất, trong khi lớp \tieucuc lại cho kết quả thấp hơn rõ rệt. Vì vậy, cần thêm các phân tích các câu thuộc lớp \tieucuc để tăng độ chính xác cho hệ thống.
+Chúng tôi tiến hành phân tích kết quả cụ thể đối với từng lớp. Kết quả Hình \ref{fig:p-r-f-class} sử dụng lần thử nghiệm đạt kết quả tối ưu nhất, sử dụng các đặc trưng: N-gram, Chuyển đổi trạng thái, Phủ định và SO-CAL. Kết quả 2 lớp \tichcuc và \trungtinh khá đồng nhất, trong khi lớp \tieucuc lại cho kết quả thấp hơn rõ rệt. Vì vậy, cần thêm các phân tích các câu thuộc lớp \tieucuc để tăng độ chính xác cho hệ thống.
 \begin{figure}
 \centering
 \includegraphics[scale=0.25]{./hinh/class.png}

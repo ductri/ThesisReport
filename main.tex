@@ -78,8 +78,8 @@ showstringspaces=false,
 \counterwithin{table}{section}
 
 \renewcommand{\ttdefault}{pcr}
-\newcommand{\myquote}[1]{{\ttfamily #1}}
-
+\newcommand{\myquote}[1]{{``#1''}}
+\newcommand{\xquote}[1]{{\ttfamily #1}}
 \renewcommand{\headrulewidth}{1pt}
 \setlength\parindent{0pt} % noindent for all paragraph
 \addbibresource{reference/my_ref.bib}
@@ -96,7 +96,7 @@ showstringspaces=false,
 \newcommand{\example}[2]{
 	\begin{minipage}{\textwidth}
 	\vspace{6px}
-	Ví dụ [section]
+	Ví dụ #1
 	
 	\begin{adjustwidth}{0.08\textwidth}{0cm}
 	\begin{minipage}{0.86\textwidth}

@@ -2,7 +2,7 @@
 Trong phần này chúng tôi sẽ đặc tả chi tiết bài toán và mô hình hóa phương pháp đề xuất để xây dựng hệ thống phân tích cảm xúc trong văn bản y khoa. Đồng thời chúng tôi cũng trình bày cụ thể các thành phần trong hệ thống và cách sử dụng các thành phần này để giải quyết bài toán.
 \subsection{Mô tả bài toán}
 Trong luận án này, chúng tôi giải quyết bài toán sau:
-Cho câu thuộc 1 bài báo nghiên cứu trong lĩnh vực y khoa, xác định câu đó thuộc 1 trong 3 loại cảm xúc \tichcuc, \tieucuc hoặc \trungtinh. Bài toán gồm 3 yếu tố (Hình \ref{fig:mo-ta-bai-toan}):
+Cho câu thuộc 1 bài báo nghiên cứu trong lĩnh vực y khoa, phân loại câu đó thuộc 1 trong 3 loại cảm xúc \tichcuc, \tieucuc hoặc \trungtinh. Đây thuộc loại bài toán phân loại nhiều lớp, gồm 3 yếu tố (Hình \ref{fig:mo-ta-bai-toan}):
 \begin{itemize}[noitemsep]
 \item[•] Dữ liệu đầu vào: 1 câu trong bài báo nghiên cứu thuộc lĩnh vực y khoa.
 \item[•] Kết quả phân tích: \tichcuc, \tieucuc hoặc \trungtinh.
@@ -59,22 +59,22 @@ Ví dụ: ``produced'' -> ``produce''.
 Trong phần còn lại, chúng tôi trình bày các đặc trưng theo cấu trúc 2 phần: Phần Mô tả trình bày ý tưởng, mô tả về đặc trưng, phần Rút trích trình bày cách sử dụng đặc trưng để có thể áp dụng vào hệ thống.
 
 
-\subsection{Đặc trưng n-gram} \label{sec:ngram}
+\subsection{Đặc trưng N-gram} \label{sec:ngram}
 \subsubsection*{Mô tả}
-Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, n-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
+Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, N-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
 %Định nghĩa
-N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng n-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng n-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng n-gram như \term{baseline}, kết quả tốt nhất tăng 20.58\% so với \term{baseline}.\\
+N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng N-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng N-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng N-gram như nền tảng (\term{baseline}), kết quả tốt nhất tăng 20.58\% so với nền tảng.\\
 
 Ví dụ câu: \myquote{Standard practice in pupillary monitoring yields inaccurate data}
 \begin{itemize}
-\item[•]Với $n=1$, n-gram được gọi là uni-gram. Câu trên sẽ được chuyển thành các n-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data.
-\item[•]Với $n=2$, n-gram được gọi là bi-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data.
-\item[•]Với $n=3$, n-gram được gọi là tri-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
+\item[•]Với $n=1$, N-gram được gọi là Uni-gram. Câu trên sẽ được chuyển thành các n-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data.
+\item[•]Với $n=2$, N-gram được gọi là Bi-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data.
+\item[•]Với $n=3$, N-gram được gọi là Yri-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
 \item[•]Với $n>3$, tần suất xuất hiện các n-gram thấp, dễ làm mô hình học máy bị học quá khớp (overfitting)
 \end{itemize}
 	
-Việc phối hợp các n-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp khác nhau của n-gram để tìm ra kết quả tốt nhất.\\
+Việc phối hợp các N-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp N-gram để tìm ra kết quả tốt nhất.\\
 
 %\subsubsection*{Mở rộng}
 Tác giả Kerstin Denecke trong nghiên cứu \cite{denecke2015sentiment} khẳng định rằng áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại cảm xúc. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa.\\
@@ -104,11 +104,11 @@ Từ {\myquote{stroke}} và {\myquote{ischemia}} đều thuộc kiểu loại b�
 %Từ \underline{\myquote{ADHD}} chỉ một dạng rối loạn về thần kinh, nên được thay bằng nhãn MOBD (Mental or Behavioral Dysfunction)\\
 %}
 \subsubsection*{Rút trích}
-Giải thuật trích xuất đặc trưng n-gram trải qua 2 bước, được mô tả như Hình \ref{fig:mo-hinh-ngram}\\
+Giải thuật trích xuất đặc trưng N-gram trải qua 2 bước, được mô tả như Hình \ref{fig:mo-hinh-ngram}\\
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.30]{../hinh/mo-hinh-ngram.png}
-\caption{Giải thuật trích xuất đặc trưng n-gram} \label{fig:mo-hinh-ngram}
+\caption{Giải thuật trích xuất đặc trưng N-gram} \label{fig:mo-hinh-ngram}
 \end{figure}
 
 Ở bước đầu tiên (1), giải thuật nhận vào tập hợp các câu. Mỗi câu sẽ được tách ra thành các n-gram. Tất cả các n-gram từ các câu sẽ được tổng hợp lại thành tập từ vựng T. Tuy nhiên, không phải tất cả các n-gram đều được thêm vào tập từ vựng T. Giải thuật quy định 1 mức ngưỡng $min\_df$ là số câu tối thiểu cùng chứa 1 n-gram thì n-gram đó mới được thêm vào tập T. Nếu $min\_df=1$ thì tập từ vựng T chứa tất cả các n-gram. \\
@@ -134,16 +134,16 @@ Ví dụ 2 & 0 & 1 & 0 & 0 & 1 & 0
 \\ \hline
 \end{tabular}
 Khi đó, $v_1 = (0, 1, 0, 1, 0, 0) $ và $v_2=(0, 1, 0, 0, 1, 0)$
-\subsection{Đặc trưng chuyển đổi trạng thái (\term{Change Phrase})}
+\subsection{Đặc trưng Chuyển đổi trạng thái (\term{Change Phrase})}
 \subsubsection*{Mô tả}
-Đặc trưng change phrase được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn. Ngoài việc sử dụng lại, Saker, Abeed,et al. có một số thay đổi và mở rộng đặc trưng này.\\
+Đặc trưng Chuyển đổi trạng thái được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn.\\
 
-\textit{Change phrase} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh.
+\textit{Cụm từ chuyển đổi trạng thái} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh.
 \example{}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
 Câu trên thể hiện tình trạng tệ hơn: Sử dụng \myquote{Atypical antipsychotic} làm tăng nguy cơ chết so với không sử dụng \myquote{Atypical antipsychoti}.
 Chúng tôi sử dụng 4 nhóm để mô tả \textit{Change phrase}:
 \begin{itemize}
-\item[•]Nhóm thể hiện sự thay đổi tình trạng, gồm 2 nhóm:\\
+\item[•]Nhóm thể hiện sự thay đổi trạng thái, gồm 2 nhóm:\\
 LESS: Có ý nghĩa làm giảm bớt, hạ bớt. Một số từ như: ``reduce'', ``decline'', ``fall'', ``less'', ``little'',\ldots \\
 MORE: Có ý nghĩa ngược lại, làm tăng thêm (hoặc duy trì). Một số từ như: ``enhance'', ``higher'', ``exceed'', ``increase'', ``improve'',\ldots
 \item[•]Nhóm xác định tính phân cực, gồm 2 nhóm:\\
@@ -156,11 +156,11 @@ Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp th�
 Từ \myquote{increased} sẽ được gán nhãn MORE, \myquote{risk} được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ \myquote{increased} là \myquote{risk}. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.
 \begin{table}[H]
 \centering
-\caption{Các đặc trưng \textit{Change phrase}}
+\caption{Các mẫu thay đổi của đặc trưng Chuyển đổi trạng thái}
 \label{tab:changphrase}
 \begin{tabular}{ | P{0.25\textwidth} | P{0.25\textwidth}| P{0.25\textwidth} | }
 \hline
-\textbf{Nhóm làm thay đổi tình trạng} & \textbf{Nhóm xác định đối tượng} & \textbf{Phân loại tính phân cực} \\
+\textbf{Nhóm làm thay đổi trạng thái} & \textbf{Nhóm xác định đối tượng} & \textbf{Phân loại tính phân cực} \\
 \hline
 LESS & GOOD & \tieucuc \\
 \hline
@@ -190,7 +190,7 @@ Sau khi đã có tập hợp các từ cho mỗi nhóm, chúng tôi xem xét y�
 
 Bước 2 nhận diện xem câu có thuộc mẫu nào trong 4 mẫu: LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD hay không. Nếu trong câu có 1 từ thuộc nhóm MORE, giải thuật sẽ xác định trong phạm vi từ từ đó đến hết câu, nếu có từ nào thuộc nhóm GOOD, câu đó thuộc mẫu MORE-GOOD. Tương tự như vậy đối với 3 mẫu còn lại.\\
 
-Cuối cùng, mỗi câu được chuyển thành 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
+Cuối cùng, mỗi câu được ánh xạ sang 1 vector 4 chiều. Giá trị tại chiều thứ $i$ bằng 1 nếu câu thuộc mẫu thứ $i$, ngược lại bằng 0. Thứ tự các mẫu được sắp xếp như sau: MORE-GOOD, MORE-BAD, LESS-GOOD, LESS-BAD
 
 \subsection{Đặc trưng phủ định} \label{sec:su-phu-dinh} \label{subsec:negation}
 \subsubsection*{Mô tả}
@@ -222,7 +222,7 @@ Sau khi đã xác định được từ phủ định và từ chịu ảnh hư�
 
 %The authors drew interesting results such as that adding negation as an explicit feature with uni- grams and using POS tags are not useful for polarity classification. They also reported that the most effective methodwas usingNBwith bigrams as features,which managed to achieve an accuracy of 82.7\%.
 
-Cách thứ nhất tham khảo từ nghiên cứu \cite{niu2005analysis}. Trong nghiên cứu đó, nhóm tác giả Niu, Yun, et al. chỉ xem xét 1 từ phủ định ``no''. Đây có thể là sự thiếu sót của nhóm tác giả, vì kết quả trong báo cáo \cite{niu2005analysis} cho thấy yếu tố phủ định được thêm vào hầu như không giúp cải thiện độ chính xác. Tiếp theo, nhóm tác giả trên sử dụng công cụ Apple Pie parser để trích xuất các cụm từ, cụm từ nào có chứa từ ``no'' sẽ được gắn thêm hậu tố ``\_NO''. Với cách này, yếu tố phủ định không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến hệ thống thông qua đặc trưng n-gram. Chúng tôi thử nghiệm cách này nhưng thay vì chỉ quan tâm đến từ ``no'', chúng tôi xem xét đến tất cả các từ được xem là từ phủ định theo giải thuật được mô tả ở phần trước. Sau đó, các từ được xem là chịu ảnh hưởng phủ định được thêm hậu tố ``\_NEG''.
+Cách thứ nhất tham khảo từ nghiên cứu \cite{niu2005analysis}. Trong nghiên cứu đó, nhóm tác giả Niu, Yun, et al. chỉ xem xét 1 từ phủ định ``no''. Đây có thể là sự thiếu sót của nhóm tác giả, vì kết quả trong báo cáo \cite{niu2005analysis} cho thấy yếu tố phủ định được thêm vào hầu như không giúp cải thiện độ chính xác. Tiếp theo, nhóm tác giả trên sử dụng công cụ Apple Pie parser để trích xuất các cụm từ, cụm từ nào có chứa từ ``no'' sẽ được gắn thêm hậu tố ``\_NO''. Với cách này, yếu tố phủ định không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến hệ thống thông qua đặc trưng N-gram. Chúng tôi thử nghiệm cách này nhưng thay vì chỉ quan tâm đến từ ``no'', chúng tôi xem xét đến tất cả các từ được xem là từ phủ định theo giải thuật được mô tả ở phần trước. Sau đó, các từ được xem là chịu ảnh hưởng phủ định được thêm hậu tố ``\_NEG''.
 
 \example{}{
 Câu: \myquote{
@@ -232,7 +232,7 @@ sẽ được chuyển thành: \\
 Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment\_NEG}
 }
 
-Cách thứ 2 chúng tôi thử nghiệm có tác dụng tương tự cách trên: không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến đặc trưng n-gram. Nhưng thay vì làm thay đổi từ bị ảnh hưởng phủ định, cách hiện thực này thay  đổi từ phủ định: thay tất cả các từ phủ định bằng nhãn đại diện ``NEGATION''\\
+Cách thứ 2 chúng tôi thử nghiệm có tác dụng tương tự cách trên: không thực sự là 1 đặc trưng mà chỉ ảnh hưởng đến đặc trưng N-gram. Nhưng thay vì làm thay đổi từ bị ảnh hưởng phủ định, cách hiện thực này thay  đổi từ phủ định: thay tất cả các từ phủ định bằng nhãn đại diện ``NEGATION''\\
 
 \example{}{
 Câu: \myquote{
@@ -242,7 +242,7 @@ sẽ được chuyển thành: \\
 Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or NEGATION treatment}
 }
 
-Cách còn lại cũng chỉ quan tâm đến từ phủ định, nhưng khác 2 cách trên: cách hiện thực này tạo ra 1 vector đại diện chứ không làm ảnh hưởng đến đặc trưng n-gram. Mỗi câu sẽ được ánh xạ thành 1 số nhị phân: 0 nếu câu đó không chứa yếu tố phủ định nào, 1 nếu ngược lại.\\
+Cách còn lại cũng chỉ quan tâm đến từ phủ định, nhưng khác 2 cách trên: cách hiện thực này tạo ra 1 vector đại diện chứ không làm ảnh hưởng đến đặc trưng N-gram. Mỗi câu sẽ được ánh xạ thành 1 số nhị phân: 0 nếu câu đó không chứa yếu tố phủ định nào, 1 nếu ngược lại.\\
 
 Ngoài ra, chúng tôi cũng tiến hành thử nghiệm kết hợp các cách hiện thực trên để tìm ra cách rút trích hiệu quả nhất.
 \subsection{Đặc trưng mở rộng SO-CAL} \label{sec:socal}
