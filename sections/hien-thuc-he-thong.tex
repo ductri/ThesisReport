@@ -84,31 +84,39 @@ Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả v�
 \caption{Hiện thực đặc trưng Thay đổi trạng thái} \label{fig:hien-thuc-changephrase}
 \end{figure}
 \subsubsection*{Đặc trưng phủ định}
-Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 chương trình con để xác định cấu trúc phủ định trong câu:
+Chúng tôi xây dựng 2 chương trình con độc lập để xác định cấu trúc phủ định trong câu, đặt tên là Meta-NegEx và Gen-NegEx. Việc sử dụng song song 2 công cụ phân tích phủ định nhằm so sánh hiệu quả giữa chúng và chọn ra phương pháp phân tích phủ định phù hợp nhất. Mô tả cụ thể 2 chương trình này như sau:
 \begin{itemize}
-\item Meta-NegEx: dùng tùy chọn \myquote{-negex} để lấy được kết quả phân tích của MetaMap có chứa từ phủ định và phạm vi phủ định.
+\item Meta-NegEx: chúng tôi dùng công cụ MetaMap để phân tích cấu trúc phủ định của câu bằng cách bật tùy chọn \xquote{-negex}. Kết quả phân tích được lưu lại dưới định dạng JSON.
 
-Ví dụ như khi áp dụng Meta-NegEx với câu \myquote{In this trial of apparently healthy persons without hyperlipidemia but with elevated high-sensitivity C-reactive protein levels, rosuvastatin significantly reduced the incidence of major cardiovascular events}, kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}. Trong đó, thuộc tính \myquote{id} là mã số câu, thuộc tính \myquote{negations} là mảng chứa các cấu trúc phủ định trong câu, bao gồm từ phủ định chứa trong thuộc tính \myquote{negex} và mảng các từ bị phủ định chứa trong thuộc tính \myquote{effectedWords}.
-
-\item Gen-NegEx: dựa vào giải thuật phân tích phủ định NegEx đã mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi xây dựng chương trình với kết quả đầu ra là câu dữ liệu đã được xác định thành phần và phạm vi phủ định. <Thêm ví dụ>
+\item Gen-NegEx: chúng tôi sử dụng công cụ phân tích phủ định NegEx tại mã nguồn mở của Google Code\footnote{https://code.google.com/archive/p/negex/wikis}. Kết quả phân tích được lưu lại dưới định dạng bảng tính XLSX. 
 \end{itemize}
 
-\begin{figure}[h]
+Ví dụ như với câu dữ liệu đầu vào là \myquote{In this trial of apparently healthy persons without hyperlipidemia but with elevated high-sensitivity C-reactive protein levels, rosuvastatin significantly reduced the incidence of major cardiovascular events.}\\
+
+Khi áp dụng Meta-NegEx: kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}. Trong đó, thuộc tính \xquote{id} là mã số câu, thuộc tính \xquote{negations} là mảng chứa các cấu trúc phủ định trong câu, bao gồm từ phủ định chứa trong thuộc tính \xquote{negex} và mảng các từ bị phủ định chứa trong thuộc tính \xquote{effectedWords}.\\
+
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.35]{../hinh/JSON.png}
-\caption{Ví dụ kết quả phân tích phủ định dùng công cụ MetaMap}
+\caption{Ví dụ kết quả phân tích phủ định dùng Meta-NegEx}
 \label{fig:Meta-NegEx}
 \end{figure}
 
-Việc hiện thực song song hai công cụ phân tích phủ định nhằm so sánh hiệu quả của chúng và chọn ra công cụ phù hợp nhất.\\
+Khi áp dụng Gen-NegEx: kết quả lưu lại dưới dạng XLSX như Bảng~\ref{table:Gen-NegEx}. Trong đó, nội dung \xquote{negated} ở cột \xquote{Result} đánh dấu câu có cấu trúc phủ định. Chi tiết cấu trúc phủ định được ghi rõ ở cột \xquote{Negation}. Từ được đặt trong cờ \xquote{[PREN]} là từ phủ định, từ được đặt trong cờ \xquote{[NEGATED]} là từ bị phủ định, từ được đặt trong cờ \xquote{[CONJ]} là từ dừng báo hiện chấm dứt phạm vi phủ định của từ phủ định.\\
 
-Với Meta-NegEx, công cụ hỗ trợ phiên bản local được cung cấp miễn phí. Một kết quả phân tích thử nghiệm như Hình\\
-HÌNH\\
+\begin{table}[H]
+\centering
+\caption{Ví dụ kết quả phân tích phủ định dùng Gen-NegEx}
+\label{table:Gen-NegEx}
+\begin{tabular}{|l|l|m{0.25\textwidth}|l|m{0.3\textwidth}|}
+\hline
+ID & Phrase & Sentence & Result & Negation \\ \hline
+346 & hyperlipidemia & In this trial of apparently healthy persons without hyperlipidemia but with elevated high-sensitivity C-reactive protein levels, rosuvastatin significantly reduced the incidence of major cardiovascular events. & negated & In this trial of apparently healthy persons {[}PREN{]}without{[}PREN{]}, {[}NEGATED{]}hyperlipidemia {[}NEGATED{]} {[}CONJ{]}but{[}CONJ{]} with elevated high-sensitivity C-reactive protein levels, rosuvastatin significantly reduced the incidence of major cardiovascular events. \\ \hline
+\end{tabular}
+\end{table}
 
-Với Gen-NegEx, chúng tôi sử dụng mã nguồn của/tại.. Tương tự, kết quả phân tích 1 câu như Hình \\
-HÌNH
 
-Kết quả của 2 công cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.
+Kết quả của 2 công cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.\\
 
 Như mô tả ở \ref{subsec:negation}, chúng tôi hiện thực việc sử dụng đặc trưng phủ định theo 3 cách chính:
 \begin{itemize}
