@@ -134,42 +134,69 @@ Mô hình SVM dạng chuẩn như trên chỉ giúp phân loại dữ liệu th�
 \label{tab:svmclass} 
 \end{table}
 Bảng~\ref{tab:svmclass} minh họa phương pháp phân loại OvA: kết hợp nhiều mô hình SVM để phân loại dữ liệu. Trong đó, mỗi SVM giúp phân loại một lớp dữ liệu tương ứng với các lớp khác. Cụ thể với bài toán phân tích cảm xúc trong văn bản y khoa đã đề cập, ta cần ba mô hình SVM: SVM\textsubscript{1} phân loại dữ liệu thành lớp \tichcuc với lớp \textit{Không tích cực} (bao gồm \tieucuc và \trungtinh), SVM\textsubscript{2} phân loại dữ liệu thành lớp \tieucuc với lớp \textit{Không tiêu cực} (bao gồm \tichcuc và \trungtinh), và tương tự với SVM\textsubscript{3}. Khi xuất hiện một điểm dữ liệu mới, dữ liệu đó sẽ được phân loại qua tất cả những lớp SVM đã được xây dựng.
-
-\subsection{Phương pháp đánh giá độ đồng nhất Cohen's kappa}
-Hệ số \term{Cohen's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của 2 ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của 2 người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ có xem xét đến xác xuất ngẫu nhiên xảy ra sự đồng ý giữa 2 ý kiến đánh giá.\\
+\subsection{Phương pháp đánh giá độ đồng nhất Fleiss's kappa}
+Hệ số \term{Fleiss's kappa}, gọi tắt là \term{kappa}, ký hiệu $\kappa$, là hệ số đánh giá mức độ đồng ý của các ý kiến đánh giá trên cùng 1 tập các đối tượng được đánh giá. Trong nghiên cứu này, chúng tôi sử dụng $\kappa$ để đánh giá mức độ đồng ý của những người đánh nhãn trên tập dữ liệu. Phương pháp này được đánh giá cao bởi vì $\kappa$ có xem xét đến xác xuất ngẫu nhiên xảy ra sự đồng ý giữa các ý kiến đánh giá.\\
 
 Phương pháp hệ số \term{kappa} có 3 phiên bản:
 \begin{itemize}
-\item[•] Phiên bản gốc do Jacob Cohen giới thiệu năm 1960, thường được gọi là \term{Cohen's kappa}. Trong nghiên cứu này, chúng tôi sử dụng phiên bản gốc.
+\item[•] Phiên bản gốc do Jacob Cohen giới thiệu năm 1960, thường được gọi là \term{Cohen's kappa}.
 \item[•] Phiên bản \term{kappa} có trọng số, giúp xét đến cả tỉ lệ không đồng ý.
-\item[•] Phiên bản \term{Fleiss' kappa} có thể đo độ đồng nhất với số lượng người đánh nhãn không giới hạn, trong khi phiên bản gốc chỉ có thể đánh giá khi có đúng 2 người đánh nhãn.
+\item[•] Phiên bản \term{Fleiss' kappa} có thể đo độ đồng nhất với số lượng người đánh nhãn không giới hạn, trong khi phiên bản gốc chỉ có thể đánh giá khi có đúng 2 người đánh nhãn. Lợi thế thứ 2 là mỗi người không cần đánh nhãn tất cả các câu trong tập dữ liệu đánh giá. Điều kiện cần là trong tập dữ liệu đánh giá, mỗi đối tượng đều phải được đánh nhãn m lần.
 \end{itemize}
-Mỗi người đánh nhãn được yêu cầu phân loại mỗi câu thuộc vào 1 trong 3 loại: \tichcuc, \tieucuc hoặc \trungtinh. Từ đó, các câu đã đánh nhãn được thống kê như Bảng \ref{table:kappa}.
+Trong luận án này, chúng tôi sử dụng phiên bản \term{Fleiss' kappa}.
 \begin{table}[t]
+\centering
 \caption{Thống kê các câu được đánh nhãn} \label{table:kappa}
-\begin{tabular}{|m{2cm}|l|l|l|l|l|}
+\begin{tabular}{| l | l | l | l |}
 \hline
-	& \multicolumn{5}{c|}{\textbf{Người đánh nhãn 1}}                                                                \\ \hline
-\multirow{5}{2cm}{\textbf{Người đánh nhãn 2}} & \textbf{}           & \textbf{Tích cực} & \textbf{Tiêu cực} & \textbf{Trung tính} & \textbf{Tổng cộng}         \\ \cline{2-6} 
-                                            & \textbf{Tích cực}   & $p_{11}$          & $p_{12}$          & $p_{13}$            & $p_{1a}$                      \\ \cline{2-6} 
-                                            & \textbf{Tiêu cực}   & $p_{21}$          & $p_{22}$          & $p_{23}$            & $p_{2a}$                      \\ \cline{2-6} 
-                                            & \textbf{Trung tính} & $p_{31}$          & $p_{32}$          & $p_{33}$            & $p_{3a}$                      \\ \cline{2-6} 
-                                            & \textbf{Tổng cộng}  & $p_{1b}$             & $p_{2b}$             & $p_{3b}$               & $p$ (Tổng số câu) \\ \hline
+\textbf{Đối tượng} & \textbf{Lớp $k_1$} & \textbf{Lớp $k_2$} & \textbf{Lớp $k_3$} \\
+\hline
+1            & $x_{11}$             & $x_{12}$               & $x_{13}$             \\
+\hline
+2            & $x_{21}$             & $x_{22}$              & $x_{33}$             \\
+\hline
+3            & $x_{31}$             & $x_{32}$              & $x_{33}$            \\
+\hline
 \end{tabular}
 \end{table}
-Hệ số kappa được tính bởi công thức:
-$$\kappa = \dfrac{p_o - p_e}{1 - p_e} = 1 - \dfrac{1-p_o}{1-p_e}$$
-Trong đó:
-\begin{itemize}
-\item[•] $p_o$ là tỉ lệ đồng ý tương đối giữa 2 người đánh nhãn. \\
-$$p_o = \dfrac{p_{11}+p_{22}+p_{33}}{p}$$
-\item[•] $p_e$ là giả thiết xác suất ngẫu nhiên 2 người đánh nhãn có chung 1 ý kiến. Xét các câu được đánh nhãn \tichcuc, xác suất để người thứ nhất phân loại 1 câu thuộc lớp \tichcuc là $p_{1b}/p$, xác suất để người thứ 2 phân loại 1 câu thuộc lớp \tieucuc là $p_{1a}/p$, do đó, xác xuất ngẫu nhiên 2 người cùng phân loại 1 câu thuộc lớp \tichcuc là: 
-$$\dfrac{p_{1b}}{p} * \dfrac{p_{1a}}{p}$$
-Từ đó, $p_e$ là tổng xác suất ngẫu nhiên 2 người cùng đánh 1 câu thuộc nhãn \tichcuc, \tieucuc, \trungtinh:
-$$p_e = \frac{p_{1a}}{p}*\frac{p_{1b}}{p} + \frac{p_{2a}}{p}*\frac{p_{2b}}{p} + \frac{p_{3a}}{p}*\frac{p_{3b}}{p}$$
-\end{itemize}
+Cho tập gồm $n$ đối tượng được đánh thứ tự $i=1..n$, mỗi đối tượng có thể thuộc vào 1 trong k lớp được đánh thứ tự $j=1..k$, mỗi đối tượng trong tập được phân loại đúng $m$ lần. Trong bài toán của luận án, đối tượng ở đây là câu, được phân loại vào 1 trong 3 lớp: \tichcuc, \tieucuc hoặc \trungtinh.\\
 
-Nếu 2 người đánh nhãn hoàn toàn đồng ý với nhau, $p_o=1$ và $p_e = 0$, suy ra $\kappa=1$ là giá trị lớn nhất có thể có. Ngược lại, $\kappa<0$ nếu tỉ lệ đồng ý giữa 2 người đánh nhãn thấp hơn cả xác xuất đồng ý ngẫu nhiên. Theo nghiên cứu \cite{Viera2005}, độ đồng nhất giữa 2 người đánh nhãn được đánh giá như Bảng \ref{table:thang-do-kappa}.
+ Các câu đã đánh nhãn được thống kê như Bảng \ref{table:kappa}, trong đó $x_{ij}$ là số lượng câu thứ $i$ được phân loại vào lớp thứ $j$.
+Hệ số \term{kappa} được tính bởi công thức:
+\begin{equation} \label{eq:0}
+\kappa = \dfrac{\overline{P} - \overline{P_e}}{1 - \overline{P_e}}
+\end{equation}
+Với $\overline{P_e}$ là mức độ đồng nhất một cách ngẫu nhiên giữa các ý kiến đánh giá, $\overline{P} - \overline{P_e}$ là mức độ đồng ý thực sự. Nếu các ý kiến hoàn toàn đồng nhất, $\kappa=1$, ngược lại nếu các ý kiến hoàn toàn không đồng nhất hoặc mức độ đồng nhất nhỏ hơn cả xác suất ngẫu nhiên thì $\kappa \leq 0$.\\
+
+Bước đầu tiên, cần tính $\overline{P}$. Gọi $P_i$ là tỉ lệ 2 ý kiến bất kỳ phân loại đối tượng thứ $i$ thuộc cùng 1 lớp. Khi đó:
+$$P_i = \dfrac{\text{Số lượng tổ hợp 2 ý kiến phân loại đối tượng } i \text{ thuộc cùng 1 lớp}}{\text{Số lượng tổ hợp 2 ý kiến bất kỳ}}$$
+Mỗi đối tượng có chính xác $m$ ý kiến đánh giá, suy ra số lượng tổ hợp 2 ý kiến đánh giá cho 1 đối tượng bất kỳ:
+\begin{equation}\label{eq:1}
+\binom m2=\Comb{m}{2}=\frac{m!}{2!(m-2)!} = \dfrac{m(m-1)}{2}
+\end{equation}
+Tương tự, $x_{ij}$ là số lượng các ý kiến đánh giá đối tượng $i$ thuộc lớp $j$, suy ra số lượng tổ hợp 2 ý kiến bất kỳ đồng nhất đánh giá đối tượng $i$ thuộc lớp $j$ được tính bởi công thức:
+$$\binom {x_{ij}}2=\Comb{x_{ij}}{2}=\frac{x_{ij}!}{2!(x_{ij}-2)!} = \dfrac{x_{ij}(x_{ij}-1)}{2}$$
+Từ đó, số lượng tổ hợp 2 ý kiến đánh giá đối tượng $i$ thuộc cùng 1 lớp là:
+\begin{equation}\label{eq:2}
+\sum_{j=1}^{k}\dfrac{x_{ij}(x_{ij}-1)}{2}
+\end{equation}
+Lấy (\ref{eq:2}) chia (\ref{eq:1}) ta thu được tỉ lệ các ý kiến đồng nhất đối với đối tượng $i$ là:
+$$P_i = \dfrac{1}{m(m-1)}\sum_{j=1}^{k}x_{ij}(x_{ij}-1)$$
+
+$\overline{P}$ là trung bình mức độ đồng ý của các đối tượng được đánh nhãn, suy ra:
+\begin{equation} \label{eq:3}
+\overline{P} = \dfrac{1}{n}\sum_{i=1}^{n}P_i
+\end{equation}
+
+Phần còn lại của công thức tính $\kappa$ là $\overline{P_e}$. Tổng số lượng ý kiến đánh giá là $nm$, suy ra xác suất ngẫu nhiên 1 ý kiến bất kỳ đánh giá 1 đối tượng thuộc lớp $j$ là:
+$$p_j = \dfrac{1}{nm} \sum_{i=1}^{n} x_{ij}$$ khi đó $$\sum_{j=1}^{k} p_j=1$$
+Từ đó, xác suất để 2 ý kiến bất kỳ ngẫu nhiên phân loại 1 đối tượng thuộc cùng 1 lớp là:
+\begin{equation}\label{eq:4}
+\overline{P_e} = \sum_{j=1}^{k}p_j^{2}
+\end{equation}
+Từ (\ref{eq:0}), (\ref{eq:3}) và (\ref{eq:4}), ta tính được $\kappa$.\\
+
+Để dễ đánh giá chất lượng tập dữ liệu đánh nhãn dựa theo $\kappa$, nghiên cứu \cite{Viera2005} quy ước đánh giá sự đồng nhất như Bảng \ref{table:thang-do-kappa}.
 \begin{table}[H]
 \centering
 \caption{Thang đo đánh giá độ đồng nhất dựa trên giá trị $\kappa$} \label{table:thang-do-kappa}
@@ -184,7 +211,6 @@ $0.61<\kappa<0.80$ & Mức độ tốt (\term{substantial}) \\ \hline
 $0.81<\kappa<0.99$ & Mức độ gần như hoàn hảo (\term{almost perfect}) \\ \hline
 \end{tabular}
 \end{table}
-
 \subsection{Các thư viện và công cụ hỗ trợ}
 Trong quá trình hiện thực hệ thống, chúng tôi sử dụng các thư viện và công cụ hỗ trợ như: Scikit-learn, UMLS-Metathesaurus, MetaMap, NLTK, cùng một số thư viện khác. Tất cả những thư viện, công cụ được dùng đều là mã nguồn mở và miễn phí.
 \subsubsection*{Thư viện Scikit-learn}

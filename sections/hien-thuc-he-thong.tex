@@ -31,7 +31,7 @@ Trong phạm vi luận văn, chúng tôi sử dụng công cụ MetaMap để x�
 Trong quá trình sử dụng MetaMap, chúng tôi chỉnh tùy chọn \myquote{-negex} để lấy được kết quả đầu ra có phân tích phủ định. Đồng thời chúng tôi cũng xây dựng một chương trình con gọi là NegEx sử dụng giải thuật phân tích phủ định NegEx\footnote{https://code.google.com/p/negex/wiki/NegExAlgorithmDescription} để so sánh với kết quả từ MetaMap.
 
 \subsection{Hiện thực rút trích đặc trưng}
-Trong phần này, chúng tôi sẽ trình bày cách thức hiện thực để từ một câu văn chuyển thành một vector, hoặc từ danh sách các câu chuyển thành một mảng 2 chiều. Từ đó làm input cho giải thuật học máy SVM
+Trong phần này, chúng tôi trình bày cách thức hiện thực để ánh xạ một câu thành một vector. Các đặc trưng sẽ nhận vào danh sách $n$ câu, hệ thống sẽ cho ra một mảng 2 chiều: $(n*m)$, với $m$ là số chiều tùy thuộc mỗi đặc trưng. Từ đó làm input cho giải thuật học máy SVM.
 \subsubsection*{Đặc trưng N-gram}
 Scikit-learn cung cấp các công cụ để làm việc với dữ liệu dạng text. Trong số này, chúng tôi sử dụng module sklearn.feature\_extraction.text.CountVectorizer để hiện thực đặc trưng N-gram. Như mô tả ở mục \ref{sec:ngram}, n-gram được trích xuất qua 2 bước:\\
 
@@ -54,16 +54,37 @@ Bước thứ 2: xây dựng tập vector đại diện cho mỗi câu trong t�
 \begin{lstlisting}
 vectors-ngram = vectorizer.transform(raw_documents).toarray()
 \end{lstlisting}
-trong đó $raw\_documents$ là tập hợp các câu. Hàm trên trả về một mảng 2 chiều $n*m$ với n là số lượng câu trong tập $raw\_documents$ và $m$ là kích thước của tập từ vựng
+trong đó $raw\_documents$ là tập hợp các câu. Hàm trên trả về một mảng 2 chiều $n*m$ với n là số lượng câu trong tập $raw\_documents$ và $m$ là kích thước của tập từ vựng (Hình \ref{fig:hien-thuc-ngram}).
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{../hinh/hien_thuc_ngram.png}
+\caption{Hiện thực đặc trưng N-gram} \label{fig:hien-thuc-ngram}
+\end{figure}
+\subsubsection*{Đặc trưng n-gram kết hợp Metamap}
+Chúng tôi sử dụng thư viện Metamap để nhận dạng các từ chuyên ngành trong y khoa, sau đó thay các từ chuyên ngành bằng nhãn ngữ nghĩa của từ đó. 
+Việc sử dụng n-gram kết hợp Metamap trải qua 2 bước (Hình \ref{fig:hien-thuc-metamap}):
+\begin{itemize}
+\item[•] Tập dữ liệu sẽ được cho qua khối xử lý Metamap để tạo ra 1 tập dữ liệu mới với các từ chuyên ngành đã được thay thế bởi nhãn ngữ nghĩa.
+\item[•] Tập dữ liệu mới đi qua khối n-gram để cho ra mảng 2 chiều $n*m$ như mô tả ở trên.
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{../hinh/hien_thuc_metamap.png}
+\caption{Hiện thực đặc trưng N-gram kết hợp Metamap} \label{fig:hien-thuc-metamap}
+\end{figure}
 \subsubsection*{Đặc trưng Chang phrase}
 Đặc trưng Change phrase ánh xạ một câu sang 1 vector 4 chiều. Trong phần hiện thực, chúng tôi định nghĩa hàm training\_change\_phrase:
 \begin{lstlisting}
 def training_change_phrase(raw_documents):
 \end{lstlisting}
-Hàm trả về mảng 2 chiều $n*4$ với $n$ là số lượng câu trong tập $raw\_documents$
-
+Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả về mảng 2 chiều $n*4$ với $n$ là số lượng câu trong tập $raw\_documents$ (Hình \ref{fig:hien-thuc-changephrase})
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{../hinh/hien_thuc_changephrase.png}
+\caption{Hiện thực đặc trưng Thay đổi trạng thái} \label{fig:hien-thuc-changephrase}
+\end{figure}
 \subsubsection*{Đặc trưng phủ định}
-Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 công cụ để xác định đặc trưng phủ định trong câu, đặt tên là Meta-NegEx và Gen-NegEx. Trong đó:
+Với dữ liệu đầu vào là câu dạng ngôn ngữ tự nhiên, chúng tôi xây dựng 2 công cụ để xác định thành phần phủ định trong câu:
 \begin{itemize}
 \item Meta-NegEx: dùng tùy chọn \myquote{-negex} để lấy được kết quả phân tích của MetaMap có chứa từ phủ định và phạm vi phủ định. Kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}.
 \item Gen-NegEx: dựa vào giải thuật phân tích phủ định NegEx đã mô tả ở Mục \ref{sec:su-phu-dinh}, chúng tôi xây dựng chương trình với kết quả đầu ra là câu dữ liệu đã được xác định thành phần và phạm vi phủ định. <Thêm ví dụ>
@@ -84,7 +105,33 @@ HÌNH\\
 Với Gen-NegEx, chúng tôi sử dụng mã nguồn của/tại.. Tương tự, kết quả phân tích 1 câu như Hình \\
 HÌNH
 
-Kết quả của 2 cộng cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.
+Kết quả của 2 công cụ được xử lý để đưa về chung 1 cấu trúc, sau đó lưu vào file. Việc này giúp dễ dàng tích hợp yếu tố vào hệ thống các đặc trưng mà không quan tâm tới quá trình trích xuất bằng công cụ nào.
+
+Như mô tả ở \ref{subsec:negation}, chúng tôi hiện thực việc sử dụng đặc trưng phủ định theo 3 cách chính:
+\begin{itemize}
+\item[•] Với 2 cách đầu, khối xử lý phủ định nhận vào tập dữ liệu và cho ra một tập dữ liệu mới với nhãn NEGATION thay thế các từ phủ định (Hình \ref{fig:hien-thuc-negation-1}), hoặc hậu tố \_NEG được thêm vào sau các từ bị phủ định (Hình \ref{fig:hien-thuc-negation-2})
+\item[•] Với cách hiện thực thứ 3, khối xử lý phủ định nhận vào tập dữ liệu và cho ra mảng $(n*1)$ với $n$ là kích thước tập dữ liệu (Hình \ref{fig:hien-thuc-negation-3}).
+\end{itemize}
+\begin{figure}
+\begin{subfigure}{0.33\textwidth}
+\centering
+\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
+\caption{Hiện thực đặc trưng Phủ định theo cách 1} \label{fig:hien-thuc-negation-1}
+\end{subfigure}
+~
+\begin{subfigure}{0.3\textwidth}
+\centering
+\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
+\caption{Hiện thực đặc trưng Phủ định theo cách 2} \label{fig:hien-thuc-negation-2}
+\end{subfigure}
+~
+\begin{subfigure}{0.3\textwidth}
+\centering
+\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
+\caption{Hiện thực đặc trưng Phủ định theo cách 3} \label{fig:hien-thuc-negation-3}
+\end{subfigure}
+\end{figure}
+
 
 \subsubsection*{SO-CAL}
 Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghiên cứu \cite{taboada2011lexicon}. Nhóm tác giả của nghiên cứu \cite{taboada2011lexicon} đã hiện thực công cụ online để tính điểm số cho 1 đoạn văn, giao diện được mô tả như Hình \ref{fig:socal}.
@@ -102,7 +149,12 @@ Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghi
 \caption{Công cụ online để tính điểm SO-CAL} \label{fig:socal}
 \end{figure}
 
-Để tích hợp vào hệ thống, nhóm sử dụng package \code{re} trong Python, sử dụng phương thức \code{HTTP POST} để gửi yêu cầu lên trang web, sau đó \term{parser} phần kết quả trả về để lấy ra thông tin điểm số.
+Để tích hợp vào hệ thống, nhóm sử dụng package \code{re} trong Python, sử dụng phương thức \code{HTTP POST} để gửi yêu cầu lên trang web, sau đó \term{parser} phần kết quả trả về để lấy ra thông tin điểm số. Kết quả đầu ra khi rút trích đặc trưng SO-CAL là ma trận (m*1) với m là kích thước tập dữ liệu (Hình \ref{fig:hien-thuc-socal}).
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{../hinh/hien_thuc_socal.png}
+\caption{Hiện thực đặc trưng SO-CAL} \label{fig:hien-thuc-socal}
+\end{figure}
 \subsection{Hiện thực bộ phân loại SVM}
 \begin{figure}[H]
 \centering
@@ -128,3 +180,5 @@ Hàm khởi tạo SVM.SVC ở dòng 1 có các tham số được sử dụng nh
 \end{description}
 
 Sau khi khởi tạo, hàm clf.fit(data\_x, data\_y) được gọi với data\_x là dữ liệu tập huấn luyện sau khi đã qua các bước rút trính đặc trưng để ánh xạ từ 1 câu sang 1 vector, data\_y là vector chứa nhãn tương ứng.
+\subsection{Hiện thực phương pháp cross-validation}
+Chúng tôi sử dụng cross-validation để điều chỉnh tham số $C$ trong giải thuật SVM. Với các thử nghiệm, chúng tôi thử nghiệm với giá trị $C$ lần lượt 1, 10, 100, 500, 1000. Sau đó, chúng tôi co hẹp dần khoảng giá trị $C$ và nhận thấy $C \in [25, 35]$ đạt hiệu quả tốt nhất. Từ đó, với mỗi thử nghiệm được trình bày ở mục \ref{subsec:ket-qua-thi-nghiem}, chúng tôi thử các giá trị $C \in [25, 35]$ và chọn ra $C$ với kết quả tốt nhất. Một ví dụ thể hiện sự phụ thuộc độ đo F vào $C$ được mô tả như Hình \

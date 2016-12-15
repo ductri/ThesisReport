@@ -1,5 +1,56 @@
 \section{Thí nghiệm và đánh giá} \label{sec:thi-nghiem-va-danh-gia}
-Ở phần này chúng tôi sẽ trình bày chi tiết về tập dữ liệu đầu vào, các phương pháp đánh giá và kết quả thí nghiệm của hệ thống, cùng với những phân tích dựa trên kết quả thí nghiệm thu được.
+Ở phần này chúng tôi sẽ trình bày chi tiết các phương pháp đánh giá, cách thức thu tập tập dữ liệu, và kết quả thí nghiệm của hệ thống, cùng với những phân tích dựa trên kết quả thí nghiệm thu được.
+\subsection{Phương pháp đánh giá}
+Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.9\textwidth}
+\includegraphics[scale=0.35]{../hinh/phepdo.png}
+{\footnotesize \\
+\begin{description}[noitemsep]
+\item[Hình chữ nhật] Toàn bộ dữ liệu 
+\item[Hình eclip] Phần dữ liệu hệ thống cho rằng thuộc lớp Positive
+\item[True Negative] Phần dữ liệu thuộc lớp Negative, hệ thống cũng cho rằng thuộc lớp Negative
+\item[False Negative] Phần dữ liệu thuộc lớp Positive, hệ thống cho rằng thuộc lớp Negative
+\item[True Positive] Phần dữ liệu thuộc lớp Positive, hệ thống cũng cho rằng thuộc lớp Positive
+\item[False Positive] Phần dữ liệu thuộc lớp Negative, hệ thống cho rằng thuộc lớp Positive
+\end{description}
+\par}
+\end{minipage}
+\caption{Các thành phần trong các phép đo Độ chính xác, Độ bao phủ và f1}
+\label{fig:phepdo}
+\end{figure}
+
+Dựa trên câu trả lời là tập hợp các phần tử mà hệ thống cho rằng thuộc lớp dương, toàn bộ dữ liệu sẽ được chia thành 4 nhóm như Hình \ref{fig:phepdo}. Từ đó, định nghĩa các phép đo như sau:
+\subsubsection*{Độ chính xác (Precision)}
+Độ chính xác \(P\) là hệ số đánh giá mức độ chính xác của câu trả lời, mức độ chính xác càng cao thì giá trị \(P\) càng lớn. Công thức tính \(P\) như sau:
+$$P=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả hệ thống đưa ra}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Positive|}}$$
+Trong trường hợp tất cả những câu trả lời hệ thống đưa ra đều đúng, thì giá trị $P=1$ là lớn nhất. Quy ước rằng nếu hệ thống không đưa ra câu trả lời nào, khi đó ngầm hiểu hệ thống không "sai", giá trị $P=1$.
+\subsubsection*{Độ bao phủ (Recall)}
+Độ bao phủ \(R\) là hệ số đánh giá mức độ bao phủ của các câu trả lời, độ bao phủ càng cao thì \(R\) càng lớn. Công thức tính \(R\) như sau:
+$$R=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả lời đúng thực tế}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Negative|}}$$
+Trong trường hợp hệ thống đưa ra đủ tất cả các câu trả lời đúng thì giá trị $R=1$ là lớn nhất.
+\subsubsection*{F-measure}
+Trên thực tế, với lượng dữ liệu lớn và phức tạp, khả năng tất cả những câu trả lời hệ thống đưa ra đều đúng và hệ thống đưa ra đủ tất cả các câu trả lời đúng ($P=R=1$) là rất thấp. Hai hệ số này thường bù trừ lẫn nhau, tức là để đạt độ bao phủ \(R\) cao, hệ thống có xu hướng đưa ra nhiều câu trả lời hơn làm cho xác suất có câu trả lời sai tăng, độ chính xác \(P\)  giảm, và ngược lại. Một hệ thống nếu chỉ có \(P\) cao mà \(R\) thấp thì tuy hệ thống có câu trả lời thường đúng nhưng lại bỏ sót nhiều trường hợp đúng khác. Hệ thống chỉ có \(R\) cao mà \(P\) thấp thì hệ thống đó tuy bao quát đầy đủ tất cả các trường hợp đúng thực tế, nhưng tỉ lệ câu trả lời sai lại lớn. Một hệ thống tốt yêu cầu cả độ chính xác P và độ bao phủ đều cao R. Do đó vấn đề đặt ra là tìm một độ đo duy nhất mà đảm bảo cả \(P\) và \(R\) để thuận tiện cho việc tối ưu.\\
+
+Để giải quyết vấn đề trên, ta sử dụng tiêu chí đánh giá \(F\) là trung bình điều hòa của \(P\) và \(R\), từ đó đảm bảo rằng chỉ khi cả \(P\) và \(R\) cao thì \(F\) mới đạt giá trị cao. Công thức tính \(F\) như sau:
+$$F=2*\frac{P*R}{P + R} $$
+\subsubsection*{Độ chính xác (P), độ bao phủ (R), F đối với bài toán phân loại đa lớp}
+Để áp dụng 3 độ đo trên vào bài toán phân loại 3 lớp, chúng tôi xem như đang giải 3 bài toán con thuộc loại bài toán phân loại nhị phân. Khi đó, điểm số của bài toán lớn bằng trung bình có trọng số của điểm số từng bài toán con. Cụ thể:
+Xét 3 bài toán con:
+\begin{enumerate}
+\item Phân loại một câu thuộc lớp \tichcuc hay không thuộc lớp \tichcuc. Lớp dương được chọn là lớp \tichcuc
+\item Phân loại một câu thuộc lớp \tieucuc hay không thuộc lớp \tieucuc. Lớp dương được chọn là lớp \tieucuc
+\item Phân loại một câu thuộc lớp \trungtinh hay không thuộc lớp \trungtinh. Lớp dương được chọn là lớp \trungtinh
+\end{enumerate}
+Khi đó:
+$$P = \alpha_1*P_1 + \alpha_2*P_2 + \alpha_3*P_3$$
+$$R = \alpha_1*R_1 + \alpha_2*R_2 + \alpha_3*R_3$$
+$$F = \alpha_1*F_1 + \alpha_2*F_2 + \alpha_3*F_3$$
+với $\alpha_1 + \alpha_2 + \alpha_3 = 1$ và $\alpha_1, \alpha_2, \alpha_3$ lần lược là tỉ lệ số lượng các câu thuộc lớp \tichcuc, \tieucuc, \trungtinh trong tập dữ liệu huấn luyện.
+\subsubsection*{K-fold cross validation}
+Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phương pháp \textit{k-fold cross validation} để đánh giá hiệu quả của hệ thống. Phương pháp này nhằm tránh trường hợp tập kiểm tra, vì được chia ngẫu nhiên, có thể rơi vào trường hợp quá dễ hoặc quá khó đối với hệ thống. Tập dữ liệu được chia ngẫu nhiên thành \(k\) phần. Phần thứ \(i\) sẽ được chọn làm tập để đánh giá, \(k-1\) phần còn lại dùng cho việc học các tham số của mô hình. Tiến trình trên được thực hiện \(k\) lần với \(i\) chạy từ 1 đến \(k\), giá trị trung bình là kết quả cuối cùng dùng để đánh giá hệ thống.
+
 \subsection{Thu thập và đánh giá dữ liệu} \label{sec:thu-thap-va-danh-gia-du-lieu}
 \subsubsection*{Thu thập dữ liệu}
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
@@ -112,60 +163,10 @@ Sau khi hoàn thành trang web đánh nhãn dữ liệu, chúng tôi đã tiến
 \end{figure}
 
 \subsubsection*{Đánh giá dữ liệu}
-%Nhờ bao nhiêu người đánh nhãn...
+TODO nhờ bao nhiêu người...
+Sau khi xây dựng trang web hỗ trợ đánh nhãn, chúng tôi đã thu thập được 161 câu được đánh nhãn. Chúng tôi sử dụng phương pháp đánh giá độ đồng nhất Flessi Kappa với các tham số: $m=2, n=46, k=3$, kết quả $\kappa = 36.91\% $. Điểm số này thể hiện độ đồng nhất thuộc mức vừa (\term{fair argreement}). Kết quả này còn thấp so với nghiên cứu \cite{sarker2011outcome} (70.6\%). Điều này xảy ra vì sự nhập nhằng về ý nghĩa của 1 số câu và sự hiểu không đồng nhất trong quy ước về tính \tichcuc, \tieucuc, \trungtinh giữa các bạn đánh nhãn. Để giải quyết, 2 thành viên trong nhóm chúng tôi tự đánh nhãn các câu còn lại.  Kết quả $\kappa=72.54\%$ được tính trên 100 câu được 2 người đánh nhãn. Kết quả trên được xem khá tốt (\term{substantial agreement})
 
-\subsection{Phương pháp đánh giá}
-Sau khi huấn luyện hệ thống với tập dữ liệu \textit{training}, bước tiếp theo là đánh giá kết quả huấn luyện để xác định mức độ tin cậy cũng như hiệu quả của hệ thống. Chúng tôi sử dụng 3 phép đo sau để đánh giá hiệu quả của hệ thống: Độ chính xác (Precision), độ bao phủ (Recall), và f. Đây cũng là các độ đo thường được sử dụng trong các bài toán về học máy và truy hồi thông tin. Cả 3 độ đo này chỉ được áp dụng trực tiếp vào bài toán phân loại nhị phân. Điều kiện trước tiên để áp dụng các độ đo này là cần quy ước 1 lớp (bài toán phân loại nhị phân chỉ có 2 lớp) là lớp dương (positive), là lớp mà hệ thống quan tâm nhiều hơn. Ví dụ trong bài toán phân loại người bị ung thư với người không bị ung thư, chúng ta có 2 lớp: bị ung thư và không bị ung thư. Vậy để áp dụng 3 độ đo trên, người thiết kế hệ thống cần quy ước lớp bị ung thư là lớp dương đối với bài toán này (người thiết kế cũng có thể quy ước ngược lại, việc này phụ thuộc vào ngữ cảnh của bài toán: hệ thống cần chọn ra những người bị ung thư trong cộng đồng, hay cần chọn ra những người không bị ung thư trong cộng đồng.
-\begin{figure}[H]
-\centering
-\begin{minipage}{0.9\textwidth}
-\includegraphics[scale=0.35]{../hinh/phepdo.png}
-{\footnotesize \\
-\begin{description}[noitemsep]
-\item[Hình chữ nhật] Toàn bộ dữ liệu 
-\item[Hình eclip] Phần dữ liệu hệ thống cho rằng thuộc lớp Positive
-\item[True Negative] Phần dữ liệu thuộc lớp Negative, hệ thống cũng cho rằng thuộc lớp Negative
-\item[False Negative] Phần dữ liệu thuộc lớp Positive, hệ thống cho rằng thuộc lớp Negative
-\item[True Positive] Phần dữ liệu thuộc lớp Positive, hệ thống cũng cho rằng thuộc lớp Positive
-\item[False Positive] Phần dữ liệu thuộc lớp Negative, hệ thống cho rằng thuộc lớp Positive
-\end{description}
-\par}
-\end{minipage}
-\caption{Các thành phần trong các phép đo Độ chính xác, Độ bao phủ và f1}
-\label{fig:phepdo}
-\end{figure}
-
-Dựa trên câu trả lời là tập hợp các phần tử mà hệ thống cho rằng thuộc lớp dương, toàn bộ dữ liệu sẽ được chia thành 4 nhóm như Hình \ref{fig:phepdo}. Từ đó, định nghĩa các phép đo như sau:
-\subsubsection*{Độ chính xác (Precision)}
-Độ chính xác \(P\) là hệ số đánh giá mức độ chính xác của câu trả lời, mức độ chính xác càng cao thì giá trị \(P\) càng lớn. Công thức tính \(P\) như sau:
-$$P=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả hệ thống đưa ra}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Positive|}}$$
-Trong trường hợp tất cả những câu trả lời hệ thống đưa ra đều đúng, thì giá trị $P=1$ là lớn nhất. Quy ước rằng nếu hệ thống không đưa ra câu trả lời nào, khi đó ngầm hiểu hệ thống không "sai", giá trị $P=1$.
-\subsubsection*{Độ bao phủ (Recall)}
-Độ bao phủ \(R\) là hệ số đánh giá mức độ bao phủ của các câu trả lời, độ bao phủ càng cao thì \(R\) càng lớn. Công thức tính \(R\) như sau:
-$$R=\frac{\text{Tổng số câu trả lời đúng hệ thống đưa ra}}{\text{Tổng số câu trả lời đúng thực tế}} = \frac{\text{|True Positive|}}{\text{|True Positive| + |False Negative|}}$$
-Trong trường hợp hệ thống đưa ra đủ tất cả các câu trả lời đúng thì giá trị $R=1$ là lớn nhất.
-\subsubsection*{F-measure}
-Trên thực tế, với lượng dữ liệu lớn và phức tạp, khả năng tất cả những câu trả lời hệ thống đưa ra đều đúng và hệ thống đưa ra đủ tất cả các câu trả lời đúng ($P=R=1$) là rất thấp. Hai hệ số này thường bù trừ lẫn nhau, tức là để đạt độ bao phủ \(R\) cao, hệ thống có xu hướng đưa ra nhiều câu trả lời hơn làm cho xác suất có câu trả lời sai tăng, độ chính xác \(P\)  giảm, và ngược lại. Một hệ thống nếu chỉ có \(P\) cao mà \(R\) thấp thì tuy hệ thống có câu trả lời thường đúng nhưng lại bỏ sót nhiều trường hợp đúng khác. Hệ thống chỉ có \(R\) cao mà \(P\) thấp thì hệ thống đó tuy bao quát đầy đủ tất cả các trường hợp đúng thực tế, nhưng tỉ lệ câu trả lời sai lại lớn. Một hệ thống tốt yêu cầu cả độ chính xác P và độ bao phủ đều cao R. Do đó vấn đề đặt ra là tìm một độ đo duy nhất mà đảm bảo cả \(P\) và \(R\) để thuận tiện cho việc tối ưu.\\
-
-Để giải quyết vấn đề trên, ta sử dụng tiêu chí đánh giá \(F\) là trung bình điều hòa của \(P\) và \(R\), từ đó đảm bảo rằng chỉ khi cả \(P\) và \(R\) cao thì \(F\) mới đạt giá trị cao. Công thức tính \(F\) như sau:
-$$F=2*\frac{P*R}{P + R} $$
-\subsubsection*{Độ chính xác (P), độ bao phủ (R), F đối với bài toán phân loại đa lớp}
-Để áp dụng 3 độ đo trên vào bài toán phân loại 3 lớp, chúng tôi xem như đang giải 3 bài toán con thuộc loại bài toán phân loại nhị phân. Khi đó, điểm số của bài toán lớn bằng trung bình có trọng số của điểm số từng bài toán con. Cụ thể:
-Xét 3 bài toán con:
-\begin{enumerate}
-\item Phân loại một câu thuộc lớp \tichcuc hay không thuộc lớp \tichcuc. Lớp dương được chọn là lớp \tichcuc
-\item Phân loại một câu thuộc lớp \tieucuc hay không thuộc lớp \tieucuc. Lớp dương được chọn là lớp \tieucuc
-\item Phân loại một câu thuộc lớp \trungtinh hay không thuộc lớp \trungtinh. Lớp dương được chọn là lớp \trungtinh
-\end{enumerate}
-Khi đó:
-$$P = \alpha_1*P_1 + \alpha_2*P_2 + \alpha_3*P_3$$
-$$R = \alpha_1*R_1 + \alpha_2*R_2 + \alpha_3*R_3$$
-$$F = \alpha_1*F_1 + \alpha_2*F_2 + \alpha_3*F_3$$
-với $\alpha_1 + \alpha_2 + \alpha_3 = 1$ và $\alpha_1, \alpha_2, \alpha_3$ lần lược là tỉ lệ số lượng các câu thuộc lớp \tichcuc, \tieucuc, \trungtinh trong tập dữ liệu huấn luyện.
-\subsubsection*{K-fold cross validation}
-Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phương pháp \textit{k-fold cross validation} để đánh giá hiệu quả của hệ thống. Phương pháp này nhằm tránh trường hợp tập kiểm tra, vì được chia ngẫu nhiên, có thể rơi vào trường hợp quá dễ hoặc quá khó đối với hệ thống. Tập dữ liệu được chia ngẫu nhiên thành \(k\) phần. Phần thứ \(i\) sẽ được chọn làm tập để đánh giá, \(k-1\) phần còn lại dùng cho việc học các tham số của mô hình. Tiến trình trên được thực hiện \(k\) lần với \(i\) chạy từ 1 đến \(k\), giá trị trung bình là kết quả cuối cùng dùng để đánh giá hệ thống.
-
-\subsection{Kết quả thí nghiệm}
+\subsection{Kết quả thí nghiệm} \label{subsec:ket-qua-thi-nghiem}
 Với mỗi lần chạy, chúng tôi sử dụng k-fold với $k=5$. Tuy nhiên, do tập dữ liệu không đủ lớn, kết quả các lần chạy có sự dao động, vì vậy, với mỗi lần thử nghiệm, chúng tôi lặp lại việc chạy k-fold 30 lần, sau đó lấy điểm số trung bình xem như kết quả cuối cùng. Đối với giải thuật học máy SVM, có 2 tham số cần được tùy chỉnh thích hợp. Để xác định tham số c, hệ thống chạy nhiều lần với c thuộc 1 khoảng cho trước (trong nghiên cứu này, c chạy từ 20 đến 30), từ đó chọn ra giá trị c tương ứng với độ đo f lớn nhất. Như vậy, với mỗi thử nghiệm, giá trị độ do f luôn là giá trị cao nhất được chọn từ những lần chạy với giá trị c thay đổi từ 20 đến 30. \\
 
 Trong mục này chúng tôi trình bày 4 nhóm thử nghiệm: Thử nghiệm với đặc trưng n-gram, thử nghiệm với đặc trưng phủ định, thử nghiệm kết hợp các đặc trưng cơ bản và thử nghiệm kết hợp các đặc trưng cơ bản với đặc trưng mở rộng SO-CAL
@@ -313,7 +314,7 @@ Chúng tôi tiến hành thử nghiệm kết hợp đặc trưng mở rộng SO
 Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đến độ chính xác thông qua kích thước tập từ vựng T. Khi kích thước tập dữ liệu huấn luyện tăng, kích thước tập từ vựng T có xu hướng tăng, từ đó có tính bao quát cao hơn, nghĩa là đặc trưng n-gram ``học'' được nhiều hơn (tập từ vựng T chứa nhiều từ trong tập kiểm tra hơn).  Độ chính xác nhờ vậy cũng tăng lên. \\
 
 Để kiểm chứng giả thuyết này, chúng tôi thực hiện thử nghiệm huấn luyện bộ phân loại chỉ với đặc trưng n-gram, sử dụng tập dữ liệu huấn luyện có kích thước khác nhau. Kết quả được trình bày ở Hình \ref{fig:so-cau-vs-ngram}. Giả thuyết của chúng tôi cũng đồng nhất với kết luận trong nghiên cứu \cite{sarker2011outcome}. Kết luận của \cite{Mate2016} cũng cho rằng hiệu suất phân loại không thể đạt kết quả tốt nếu dữ liệu không đủ.
-\begin{figure}
+\begin{figure}[h]
 \begin{subfigure}[h]{0.45\textwidth}
 \centering
 \includegraphics[scale=0.15]{../hinh/socau_vs_tuvung.png}
@@ -329,7 +330,7 @@ Kích thước tập dữ liệu để huấn luyện ảnh hưởng lớn đế
 \end{figure}
 
 \subsubsection*{So sánh kết quả đối với từng lớp}
-Chúng tôi tiến hành phân tích kết quả cụ thể đối với từng lớp. Kết quả Hình \ref{fig:p-r-f-class} sử dụng lần thử nghiệm đạt kết quả tối ưu nhất, sử dụng các đặc trưng: n-gram, change phrase, phủ định và SO-CAL. Kết quả 2 lớp \tichcuc và \trungtinh khá đồng nhất, trong khi lớp \tieucuc lại cho kết quả thấp hơn rõ rệt. Vì vậy, một trong những cách để cải thiện hiệu quả của hệ thống là phân tích thêm các câu thuộc lớp \tieucuc.
+Chúng tôi tiến hành phân tích kết quả cụ thể đối với từng lớp. Kết quả Hình \ref{fig:p-r-f-class} sử dụng lần thử nghiệm đạt kết quả tối ưu nhất, sử dụng các đặc trưng: n-gram, change phrase, phủ định và SO-CAL. Kết quả 2 lớp \tichcuc và \trungtinh khá đồng nhất, trong khi lớp \tieucuc lại cho kết quả thấp hơn rõ rệt. Vì vậy, cần thêm các phân tích các câu thuộc lớp \tieucuc để tăng độ chính xác cho hệ thống.
 \begin{figure}
 \centering
 \includegraphics[scale=0.25]{./hinh/class.png}
