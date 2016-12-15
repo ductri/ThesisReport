@@ -186,7 +186,13 @@ $0.81<\kappa<0.99$ & Mức độ gần như hoàn hảo (\term{almost perfect}) 
 \end{table}
 
 \subsection{Các thư viện và công cụ hỗ trợ}
-\subsubsection*{Thư viện UMLS}
+Trong quá trình hiện thực hệ thống, chúng tôi sử dụng các thư viện và công cụ hỗ trợ như: Scikit-learn, UMLS-Metathesaurus, MetaMap, NLTK, cùng một số thư viện khác. Tất cả những thư viện, công cụ được dùng đều là mã nguồn mở và miễn phí.
+\subsubsection*{Thư viện Scikit-learn}
+Scikit-learn \cite{scikit-learn} là bộ thư viện về lĩnh vực Học máy cho ngôn ngữ lập trình Python, được xây dựng trên nền tảng thư viện SciPy\footnote{https://www.scipy.org/}. Scikit-learn cung cấp nhiều hàm chức năng cần thiết để giải quyết những vấn đề trong lĩnh vực Học máy như: các giải thuật phân loại, hồi quy, phân cụm, \ldots; các công cụ tiền xử lý; các giải thuật thu giảm chiều; và các công cụ giúp lựa chọn, đánh giá mô hình.\\
+
+Trong nghiên cứu này, chúng tôi sử dụng thư viện Scikit-learn để hiện thực đặc trưng n-gram và giải thuật học máy SVM.
+
+\subsubsection*{Bộ từ điển UMLS-Metathesaurus}
 UMLS (\term{Unified Medical Language System}) là hệ thống từ vựng y sinh do Thư viện Y khoa Quốc gia Hoa Kỳ xây dựng từ năm 1986 bao gồm tập dữ liệu lớn các thông tin y khoa đã được chuẩn hóa và những công cụ hỗ trợ tương tác với hệ thống máy tính. Tính đến năm 2004, bộ từ điển UMLS tích hợp hơn 2 triệu tên gọi cho khoảng 900.000 khái niệm y sinh và khoảng 12 triệu tên gọi cho quan hệ giữa các khái niệm này \cite{Bodenreider2004}. Hiện nay UMLS vẫn liên tục được câp nhật và cho phép sử dụng miễn phí phục vụ mục đích nghiên cứu khoa học.\\
 
 Hệ thống UMLS chứa 3 thành phần chính:
@@ -195,6 +201,8 @@ Hệ thống UMLS chứa 3 thành phần chính:
 \item Mạng ngữ nghĩa (\term{Semantic Network}) chứa danh mục các loại ngữ nghĩa và mối quan hệ giữa chúng.
 \item Công cụ từ vựng (\term{SPECIALIST Lexicon and Lexical Tools}) bao gồm các công cụ xử lý ngôn ngữ tự nhiên được dùng để tích hợp Metathesaurus.
 \end{itemize}
+
+Trong luận án, chúng tôi sử dụng thư viện UMLS chủ yếu để tra cứu các nhãn phân loại ngữ nghĩa cho các từ trong câu dữ liệu. 
 
 \subsubsection*{Công cụ MetaMap}
 MetaMap là công cụ hỗ trợ việc nhận dạng các khái niệm trong bộ từ điển UMLS-Metathesaurus từ văn bản y khoa. MetaMap nhận dữ liệu đầu vào là văn bản phi cấu trúc, thuần ngôn ngữ tự nhiên như các loại báo cáo y khoa, văn bản khám lâm sàng,... Sau quá trình xử lý, đầu ra của MetaMap là văn bản có cấu trúc - chủ yếu ở định dạng XML hoặc một số định dạng khác như MMO, HR - chứa các khái niệm nhận dạng được trong kho dữ liệu Metathesaurus từ văn bản đầu vào. Kiến trúc tổng quát của MetaMap được mô tả như Hình~\ref{fig:kientrucmetamap}.\\
@@ -208,14 +216,14 @@ MetaMap là công cụ hỗ trợ việc nhận dạng các khái niệm trong b
 Quá trình xử lý của MetaMap có thể được tóm tắt qua 2 bước:
 \begin{enumerate}
 \item Phân tích từ vựng và cú pháp: dữ liệu đầu vào được áp dụng các tác vụ xử lý ngôn ngữ tự nhiên cơ bản như tách câu, tách từ, xác định từ loại, tra cứu từ vựng dùng công cụ từ vựng của UMLS và phân tích cú pháp câu. Sau những tác vụ này, kết quả thu được là tập hợp các cụm từ (\term{phrase}) được xác định từ văn bản đầu vào.
-\item Phân tích chuyên sâu: ứng với mỗi cụm từ đã tìm được, MetaMap tiến hành tìm tất cả những biến thể của cụm, xác định các ứng cử viên (candidate) từ các khái niệm trong UMLS khớp với các biến thể được sinh ra và đánh giá độ tin cậy của từng ứng viên. Kết quả thu được là tập hợp các cụm đã có từ bước 1, và thông tin các ứng cử viên tương ứng.
+\item Phân tích chuyên sâu: ứng với mỗi cụm từ đã tìm được, MetaMap tiến hành tìm tất cả những biến thể của cụm, xác định các ứng cử viên (\term{candidate}) từ các khái niệm trong UMLS khớp với các biến thể được sinh ra và đánh giá độ tin cậy của từng ứng viên. Kết quả thu được là tập hợp các cụm đã có từ bước 1, và thông tin các ứng cử viên tương ứng.
 \end{enumerate}
 
 Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of breath or cough.} Kết quả sau khi phân tích của MetaMap trả về như Hình~\ref{fig:metamapsample}. Các ứng cử viên được gọi tên là Meta Mapping. Câu văn được tách thành các cụm: \myquote{He}, \myquote{denied}, \myquote{chest pain}, \myquote{shortness of breath}, \myquote{or}, \myquote{cough}. Trong đó:
 \begin{itemize}
 \item Các cụm \myquote{He}, \myquote{or} không có Meta Mapping do không tìm được ứng cử viên nào.
-\item Cụm \myquote{denied} có 2 Meta Mapping cùng số điểm tin cậy (1000), tương ứng với 2 khái niệm trong UMLS Metathesaurus với 2 mã định danh CUI (\term{Concept Unique Identifier}) là C0332319 và C2700401, kèm theo là định nghĩa, mô tả và nhóm của khái niệm đó. Với cụm \myquote{denied}, MetaMap xác định được 2 nhóm là Khái niệm định tính (\term{Qualitative Concept}) và Hành động (\term{Activity}).
-\item Tương tự như cụm \myquote{denied}, các cụm \myquote{chest pain}, \myquote{shortness of breath}, \myquote{chest pain} cũng có 2 Meta Mapping với đầy đủ mã số CUI, định nghĩa, mô tả và nhóm của từng khái niệm.
+\item Cụm \myquote{denied} có 2 Meta Mapping cùng số điểm tin cậy (1000), tương ứng với 2 khái niệm trong UMLS Metathesaurus với 2 mã định danh CUI (\term{Concept Unique Identifier}) là C0332319 và C2700401, kèm theo là định nghĩa, mô tả và nhóm ngữ nghĩa của khái niệm đó. Với cụm \myquote{denied} được MetaMap xác định thuộc 2 nhóm ngữ nghĩa là Khái niệm định tính (\term{Qualitative Concept}) và Hành động (\term{Activity}).
+\item Tương tự như cụm \myquote{denied}, các cụm \myquote{chest pain}, \myquote{shortness of breath}, \myquote{chest pain} cũng có 2 Meta Mapping với đầy đủ mã số CUI, định nghĩa, mô tả và nhóm ngữ nghĩa của từng khái niệm.
 \end{itemize}
 
 \begin{figure}[H]
@@ -225,4 +233,18 @@ Ví dụ với đầu vào là câu: \myquote{He denied chest pain, shortness of
 \label{fig:metamapsample}
 \end{figure}
 
-Không chỉ xác định nhóm ngữ nghĩa của các khái niệm, MetaMap còn hỗ trợ phân tích các yếu tố phủ định có trong dữ liệu đầu vào. Khi chọn bộ lọc \myquote{-negex}, kết quả phân tích sẽ thêm ký tự \myquote{N} vào trước khái niệm bị phủ định. Ví dụ như Hình~\ref{fig:metamapsample}, cụm \myquote{chest pain} có 1 Meta Mapping với mã khái niệm C0008031, thuộc nhóm Dấu hiện hoặc triệu chứng (\term{Sign or Symptom}) bị phủ định.
+Không chỉ xác định nhóm ngữ nghĩa của các khái niệm, MetaMap còn hỗ trợ phân tích các yếu tố phủ định có trong dữ liệu đầu vào. Khi chọn bộ lọc \myquote{-negex}, kết quả phân tích sẽ thêm ký tự \myquote{N} vào trước khái niệm bị phủ định. Ví dụ như Hình~\ref{fig:metamapsample}, cụm \myquote{chest pain} có 1 Meta Mapping với mã khái niệm C0008031, thuộc nhóm Dấu hiệu hoặc triệu chứng (\term{Sign or Symptom}) bị phủ định.
+
+Trong luận án, chúng tôi sử dụng công cụ MetaMap để gán nhãn ngữ nghĩa cho các từ chuyên ngành y khoa trong câu dữ liệu đầu vào.
+
+\subsubsection*{Bộ công cụ phân tích ngôn ngữ tự nhiên NLTK}
+Bộ công cụ phân tích ngôn ngữ tự nhiên NLTK (\term{Natural Language Toolkit}) \cite{bird2009natural} là một nền tảng hàng đầu cho việc xây dựng các chương trình Python trên máy tính để tương tác với dữ liệu dạng ngôn ngữ tự nhiên của con người\footnote{http://www.nltk.org/}. NTLK tích hợp hơn 50 kho dữ liệu văn bản và từ vựng trong ngôn ngữ tự nhiên như WordNet, SentiWordNet,\ldots cùng một bộ các thư viện hỗ trợ xử lý dữ liệu dạng văn bản. Một số chức năng NLTK cung cấp để áp dụng vào các bài toán phân tích là phân loại (\term{classification}), biến đổi từ về dạng gốc dựa trên hình thức (\term{stemming}), biến đổi từ về dạng gốc dựa trên từ điển (\term{lemmatization}), gắn nhãn, phân tích cú pháp,\ldots Ngoài ra NLTK còn đóng gói và cung cấp các giao diện lập trình ứng dụng (API) của một số thư viện khác (ví dụ như thư viện Stanford NLP).\\
+
+Trong nghiên cứu này, chúng tôi sử dụng NLTK như công cụ chính để thực hiện một số bước tiền xử lý dữ liệu, bao gồm tách câu, biến đổi từ về dạng gốc dựa trên hình thức và dựa trên từ điển.
+
+\subsubsection*{Các thư viện khác}
+Ngoài 2 thư viện kể trên, chúng tôi còn sử dụng một số thư viện hỗ trợ như:
+\begin{itemize}
+\item[•] Thư viện NumPy: giúp thao tác trên dữ liệu dạng vector trong các chương trình Python.
+\item[•] Thư viện Pandas: giúp đọc, ghi tập tin, quản lý các tập dữ liệu (gồm tập huấn luyện và tập kiểm tra).
+\end{itemize}
