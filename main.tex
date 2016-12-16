@@ -48,7 +48,7 @@ bibencoding=ascii
 %For footnote on table
 \usepackage{tablefootnote}
 %Reset footnote counter for each page
-\usepackage[perpage]{footmisc}
+\usepackage[perpage, bottom]{footmisc}
 \usepackage{changepage}   % for the adjustwidth environment
 \usepackage{xspace}	%Stop ignoring space after command
 \usepackage{import} %For section from another file
@@ -69,7 +69,7 @@ showstringspaces=false,
     breaklines=true,
     breakatwhitespace=false,
 }
-
+\usepackage{subcaption}
 \usepackage{chngcntr}
 \usepackage{amsmath}
 \newcommand*{\Comb}[2]{{}^{#1}C_{#2}}% 
@@ -86,18 +86,22 @@ showstringspaces=false,
 \addbibresource{reference/my_ref.bib}
 
 \captionsetup[figure]{labelfont=sc, font={sf}}
+\captionsetup[subfigure]{position=b}
 \captionsetup[table]{labelfont=sc, font=sf}
+\captionsetup[subfigure]{labelfont=rm, justification=centering}
 
 \theoremstyle{definition}
 \newtheorem{exmp}{Ví dụ}[section]
 \renewcommand{\thefootnote}{\arabic{footnote}}
 \newcommand{\refformat}[1]{#1}
 \newcounter{example}[section]
+\newcounter{myCounter}[section]
 
 \newcommand{\example}[2]{
+\stepcounter{myCounter}
 	\begin{minipage}{\textwidth}
 	\vspace{6px}
-	Ví dụ [section]
+	Ví dụ \themyCounter:
 	
 	\begin{adjustwidth}{0.08\textwidth}{0cm}
 	\begin{minipage}{0.86\textwidth}

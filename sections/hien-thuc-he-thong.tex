@@ -2,9 +2,9 @@
 Trong chương này, chúng tôi sẽ trình bày chi tiết về kỹ thuật cách rút trích các đặc trưng, hiện thực bộ phân loại cũng như cách tích hợp các yếu tố đó vào hệ thống. Ngôn ngữ lập trình được sử dụng là Python, phiên bản 2.7.
 
 \subsection{Hiện thực rút trích đặc trưng}
-Trong phần này, chúng tôi trình bày cách thức hiện thực để ánh xạ một câu thành một vector. Các đặc trưng sẽ nhận vào danh sách $n$ câu, hệ thống sẽ cho ra một mảng 2 chiều: $(n*m)$, với $m$ là số chiều tùy thuộc mỗi đặc trưng. Từ đó làm input cho giải thuật học máy SVM.
+Trong phần này, chúng tôi trình bày cách thức hiện thực để ánh xạ một câu thành một vector. Các đặc trưng sẽ nhận vào danh sách $n$ câu, hệ thống sẽ cho ra một mảng 2 chiều $n \times m$, với $m$ là số chiều tùy thuộc mỗi đặc trưng. Từ đó làm đầu vào cho giải thuật học máy SVM.
 \subsubsection*{Đặc trưng N-gram}
-Scikit-learn cung cấp các công cụ để làm việc với dữ liệu dạng text. Trong số này, chúng tôi sử dụng module sklearn.feature\_extraction.text.CountVectorizer để hiện thực đặc trưng N-gram. Như mô tả ở mục \ref{sec:ngram}, n-gram được trích xuất qua 2 bước:\\
+Scikit-learn cung cấp các công cụ để làm việc với dữ liệu dạng text. Trong số này, chúng tôi sử dụng module sklearn.feature\_extraction.text.CountVectorizer để hiện thực đặc trưng N-gram. Như mô tả ở mục \ref{sec:ngram}, đặc trưng N-gram được trích xuất qua 2 bước:\\
 
 Bước đầu tiên: Xây dựng tập từ vựng T. Scikit-learn cung cấp lớp CountVectorizer cho tác vụ này.
 \begin{lstlisting}
@@ -18,20 +18,20 @@ Hàm khởi tạo CountVectorizer cung cấp 17 tham số, tuy nhiên, trong ngh
 ngược lại sử dụng \term{vector số nguyên}\footnotemark
  \footnotetext{2 khái niệm này được định nghĩa tại Mục \ref{sec:ngram}, phần Rút trích}
  \item[ngram\_range] Là một \term{tuple}, có dạng $(a, b)$. Giải thuật sẽ sử dụng các loại n-gram từ a-gram đến b-gram. \\
- Ví dụ $ngram\_range = (1,3)$: Giải thuật sử dụng 3 loại n-gram: Uni-gram, bi-gram và tri-gram.
+ Ví dụ $ngram\_range = (1,3)$: Giải thuật sử dụng 3 loại N-gram: Uni-gram, Bi-gram và Tri-gram.
 \end{description}
 
 Bước thứ 2: xây dựng tập vector đại diện cho mỗi câu trong tập huấn luyện. Bước này được thực hiện bằng cách gọi hàm:
 \begin{lstlisting}
 vectors-ngram = vectorizer.transform(raw_documents).toarray()
 \end{lstlisting}
-trong đó $raw\_documents$ là tập hợp các câu. Hàm trên trả về một mảng 2 chiều $n*m$ với n là số lượng câu trong tập $raw\_documents$ và $m$ là kích thước của tập từ vựng (Hình \ref{fig:hien-thuc-ngram}).
+trong đó $raw\_documents$ là tập hợp các câu. Hàm trên trả về một mảng 2 chiều $n \times m$ với n là số lượng câu trong tập $raw\_documents$ và $m$ là kích thước của tập từ vựng (Hình \ref{fig:hien-thuc-ngram}).
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{../hinh/hien_thuc_ngram.png}
+\includegraphics[scale=0.8]{../hinh/hien_thuc_ngram.png}
 \caption{Hiện thực đặc trưng N-gram} \label{fig:hien-thuc-ngram}
 \end{figure}
-\subsubsection*{Đặc trưng n-gram kết hợp Metamap}
+\subsubsection*{Đặc trưng N-gram kết hợp Metamap}
 
 MetaMap cung cấp 3 phương pháp cơ bản để nhận diện các khái niệm trong kho dữ liệu UMLS-Metathesaurus từ dữ liệu đầu vào:
 \begin{itemize}
@@ -61,14 +61,14 @@ Kết quả xử lý trả về như nhau khi dùng cả 3 phương pháp. Trong
 %\end{figure}
 
 Chúng tôi sử dụng công cụ MetaMap để xác định các từ chuyên ngành tồn tại trong câu dữ liệu đầu vào. Chúng tôi đã tùy chọn bộ lọc nhãn từ vựng thuộc các nhóm ngữ nghĩa liên quan trực tiếp tới các triệu chứng, nguyên nhân, bệnh lý lâm sàng và cận lâm sàng theo \cite{sarker2011outcome} gồm \term{Pathologic Function}, \term{Disease or Syndrome}, \term{Mental or Behavioral Dysfunction}, \term{Cell or Molecular Dysfunction}, \term{Virus}, \term{Neoplastic Process}, \term{Anatomical Abnormality}, \term{Acquired Abnormality}, \term{Congenital Abnormality}, \term{Injury or Poisoning}. Sau đó chúng tôi thay các từ chuyên ngành bằng nhãn ngữ nghĩa của từ đó. 
-Việc sử dụng n-gram kết hợp Metamap trải qua 2 bước (Hình \ref{fig:hien-thuc-metamap}):
+Việc sử dụng N-gram kết hợp Metamap trải qua 2 bước (Hình \ref{fig:hien-thuc-metamap}):
 \begin{itemize}
 \item[•] Tập dữ liệu sẽ được cho qua khối xử lý Metamap để tạo ra 1 tập dữ liệu mới với các từ chuyên ngành đã được thay thế bởi nhãn ngữ nghĩa.
-\item[•] Tập dữ liệu mới đi qua khối n-gram để cho ra mảng 2 chiều $n*m$ như mô tả ở trên.
+\item[•] Tập dữ liệu mới đi qua khối rút trích N-gram để cho ra mảng 2 chiều $n \times m$ như mô tả ở trên.
 \end{itemize}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{../hinh/hien_thuc_metamap.png}
+\includegraphics[scale=0.7]{../hinh/hien_thuc_metamap.png}
 \caption{Hiện thực đặc trưng N-gram kết hợp Metamap} \label{fig:hien-thuc-metamap}
 \end{figure}
 
@@ -77,10 +77,10 @@ Việc sử dụng n-gram kết hợp Metamap trải qua 2 bước (Hình \ref{f
 \begin{lstlisting}
 def training_change_phrase(raw_documents):
 \end{lstlisting}
-Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả về mảng 2 chiều $n*4$ với $n$ là số lượng câu trong tập $raw\_documents$ (Hình \ref{fig:hien-thuc-changephrase})
-\begin{figure}
+Hàm nhận vào danh sách các câu trong tập dữ liệu, sau đó trả về mảng 2 chiều $n \times 4$ với $n$ là số lượng câu trong tập $raw\_documents$ (Hình \ref{fig:hien-thuc-changephrase})
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{../hinh/hien_thuc_changephrase.png}
+\includegraphics[scale=0.7]{../hinh/hien_thuc_changephrase.png}
 \caption{Hiện thực đặc trưng Thay đổi trạng thái} \label{fig:hien-thuc-changephrase}
 \end{figure}
 \subsubsection*{Đặc trưng phủ định}
@@ -95,7 +95,7 @@ Ví dụ như với câu dữ liệu đầu vào là \myquote{In this trial of a
 
 Khi áp dụng Meta-NegEx: kết quả lưu lại dưới dạng JSON như Hình~\ref{fig:Meta-NegEx}. Trong đó, thuộc tính \xquote{id} là mã số câu, thuộc tính \xquote{negations} là mảng chứa các cấu trúc phủ định trong câu, bao gồm từ phủ định chứa trong thuộc tính \xquote{negex} và mảng các từ bị phủ định chứa trong thuộc tính \xquote{effectedWords}.\\
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{../hinh/JSON.png}
 \caption{Ví dụ kết quả phân tích phủ định dùng Meta-NegEx}
@@ -104,7 +104,7 @@ Khi áp dụng Meta-NegEx: kết quả lưu lại dưới dạng JSON như Hình
 
 Khi áp dụng Gen-NegEx: kết quả lưu lại dưới dạng XLSX như Bảng~\ref{table:Gen-NegEx}. Trong đó, nội dung \xquote{negated} ở cột \xquote{Result} đánh dấu câu có cấu trúc phủ định. Chi tiết cấu trúc phủ định được ghi rõ ở cột \xquote{Negation}. Từ được đặt trong cờ \xquote{[PREN]} là từ phủ định, từ được đặt trong cờ \xquote{[NEGATED]} là từ bị phủ định, từ được đặt trong cờ \xquote{[CONJ]} là thuật ngữ kết thúc báo hiệu chấm dứt tầm vực phủ định của từ phủ định.\\
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
 \caption{Ví dụ kết quả phân tích phủ định dùng Gen-NegEx}
 \label{table:Gen-NegEx}
@@ -120,61 +120,53 @@ Kết quả của 2 công cụ được xử lý để đưa về chung 1 cấu 
 
 Như mô tả ở \ref{subsec:negation}, chúng tôi hiện thực việc sử dụng đặc trưng phủ định theo 3 cách chính:
 \begin{itemize}
-\item[•] Với 2 cách đầu, khối xử lý phủ định nhận vào tập dữ liệu và cho ra một tập dữ liệu mới với nhãn NEGATION thay thế các từ phủ định (Hình \ref{fig:hien-thuc-negation-1}), hoặc hậu tố \_NEG được thêm vào sau các từ bị phủ định (Hình \ref{fig:hien-thuc-negation-2})
-\item[•] Với cách hiện thực thứ 3, khối xử lý phủ định nhận vào tập dữ liệu và cho ra mảng $(n*1)$ với $n$ là kích thước tập dữ liệu (Hình \ref{fig:hien-thuc-negation-3}).
+\item[•] Với 2 cách đầu, khối xử lý phủ định nhận vào tập dữ liệu và cho ra một tập dữ liệu mới với nhãn NEGATION thay thế các từ phủ định hoặc hậu tố \_NEG được thêm vào sau các từ bị phủ định. Cách thức hiện thực được mô tả như Hình \ref{fig:hien-thuc-negation-1-2}.
+\item[•] Với cách hiện thực thứ 3, khối xử lý phủ định nhận vào tập dữ liệu và cho ra mảng $n \times 1$ với $n$ là kích thước tập dữ liệu. Cách thức hiện thực được mô tả như Hình \ref{fig:hien-thuc-negation-3}.
 \end{itemize}
-\begin{figure}
-\begin{subfigure}{0.33\textwidth}
+\begin{figure}[h]
+\begin{subfigure}[t]{0.5\textwidth}
 \centering
-\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
-\caption{Hiện thực đặc trưng Phủ định theo cách 1} \label{fig:hien-thuc-negation-1}
+\includegraphics[scale=0.7]{../hinh/hien_thuc_negation_1_2.png}
+\caption{Hiện thực theo cách 1 và 2} \label{fig:hien-thuc-negation-1-2}
 \end{subfigure}
 ~
-\begin{subfigure}{0.3\textwidth}
+\begin{subfigure}[t]{0.5\textwidth}
 \centering
-\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
-\caption{Hiện thực đặc trưng Phủ định theo cách 2} \label{fig:hien-thuc-negation-2}
+\includegraphics[scale=0.4]{../hinh/hien_thuc_negation_3.png}
+\hfill
+\caption{Hiện thực theo cách 3} \label{fig:hien-thuc-negation-3}
 \end{subfigure}
-~
-\begin{subfigure}{0.3\textwidth}
-\centering
-\includegraphics[scale=0.3]{../hinh/hien_thuc_negation.png}
-\caption{Hiện thực đặc trưng Phủ định theo cách 3} \label{fig:hien-thuc-negation-3}
-\end{subfigure}
+\caption{Hiện thực đặc trưng Phủ định theo 3 cách}
 \end{figure}
-
-
 \subsubsection*{SO-CAL}
 Trong phần này, chúng tôi sử dụng phiên bản hiện thực của nghiên cứu \cite{taboada2011lexicon}. Nhóm tác giả của nghiên cứu \cite{taboada2011lexicon} đã hiện thực công cụ online để tính điểm số cho 1 đoạn văn, giao diện được mô tả như Hình \ref{fig:socal}.
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.4\textwidth}
+\begin{subfigure}[t]{0.45\textwidth}
 \includegraphics[scale=0.3]{../hinh/socal.png}
 \caption{Nhập 1 đoạn text sau đó nhấp submit để chuyển đến trang kết quả}
 \end{subfigure}
 ~
-\begin{subfigure}[b]{0.4\textwidth}
-\includegraphics[scale=0.3]{../hinh/socal_result.png}
+\begin{subfigure}[t]{0.45\textwidth}
+\includegraphics[scale=0.35]{../hinh/socal_result.png}
  \caption{Giao diện kết quả}
 \end{subfigure}
 \caption{Công cụ online để tính điểm SO-CAL} \label{fig:socal}
 \end{figure}
 
-Để tích hợp vào hệ thống, nhóm sử dụng package \code{re} trong Python, sử dụng phương thức \code{HTTP POST} để gửi yêu cầu lên trang web, sau đó \term{parser} phần kết quả trả về để lấy ra thông tin điểm số. Kết quả đầu ra khi rút trích đặc trưng SO-CAL là ma trận (m*1) với m là kích thước tập dữ liệu (Hình \ref{fig:hien-thuc-socal}).
-\begin{figure}
+Để tích hợp vào hệ thống, nhóm sử dụng package \code{re} trong Python, sử dụng phương thức \code{HTTP POST} để gửi yêu cầu lên trang web, sau đó \term{parser} phần kết quả trả về để lấy ra thông tin điểm số. Kết quả đầu ra khi rút trích đặc trưng SO-CAL là ma trận $m \times 1$ với $m$ là kích thước tập dữ liệu (Hình \ref{fig:hien-thuc-socal}).
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{../hinh/hien_thuc_socal.png}
+\includegraphics[scale=0.7]{../hinh/hien_thuc_socal.png}
 \caption{Hiện thực đặc trưng SO-CAL} \label{fig:hien-thuc-socal}
 \end{figure}
 \subsection{Hiện thực bộ phân loại SVM}
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.25]{../hinh/kethopdactrung.png}
 \caption{Kết hợp các đặc trưng trước khi đưa vào SVM huấn luyện} \label{fig:ket-hop-dac-trung}
 \end{figure}
-Các đặc trưng sau khi được rút trích như đã mô tả sẽ được kết hợp lại để với mỗi câu, chỉ có 1 vector đại diện. Mô hình kết hợp các đặc trưng được miêu tả như Hình \ref{fig:ket-hop-dac-trung}
-
-Chúng tôi sử dụng lớp SVM.SVC của thư viện Scikit-learn để hiện thực giải thuật học máy SVM.\\
+Các đặc trưng sau khi được rút trích như đã mô tả sẽ được kết hợp lại để với mỗi câu, chỉ có 1 vector đại diện. Mô hình kết hợp các đặc trưng được miêu tả như Hình \ref{fig:ket-hop-dac-trung}. Trong mô hình kết hợp trên, đặc trưng Phủ định được sử dụng theo cách 2 (là cách đạt hiệu quả tốt nhất, sẽ được chứng minh ở Mục \ref{subsec:ket-qua-thi-nghiem}). Chúng tôi sử dụng lớp SVM.SVC của thư viện Scikit-learn để hiện thực giải thuật học máy SVM.\\
 \begin{minipage}{0.95\textwidth}
 \begin{lstlisting}
 clf = svm.SVC(decision_function_shape = 'ovr', C = c,           kernel = 'rbf', class_weight = 'balanced')
@@ -192,4 +184,10 @@ Hàm khởi tạo SVM.SVC ở dòng 1 có các tham số được sử dụng nh
 
 Sau khi khởi tạo, hàm clf.fit(data\_x, data\_y) được gọi với data\_x là dữ liệu tập huấn luyện sau khi đã qua các bước rút trính đặc trưng để ánh xạ từ 1 câu sang 1 vector, data\_y là vector chứa nhãn tương ứng.
 \subsection{Hiện thực phương pháp cross-validation}
-Chúng tôi sử dụng cross-validation để điều chỉnh tham số $C$ trong giải thuật SVM. Với các thử nghiệm, chúng tôi thử nghiệm với giá trị $C$ lần lượt 1, 10, 100, 500, 1000. Sau đó, chúng tôi co hẹp dần khoảng giá trị $C$ và nhận thấy $C \in [25, 35]$ đạt hiệu quả tốt nhất. Từ đó, với mỗi thử nghiệm được trình bày ở mục \ref{subsec:ket-qua-thi-nghiem}, chúng tôi thử các giá trị $C \in [25, 35]$ và chọn ra $C$ với kết quả tốt nhất. Một ví dụ thể hiện sự phụ thuộc độ đo F vào $C$ được mô tả như Hình \
+Chúng tôi sử dụng cross-validation để điều chỉnh tham số $C$ trong giải thuật SVM. Với các thử nghiệm, chúng tôi thử nghiệm với giá trị $C$ lần lượt 1, 10, 100, 500, 1000. Sau đó, chúng tôi co hẹp dần khoảng giá trị $C$ và nhận thấy $C \in [25, 35]$ đạt hiệu quả tốt nhất. Từ đó, với mỗi thử nghiệm được trình bày ở Mục \ref{subsec:ket-qua-thi-nghiem}, chúng tôi thử các giá trị $C \in [25, 35]$ và chọn ra $C$ với kết quả tốt nhất. Một ví dụ thể hiện sự phụ thuộc độ đo F vào $C$ được mô tả như Hình \ref{fig:hien-thuc-cross}.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.34]{../hinh/hien_thuc_cross.png}
+\caption{Một thử nghiệm trên đặc trưng N-gram, sử dụng cross-validation để tìm tham số C}
+\label{fig:hien-thuc-cross}
+\end{figure}

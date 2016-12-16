@@ -10,7 +10,7 @@ Cho câu thuộc 1 bài báo nghiên cứu trong lĩnh vực y khoa, phân loạ
 \end{itemize}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.35]{../hinh/mo_ta_bai_toan.png}
+\includegraphics[scale=0.2]{../hinh/mo_ta_bai_toan.png}
 \caption{Mô tả bài toán} \label{fig:mo-ta-bai-toan}
 \end{figure}
 Cảm xúc mà bài toán đề cập trong luận án này được hiểu như kết quả của 1 phương pháp hay 1 can thiệp, cụ thể:
@@ -64,17 +64,17 @@ Trong phần còn lại, chúng tôi trình bày các đặc trưng theo cấu t
 Theo kết luận của nghiên cứu \cite{chandrakala2012opinion}, N-gram là đặc trưng được sử dụng phổ biến trong bài toán phân tích cảm xúc nói chung. Nhiều nghiên cứu về phân tích cảm xúc trong lĩnh vực y khoa cũng sử dụng đặc trưng này \cite{pang2002thumbs}, \cite{niu2005analysis}, \cite{sarker2011outcome}, \cite{niu2006using}, \cite{pestian2012sentie}, \cite{xia09improving} \\
 
 %Định nghĩa
-N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng N-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như baseline. Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng N-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng N-gram như nền tảng (\term{baseline}), kết quả tốt nhất tăng 20.58\% so với nền tảng.\\
+N-gram là một chuỗi gồm n phần tử liên tiếp nhau. Các phần tử này có thể chữ cái, âm tiết hoặc đoạn văn\ldots Trong nghiên cứu này, các phần tử là các từ đơn trong câu. Đơn vị từ được định nghĩa là chuỗi các chữ cái liên tiếp nhau không chứa ký tự khoảng trắng, các từ phân biệt nhau bởi ký tự khoảng trắng. Đặc trưng N-gram đóng góp lớn trong kết quả của các phân tích, vì vậy đặc trưng này thường được dùng như đặc trưng nền tảng (\term{baseline}). Báo cáo  của \cite{pang2002thumbs} phân tích cảm xúc trên các bình luận về phim, đạt độ chính xác 82.9\% với chỉ một đặc trưng N-gram. Đây cũng là kết quả tốt nhất của nghiên cứu này. Nghiên cứu của \cite{niu2005analysis} đạt độ chính xác 77.87\% khi chỉ sử dụng N-gram như nền tảng (\term{baseline}), kết quả tốt nhất tăng 20.58\% so với nền tảng.\\
 
 Ví dụ câu: \myquote{Standard practice in pupillary monitoring yields inaccurate data}
 \begin{itemize}
 \item[•]Với $n=1$, N-gram được gọi là Uni-gram. Câu trên sẽ được chuyển thành các n-gram: Standard, practice, in, pupillary, monitoring, yields, inaccurate, data.
 \item[•]Với $n=2$, N-gram được gọi là Bi-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice, practice in, in pupillary, pupillary monitoring, monitoring yields, yields inaccurate, inaccurate data.
 \item[•]Với $n=3$, N-gram được gọi là Yri-gram. Câu trên sẽ được chuyển thành các n-gram: Standard practice in, practice in pupillary, in pupillary monitoring, pupillary monitoring yields, monitoring yields inaccurate, yields inaccurate data.
-\item[•]Với $n>3$, tần suất xuất hiện các n-gram thấp, dễ làm mô hình học máy bị học quá khớp (overfitting)
+\item[•]Với $n>3$, tần suất xuất hiện các n-gram thấp, dễ làm mô hình học máy bị học quá khớp (\term{overfitting})
 \end{itemize}
 	
-Việc phối hợp các N-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng bi-gram kết hợp với uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả uni-gram, bi-gram và tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng uni-gram cho kết quả tốt hơn bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Trong báo cáo này, chúng tôi thử nghiệm các cách kết hợp N-gram để tìm ra kết quả tốt nhất.\\
+Việc phối hợp các N-gram là tùy chọn đối với mỗi nghiên cứu, và các kết quả cũng không hoàn toàn đồng nhất. Báo cáo \cite{niu2005analysis} kết luận khi sử dụng Bi-gram kết hợp với Uni-gram giúp tăng độ chính xác thêm 3.01\%, điều này phù hợp với báo cáo \cite{sarker2011outcome}. Báo cáo \cite{sarker2011outcome} kết luận rằng việc dùng cả Uni-gram, Bi-gram và Tri-gram giúp cải thiện kết quả rõ rệt. Trong khi đó \cite{pang2002thumbs} đạt kết quả cao nhất chỉ với Uni-gram. Kết luận của \cite{pang2002thumbs} cho thấy việc sử dụng thêm đặc trưng Bi-gram không tác động nhiều đến kết quả. Báo cáo của \cite{smith2012cross} phân tích cảm xúc trong lĩnh vực y khoa lâm sàng, khẳng định đặc trưng Uni-gram cho kết quả tốt hơn Bi-gram. Tuy nhiên, nghiên cứu không thử nghiệm kết hợp 2 đặc trưng này. Vì không có sự nhất quán trong việc sử dụng kết hợp N-gram giữa các nghiên cứu trên, chúng tôi tiến hành thử nghiệm các cách kết hợp khác nhau để tìm ra kết quả tốt nhất.\\
 
 %\subsubsection*{Mở rộng}
 Tác giả Kerstin Denecke trong nghiên cứu \cite{denecke2015sentiment} khẳng định rằng áp dụng kiến thức trong lĩnh vực y khoa là cần thiết để cải thiện hiệu quả phân loại cảm xúc. Trong nghiên cứu này, ý nghĩa cụ thể của các thuật ngữ y khoa không có tác dụng phân loại cảm xúc, chỉ thông tin mô tả của các thuật ngữ này có ý nghĩa.\\
@@ -139,9 +139,10 @@ Khi đó, $v_1 = (0, 1, 0, 1, 0, 0) $ và $v_2=(0, 1, 0, 0, 1, 0)$
 Đặc trưng Chuyển đổi trạng thái (\term{Change Phrase}) được Niu, Yun et al. định nghĩa trong một nghiên cứu phân tích cảm xúc trên câu \cite{niu2005analysis}. Sau đó được nhóm tác giả Sarker, Abeed, et al. sử dụng lại. Bài toán mà Sarker, Abeed, et al giải quyết cũng tương tự nhưng thay vì phân tích trên câu, nhóm tác giả phân tích trên đoạn.\\
 
 \textit{Cụm từ chuyển đổi trạng thái} là những cụm từ mang ý nghĩa làm thay đổi tình trạng, trạng thái: làm tốt hơn hoặc làm tệ hơn. Tính phân cực trong một câu thường biểu thị qua sự thay đổi \cite{niu2005analysis}, và hay xuất hiện ở những câu so sánh.
+
 \example{}{\myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
 Câu trên thể hiện tình trạng tệ hơn: Sử dụng \myquote{Atypical antipsychotic} làm tăng nguy cơ chết so với không sử dụng \myquote{Atypical antipsychoti}.
-Chúng tôi sử dụng 4 nhóm để mô tả \textit{Change phrase}:
+Chúng tôi sử dụng 4 nhóm để mô tả đặc trưng Chuyển đổi trạng thái:
 \begin{itemize}
 \item[•]Nhóm thể hiện sự thay đổi trạng thái, gồm 2 nhóm:\\
 LESS: Có ý nghĩa làm giảm bớt, hạ bớt. Một số từ như: ``reduce'', ``decline'', ``fall'', ``less'', ``little'',\ldots \\
@@ -150,7 +151,7 @@ MORE: Có ý nghĩa ngược lại, làm tăng thêm (hoặc duy trì). Một s�
 GOOD: Mang ý nghĩa tích cực. Một số ví dụ như: ``benefit'', ``improvement'', ``advantage'', ``accuracy'', ``great'', \ldots\\
 BAD: Mang ý nghĩa tiêu cực. Một số ví dụ như: ''suffer``, ''adverse``, ''hazards``, ''risk``, ''death``,\ldots
 \end{itemize}
-Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp thủ công. Kết hợp 4 nhóm trên, ta có 4 đặc trưng giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{Bảng~\ref{tab:changphrase}}.
+Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp thủ công. Kết hợp 4 nhóm, ta có 4 mẫu (\term{pattern}) giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{Bảng~\ref{tab:changphrase}}.
 \example{}{
 \myquote{Atypical antipsychotic use is associated with an increased risk for death compared with nonuse among older adults with dementia}}
 Từ \myquote{increased} sẽ được gán nhãn MORE, \myquote{risk} được gán nhãn BAD, sau đó việc phân tích sẽ xác định được đối tượng của từ \myquote{increased} là \myquote{risk}. Từ đó, câu trên được nhận dạng thuộc mẫu MORE-BAD, suy ra nó có xu hướng biểu thị tính phân cực \tieucuc.
@@ -158,7 +159,7 @@ Từ \myquote{increased} sẽ được gán nhãn MORE, \myquote{risk} được 
 \centering
 \caption{Các mẫu thay đổi của đặc trưng Chuyển đổi trạng thái}
 \label{tab:changphrase}
-\begin{tabular}{ | P{0.25\textwidth} | P{0.25\textwidth}| P{0.25\textwidth} | }
+\begin{tabular}{ | P{0.25\textwidth} | P{0.2\textwidth}| P{0.25\textwidth} | }
 \hline
 \textbf{Nhóm làm thay đổi trạng thái} & \textbf{Nhóm xác định đối tượng} & \textbf{Phân loại tính phân cực} \\
 \hline
@@ -173,10 +174,10 @@ MORE & BAD & \tieucuc \\
 \end{tabular}
 \end{table}
 \subsubsection*{Rút trích}
-Rút trích đặc trưng Change phrase phụ thuộc vào 2 yếu tố:
+Rút trích đặc trưng Chuyển đổi trạng thái phụ thuộc vào 2 yếu tố:
 \begin{itemize}
-\item[•] Danh sách từ trong mỗi nhóm LESS, MORE, BAD, GOOD
-\item[•] Giải thuật nhận biết sự kết hợp của các nhãn trên
+\item[•] Danh sách từ trong mỗi nhóm LESS, MORE, BAD, GOOD.
+\item[•] Giải thuật nhận dạng 4 mẫu LESS-GOOD, LESS-BAD, MORE-GOOD, MORE-BAD (Bảng \ref{tab:changphrase}).
 \end{itemize}
 Với yếu tố thứ nhất, trong nghiên cứu này, chúng tôi sử dụng danh sách từ cho mỗi nhóm tham khảo từ nghiên cứu của nhóm tác giả Sarker, Abeed, et al.\cite{sarker2011outcome}. Nhóm tác giả trên tự tập hợp danh sách các nhóm từ thủ công nhưng không liệt kê trong báo cáo của mình. Nhóm chúng tôi có liên hệ và đã nhận được mã nguồn, từ đó lấy được danh sách các nhóm từ. Danh sách này gồm 371 từ (BAD: 223 từ, GOOD: 82 từ, MORE: 30 từ, LESS:36 từ). Sau đó, chúng tôi mở rộng danh sách bằng cách thu thập thủ công. Danh sách cuối cùng gồm 423 từ (BAD: 238, GOOD: 96, MORE: 42 từ, LESS: 47 từ).\\
 
@@ -351,15 +352,15 @@ extraordinarily & +50\%
 \end{tabular}
 \end{table}
 \example{}{
-\myquote{good} có điểm số là 3.0, từ đó \myquote{very good} có điểm số là: 3.0 * (100\% + 25\%) =  3.75}
+\myquote{good} có điểm số là 3.0, từ đó \myquote{very good} có điểm số là: $3.0 \times (100\% + 25\%) =  3.75$}
 Trong trường hợp có hơn 1 từ có tính tăng cường, điểm số được tính tương tự theo cách đệ quy. \\
-\example{}{\myquote{really very good}: (3 * [100\% + 25\%]) * (100\% + 15\%) = 4.3}
+\example{}{\myquote{really very good}: $(3 \times [100\% + 25\%]) \times (100\% + 15\%) = 4.3$}
 
 Trong trường hợp một tính từ bổ sung nghĩa cho một danh từ theo sau nó, tính từ đó được coi như là một từ có tính tăng cường. Vì vậy, bản thân tính từ đó không có điểm số, và chỉ làm thay đổi điểm số của danh từ theo sau. \\
 
 \example{}{
 \myquote{This is a total failure}\\
-Tính từ \myquote{total} được xem là từ có tính tăng cường, nên thay vì sử dụng điểm số, \myquote{total} ảnh hưởng đến điểm số của \myquote{failure}: $-3.0 * (100\% + 50\%) = -4.5$
+Tính từ \myquote{total} được xem là từ có tính tăng cường, nên thay vì sử dụng điểm số, \myquote{total} ảnh hưởng đến điểm số của \myquote{failure}: $-3.0 \times (100\% + 50\%) = -4.5$
 }
 \paragraph*{Xử lý phủ định}
 Sự xuất hiện từ phủ định có thể làm đảo chiều tính phân cực cho cả câu. Tuy nhiên, một từ phân cực về phía tiêu cực mạnh (điểm số rất thấp), không có nghĩa rằng sẽ phân cực về phía tích cực mạnh (điểm số rất cao). Nghiên cứu \cite{taboada2011lexicon} sử dụng chiến lược \term{shift negation}. Thay vì chỉ đơn thuần đổi dấu điểm số, \term{shift negation} chỉ cộng/trừ 1 lượng cố định (trong nghiên cứu này là 4) vào điểm số của từ bị phủ định.\\

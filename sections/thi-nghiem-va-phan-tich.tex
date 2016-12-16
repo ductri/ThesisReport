@@ -34,19 +34,18 @@ Trong trường hợp hệ thống đưa ra đủ tất cả các câu trả l�
 Trên thực tế, với lượng dữ liệu lớn và phức tạp, khả năng tất cả những câu trả lời hệ thống đưa ra đều đúng và hệ thống đưa ra đủ tất cả các câu trả lời đúng ($P=R=1$) là rất thấp. Hai hệ số này thường bù trừ lẫn nhau, tức là để đạt độ bao phủ \(R\) cao, hệ thống có xu hướng đưa ra nhiều câu trả lời hơn làm cho xác suất có câu trả lời sai tăng, độ chính xác \(P\)  giảm, và ngược lại. Một hệ thống nếu chỉ có \(P\) cao mà \(R\) thấp thì tuy hệ thống có câu trả lời thường đúng nhưng lại bỏ sót nhiều trường hợp đúng khác. Hệ thống chỉ có \(R\) cao mà \(P\) thấp thì hệ thống đó tuy bao quát đầy đủ tất cả các trường hợp đúng thực tế, nhưng tỉ lệ câu trả lời sai lại lớn. Một hệ thống tốt yêu cầu cả độ chính xác P và độ bao phủ đều cao R. Do đó vấn đề đặt ra là tìm một độ đo duy nhất mà đảm bảo cả \(P\) và \(R\) để thuận tiện cho việc tối ưu.\\
 
 Để giải quyết vấn đề trên, ta sử dụng tiêu chí đánh giá \(F\) là trung bình điều hòa của \(P\) và \(R\), từ đó đảm bảo rằng chỉ khi cả \(P\) và \(R\) cao thì \(F\) mới đạt giá trị cao. Công thức tính \(F\) như sau:
-$$F=2*\frac{P*R}{P + R} $$
+$$F=2 \times \frac{P \times R}{P + R} $$
 \subsubsection*{Độ chính xác (P), độ bao phủ (R), F đối với bài toán phân loại đa lớp}
-Để áp dụng 3 độ đo trên vào bài toán phân loại 3 lớp, chúng tôi xem như đang giải 3 bài toán con thuộc loại bài toán phân loại nhị phân. Khi đó, điểm số của bài toán lớn bằng trung bình có trọng số của điểm số từng bài toán con. Cụ thể:
-Xét 3 bài toán con:
+Để áp dụng 3 độ đo trên vào bài toán phân loại 3 lớp, chúng tôi xem như đang giải 3 bài toán con thuộc loại bài toán phân loại nhị phân. Khi đó, điểm số của bài toán lớn bằng trung bình có trọng số của điểm số từng bài toán con. Xét 3 bài toán con:
 \begin{enumerate}
 \item Phân loại một câu thuộc lớp \tichcuc hay không thuộc lớp \tichcuc. Lớp dương được chọn là lớp \tichcuc
 \item Phân loại một câu thuộc lớp \tieucuc hay không thuộc lớp \tieucuc. Lớp dương được chọn là lớp \tieucuc
 \item Phân loại một câu thuộc lớp \trungtinh hay không thuộc lớp \trungtinh. Lớp dương được chọn là lớp \trungtinh
 \end{enumerate}
 Khi đó:
-$$P = \alpha_1*P_1 + \alpha_2*P_2 + \alpha_3*P_3$$
-$$R = \alpha_1*R_1 + \alpha_2*R_2 + \alpha_3*R_3$$
-$$F = \alpha_1*F_1 + \alpha_2*F_2 + \alpha_3*F_3$$
+$$P = \alpha_1 \times P_1 + \alpha_2 \times P_2 + \alpha_3 \times P_3$$
+$$R = \alpha_1 \times R_1 + \alpha_2 \times R_2 + \alpha_3 \times R_3$$
+$$F = \alpha_1 \times F_1 + \alpha_2 \times F_2 + \alpha_3 \times F_3$$
 với $\alpha_1 + \alpha_2 + \alpha_3 = 1$ và $\alpha_1, \alpha_2, \alpha_3$ lần lược là tỉ lệ số lượng các câu thuộc lớp \tichcuc, \tieucuc, \trungtinh trong tập dữ liệu huấn luyện.
 \subsubsection*{K-fold cross validation}
 Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phương pháp \textit{k-fold cross validation} để đánh giá hiệu quả của hệ thống. Phương pháp này nhằm tránh trường hợp tập kiểm tra, vì được chia ngẫu nhiên, có thể rơi vào trường hợp quá dễ hoặc quá khó đối với hệ thống. Tập dữ liệu được chia ngẫu nhiên thành \(k\) phần. Phần thứ \(i\) sẽ được chọn làm tập để đánh giá, \(k-1\) phần còn lại dùng cho việc học các tham số của mô hình. Tiến trình trên được thực hiện \(k\) lần với \(i\) chạy từ 1 đến \(k\), giá trị trung bình là kết quả cuối cùng dùng để đánh giá hệ thống.
@@ -56,7 +55,7 @@ Sau khi đã có thước đo \(F\), chúng tôi đề xuất sử dụng phươ
 %Bảng dữ liệu mẫu gồm id và sen, mỗi sen có id duy nhất
 Trong nghiên cứu này, chúng tôi thu thập dữ liệu từ \term{website} PubMed \footnote{https://www.ncbi.nlm.nih.gov/pubmed}. Trang web cung cấp miễn phí tóm tắt (\term{abstract}) của các bài báo khoa học trong lĩnh vực y khoa. Phần tóm tắt của các bài báo không có cấu trúc chung, chúng tôi chỉ thu thập những tóm tắt nào có chứa phần kết luận (\term{Conclusion}) như Hình \ref{fig:bai-bao-mau}. Dựa theo báo cáo \cite{sarker2011outcome} gợi ý rằng sử dụng những câu kết luận giúp tăng hiệu quả phân loại, chúng tôi chỉ giữ lại phần Kết luận, và sử dụng công cụ tìm kiếm cùng bộ lọc để tìm các bài có loại xuất bản (\term{publication type}) là ``clinical trial''.\\
 
-Vì \term{website} PubMed không chính thức hỗ trợ cung cấp dữ liệu, chúng tôi tự hiện thực công cụ phục vụ nhu cầu này. TODO mô tả thêm\\
+Vì \term{website} PubMed không chính thức hỗ trợ cung cấp dữ liệu, chúng tôi tự hiện thực công cụ phục vụ nhu cầu này. Chúng tôi sử dụng module \texttt{re} trong Python để gửi các yêu cầu HTTP lên \term{website} PubMed. Khi PubMed trả về phản hồi, thông tin được phân giải và lọc ra phần nội dung cần lấy.\\
 
 Sau khi chạy công cụ trên, kết quả thu được là những đoạn văn thuộc phần kết luận. Bản thân việc phân tách câu trong đoạn cũng là 1 bài toán, thường được gọi là Định hướng ranh giới câu (\term{Sentence boundary disambiguation}), không nằm trong phạm vi đề tài. Trong luận án này, chúng tôi sử dụng giải thuật phân tách câu Punkt sentence segmenter \cite{kiss2006unsupervised} được hiện thực trong thư viện NLTK. Dữ liệu chúng tôi thu thập được gồm 1182 câu được gán mã số (\term{Id}) tuần tự và lưu trữ như Bảng \ref{table:data}.
 \begin{figure}[H]
