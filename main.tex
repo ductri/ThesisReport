@@ -2,7 +2,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[a4paper, 12pt]{article}
+\documentclass[a4paper, 12pt]{report}
 \usepackage[a4paper, left=30mm]{geometry}
 \geometry{
 	bmargin=2cm,
@@ -25,6 +25,15 @@
 \renewcommand{\headrulewidth}{0.0pt}
 \renewcommand{\footrulewidth}{0.0pt}
 
+%\usepackage{etoolbox}
+%\makeatletter
+%\patchcmd{\@makechapterhead}
+%  {\thechapter}
+%  {\Ordinalstring{chapter}}
+%  {}{}
+%\makeatother
+
+            
 \usepackage{subcaption}
 \usepackage{color}
 \usepackage{float}
@@ -74,8 +83,8 @@ showstringspaces=false,
 \usepackage{amsmath}
 \newcommand*{\Comb}[2]{{}^{#1}C_{#2}}% 
  
-\counterwithin{figure}{section}
-\counterwithin{table}{section}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
 
 \renewcommand{\ttdefault}{pcr}
 \newcommand{\myquote}[1]{{``#1''}}
@@ -108,7 +117,7 @@ showstringspaces=false,
 	 #2
 	\end{minipage}
 	 
-	\end{adjustwidth}\vspace{10px}
+	\end{adjustwidth}\vspace{5px}
 	\end{minipage}
 	}
 %\newcommand{\myquote}[1]{#1}
@@ -118,6 +127,8 @@ showstringspaces=false,
 \newcommand{\trungtinh}{\textit{trung tính}\xspace}
 \newcommand{\term}[1]{\textit{#1}}
 \newcommand{\code}[1]{\texttt{#1}}
+%\renewcommand{\thesection}{Chương \arabic{section}}
+
 \begin{document}
 
 \begin{titlepage}
@@ -183,17 +194,25 @@ Nguyễn Diệp Phương Linh (51201899)\\[1.5cm]
 \end{titlepage}
 
 \pagebreak
-\section*{Lời cam đoan}
+\chapter*{Lời cam đoan}
+\thispagestyle{empty}
 Chúng tôi xin cam đoan rằng, đề tài luận văn tốt nghiệp ``Phân tích cảm xúc trong văn bản y khoa'' là công trình nghiên cứu của chúng tôi dưới sự hướng dẫn của GS. TS. Cao Hoàng Trụ, xuất phát từ nhu cầu thực tiễn của đề tài và nguyện vọng tìm hiểu, nghiên cứu của bản thân chúng tôi.\\
 
 Ngoại trừ kết quả tham khảo từ các công trình khác đã ghi rõ trong luận văn, các nội dung trình bày trong luận văn này là do chính chúng tôi thực hiện và kết quả của luận văn chưa từng được công bố trước đây dưới bất kỳ hình thức nào.\\
 
 \begin{flushright}
-Thành phố Hồ Chí Minh, ngày 16 tháng 12 năm 2016
+\begin{minipage}{0.65\textwidth}
+\centering
+Thành phố Hồ Chí Minh, ngày 16 tháng 12 năm 2016\\
+\vspace{25px}
+Nhóm tác giả
+\end{minipage}
+
 \end{flushright}
 
 \pagebreak
-\section*{Lời cảm ơn}
+\chapter*{Lời cảm ơn}
+\thispagestyle{empty}
 Trước hết, chúng tôi xin gửi lời cám ơn sâu sắc nhất đến GS. TS. Cao Hoàng Trụ, giáo viên hướng dẫn luận văn và là người thầy gắn bó với chúng tôi trong nhóm nghiên cứu khoa học hơn một năm vừa qua. Chính nhờ những tri thức Thầy truyền đạt cùng với sự hướng dẫn tận tình, những góp ý khoa học của Thầy đã giúp chúng tôi hoàn thành tốt nhất đề tài luận văn này.\\
 
 Chúng tôi cũng xin gửi lời cảm ơn chân thành tới quý Thầy Cô đang công tác tại Khoa Khoa học và Kỹ thuật Máy tính, Trường Đại học Bách Khoa TP.HCM, những người đã nhiệt tình truyền đạt kiến thức, kinh nghiệm trong suốt hơn bốn năm học để chúng tôi có được nền tảng vững chắc như ngày hôm nay.\\
@@ -201,16 +220,21 @@ Chúng tôi cũng xin gửi lời cảm ơn chân thành tới quý Thầy Cô �
 Cuối cùng, chúng tôi xin gửi lời cảm ơn tới gia đình, bạn bè, những người đã động viên, giúp đỡ chúng tôi rất nhiều trong quá trình thực hiện đề tài này.\\
 
 \begin{flushright}
+\begin{minipage}{0.65\textwidth}
+\centering
 Thành phố Hồ Chí Minh, ngày 16 tháng 12 năm 2016\\
-
+\vspace{25px}
 Nhóm tác giả
+\end{minipage}
+
 \end{flushright}
 
 \pagebreak
-\section*{Tóm tắt luận văn}
+\chapter*{Tóm tắt luận văn}
+\thispagestyle{empty}
 Việc nhận biết được sự phân cực cảm xúc trong báo cáo y khoa là rất quan trọng để các y bác sĩ sàng lọc, tiếp thu và tổng hợp tri thức trước khi đưa ra quyết định lâm sàng. Chúng tôi đã xem xét vấn đề này như một bài toán phân loại với dữ liệu đầu vào là một câu trong báo cáo y khoa và đầu ra là kết quả phân cực của câu: \tichcuc, \tieucuc hoặc \trungtinh. Để giải quyết bài toán này, chúng tôi kết hợp các kỹ thuật xử lý ngôn ngữ tự nhiên và học máy vào hệ thống xây dựng bộ phân loại cảm xúc trên câu.\\
 
-Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành rút trích 3 đặc trưng gồm có đặc trưng n-gram, đặc trưng chuyển đổi trạng thái và đặc trưng phủ định để xây dựng hệ thống phân tích tính phân cực cảm xúc. Đồng thời chúng tôi đề xuất kết hợp thêm đặc trưng SO-CAL vào hệ thống. Các thí nghiệm cho thấy đặc trưng SO-CAL giúp cải thiện đáng kể hiệu quả phân loại. Kết quả hệ thống chúng tôi xây dựng đạt độ chính xác $F=70.74\%$ trên tập dữ liệu 552 câu trích từ phần tóm tắt của các báo cáo y khoa. Từ kết quả đạt được, chúng tôi hy vọng đề tài sẽ cung cấp nhiều thông tin hữu ích cho các hệ thống hỗ trợ ra quyết định lâm sàng, và làm nền tảng cho các nghiên cứu sau này.
+Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành rút trích 3 đặc trưng gồm có đặc trưng N-gram, đặc trưng Chuyển đổi trạng thái và đặc trưng Phủ định để xây dựng hệ thống phân tích tính phân cực cảm xúc. Đồng thời chúng tôi đề xuất kết hợp thêm đặc trưng SO-CAL vào hệ thống. Các thí nghiệm cho thấy đặc trưng SO-CAL giúp cải thiện đáng kể hiệu quả phân loại. Kết quả hệ thống chúng tôi xây dựng đạt kết quả độ đo $F=70.74\%$ trên tập dữ liệu 552 câu trích từ phần tóm tắt của các báo cáo y khoa. Từ kết quả đạt được, chúng tôi hy vọng đề tài sẽ cung cấp nhiều thông tin hữu ích cho các hệ thống hỗ trợ ra quyết định lâm sàng, và làm nền tảng cho các nghiên cứu sau này.
 % START MAIN DOCUMENT
 
 \pagebreak
@@ -218,10 +242,13 @@ Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành r
 
 \thispagestyle{empty}
 \pagebreak
+\thispagestyle{empty}
 \listoffigures
+\thispagestyle{empty}
 \pagebreak
+\thispagestyle{empty}
 \listoftables
-
+\thispagestyle{empty}
 \pagebreak
 
 \import{sections/}{gioi-thieu.tex}
@@ -246,7 +273,4 @@ Dựa trên kết quả của \cite{niu2005analysis}, chúng tôi tiến hành r
 \pagebreak
 
 \printbibliography[title={Tài liệu tham khảo}]
-\pagebreak
-
-\section*{PHỤ LỤC (nếu có)}
 \end{document}
