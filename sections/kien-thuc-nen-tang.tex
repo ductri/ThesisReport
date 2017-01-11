@@ -164,10 +164,10 @@ Bước đầu tiên, cần tính $\overline{P}$. Gọi $P_i$ là tỉ lệ 2 ý
 $$P_i = \dfrac{\text{Số lượng tổ hợp 2 ý kiến phân loại đối tượng } i \text{ thuộc cùng 1 lớp}}{\text{Số lượng tổ hợp 2 ý kiến bất kỳ}}$$
 Mỗi đối tượng có chính xác $m$ ý kiến đánh giá, suy ra số lượng tổ hợp 2 ý kiến đánh giá cho 1 đối tượng bất kỳ là:
 \begin{equation}\label{eq:1}
-\binom m2=\Comb{m}{2}=\frac{m!}{2!(m-2)!} = \dfrac{m(m-1)}{2}
+\binom m2=\Comb{2}{m}=\frac{m!}{2!(m-2)!} = \dfrac{m(m-1)}{2}
 \end{equation}
 Tương tự, $x_{ij}$ là số lượng các ý kiến đánh giá đối tượng $i$ thuộc lớp $j$, suy ra số lượng tổ hợp 2 ý kiến bất kỳ đồng nhất đánh giá đối tượng $i$ thuộc lớp $j$ được tính bởi công thức:
-$$\binom {x_{ij}}2=\Comb{x_{ij}}{2}=\frac{x_{ij}!}{2!(x_{ij}-2)!} = \dfrac{x_{ij}(x_{ij}-1)}{2}$$
+$$\binom {x_{ij}}2=\Comb{2}{x_{ij}}=\frac{x_{ij}!}{2!(x_{ij}-2)!} = \dfrac{x_{ij}(x_{ij}-1)}{2}$$
 Từ đó, số lượng tổ hợp 2 ý kiến đánh giá đối tượng $i$ thuộc cùng 1 lớp là:
 \begin{equation}\label{eq:2}
 \sum_{j=1}^{k}\dfrac{x_{ij}(x_{ij}-1)}{2}

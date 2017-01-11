@@ -3,7 +3,7 @@
 Trong phần này chúng tôi sẽ đặc tả chi tiết yêu cầu bài toán và mô hình hóa phương pháp đề xuất để xây dựng hệ thống phân tích cảm xúc trong văn bản y khoa. Đồng thời chúng tôi cũng trình bày cụ thể các thành phần trong hệ thống và cách sử dụng các thành phần này để giải quyết bài toán.
 \pagebreak
 \section{Mô tả bài toán}
-Với đề tài "Phân tích cảm xúc trong văn bản y khoa", chúng tôi giải quyết bài toán cụ thể sau: Cho 1 câu thuộc báo cáo nghiên cứu trong lĩnh vực y khoa, xác định cực cảm xúc của câu là tích cực, tiêu cực hay trung tính. Đây là bài toán phân loại đa lớp. Chúng tôi mô hình hóa yêu cầu bài toán như Hình 4.1, trong đó:
+Với đề tài ``Phân tích cảm xúc trong văn bản y khoa'', chúng tôi giải quyết bài toán cụ thể sau: Cho 1 câu thuộc báo cáo nghiên cứu trong lĩnh vực y khoa, xác định cực cảm xúc của câu là tích cực, tiêu cực hay trung tính. Đây là bài toán phân loại đa lớp. Chúng tôi mô hình hóa yêu cầu bài toán như Hình 4.1, trong đó:
 \begin{itemize}[noitemsep]
 \item[•] Dữ liệu đầu vào là 1 câu trong bài báo nghiên cứu thuộc lĩnh vực y khoa.
 \item[•] Kết quả phân tích là cực cảm xúc của câu: \tichcuc, \tieucuc hoặc \trungtinh.
@@ -18,7 +18,7 @@ Cảm xúc mà bài toán đề cập trong luận án này được hiểu như
 \begin{itemize}
 \item[•] Câu được phân loại \textit{tích cực} là những câu thể hiện kết quả tốt hơn, cải thiện hơn hoặc kết quả tích cực vượt trội so với tổng thể dù vẫn có tác dụng phụ tiêu cực.\\
 \example{1}{\myquote{Patients subjectively reported significantly greater relief from symptoms with Debacterol than with Kenalog-in-Orabase or no treatment.}}
-\item[•]  Câu được phân loại\tieucuc là những câu thể hiện kết quả xấu, tệ hơn hoặc thể hiện phương pháp không đem lại hiệu quả.\\
+\item[•]  Câu được phân loại \tieucuc là những câu thể hiện kết quả xấu, tệ hơn hoặc thể hiện phương pháp không đem lại hiệu quả.\\
 \example{2}{\myquote{There is a suggestion that routine surgical interference may be harmful by increasing the risk of caesarean section, and this agrees with data from other trials.}}
 \item[•] Câu được phân loại \trungtinh là những câu không thể hiện kết quả, không có khẳng định tốt hay xấu; hoặc đồng thời nhiều ý kiến tốt xấu mà không có sự lất át rõ ràng.\\
 \example{3}{\myquote{Data extraction and analyses and quality assessment were conducted according to the Cochrane standards.}}
@@ -43,7 +43,7 @@ Cảm xúc mà bài toán đề cập trong luận án này được hiểu như
 \item[•] Loại bỏ từ dừng (\term{Stop words}): Các từ dừng là những từ có tần suất xuất hiện cao trong câu nhưng lại ít có ý nghĩa phân cực. Một số từ dừng thường gặp như it, I, you, then, \ldots
 \item[•] \term{Tokenization}: Sử dụng ký tự khoảng trắng để tách tách câu thành các token.
 \item[•] \term{Lemmatization:} biến đổi một từ về dạng gốc bằng cách tra cứu từ điển.  Điều này sẽ đảm bảo các từ như “goes“, “went” và “go” chắc chắn có kết quả trả về  như nhau, kể cả các danh từ như ``mouse'', ``mice'' cũng đều được đưa về cùng một dạng như nhau. Nhược điểm của phương pháp này là tốc độ xử lý khá chậm vì phải tra cứu trong cơ sở dữ liệu.
-\item[•] \term{Stemming} biến đổi một từ về dạng gốc bằng cách loại bỏ một số ký tự nằm ở cuối từ vì đó có thể là biến thể của từ. Ví dụ các từ như ``walked'', ``walking'', ``walks'' chỉ khác nhau ở những ký tự cuối cùng, bằng cách bỏ đi các hậu tố ``-ed'', ``-ing'', ``-s'' ta sẽ được từ gốc ``walk". Phương pháp này tuy có tốc độ xử lý nhanh nhưng thiếu chính xác ở chỗ: với những động từ bất quy tắc như ``went'' hay ``spoke'' thì kết quả sau xử lý không thể trả ra từ gốc ``go'' hay ``speak''. Vì vậy, bước này được thực hiện sau bước \term{lemmatization}.
+\item[•] \term{Stemming:} biến đổi một từ về dạng gốc bằng cách loại bỏ một số ký tự nằm ở cuối từ vì đó có thể là biến thể của từ. Ví dụ các từ như ``walked'', ``walking'', ``walks'' chỉ khác nhau ở những ký tự cuối cùng, bằng cách bỏ đi các hậu tố ``-ed'', ``-ing'', ``-s'' ta sẽ được từ gốc ``walk". Phương pháp này tuy có tốc độ xử lý nhanh nhưng thiếu chính xác ở chỗ: với những động từ bất quy tắc như ``went'' hay ``spoke'' thì kết quả sau xử lý không thể trả ra từ gốc ``go'' hay ``speak''. Vì vậy, bước này được thực hiện sau bước \term{lemmatization}.
 \end{itemize}
 \textbf{Rút trích đặc trưng:} Chúng tôi đề xuất sử dụng 4 đặc trưng: N-gram, Chuyển đổi trạng thái, Phủ định và SO-CAL được trình bày trong các Mục từ \ref{sec:ngram} đến \ref{sec:socal}. \\
 
@@ -51,7 +51,7 @@ Cảm xúc mà bài toán đề cập trong luận án này được hiểu như
 
 \textbf{Phân loại:} Sử dụng bộ phân loại đã được xây dựng, mỗi dữ liệu đầu vào được phân loại thuộc 1 trong 3 lớp: \tichcuc,\tieucuc, hoặc \trungtinh.\\
 
-\textbf{Đánh giá:}Chúng tôi đánh giá hiệu quả của bộ phân loại bằng tập dữ liệu kiểm tra.\\
+\textbf{Đánh giá:} Chúng tôi đánh giá hiệu quả của bộ phân loại bằng tập dữ liệu kiểm tra.\\
 
 Trong phần còn lại, chúng tôi trình bày các đặc trưng đề xuất theo cấu trúc 2 phần: Phần Mô tả trình bày ý tưởng, giới thiệu về đặc trưng, phần Rút trích trình bày cách sử dụng đặc trưng để có thể áp dụng vào hệ thống.
 
