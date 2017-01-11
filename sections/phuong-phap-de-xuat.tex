@@ -42,8 +42,8 @@ Cảm xúc mà bài toán đề cập trong luận án này được hiểu như
 \item[•] Thay tất cả chữ số trong câu bằng nhãn \term{DIGIT}.
 \item[•] Loại bỏ từ dừng (\term{Stop words}): Các từ dừng là những từ có tần suất xuất hiện cao trong câu nhưng lại ít có ý nghĩa phân cực. Một số từ dừng thường gặp như it, I, you, then, \ldots
 \item[•] \term{Tokenization}: Sử dụng ký tự khoảng trắng để tách tách câu thành các token.
-\item[•] \term{Lemmatization:} Trả về dạng gốc của một động từ. \term{Lemmatization} biến đổi một từ về dạng gốc bằng cách tra cứu từ điển.  Điều này sẽ đảm bảo các từ như “goes“, “went” và “go” chắc chắn có kết quả trả về  như nhau, kể cả các danh từ như ``mouse'', ``mice'' cũng đều được đưa về cùng một dạng như nhau. Nhược điểm của phương pháp này là tốc độ xử lý khá chậm vì phải tra cứu trong cơ sở dữ liệu.
-\item[•] \term{Stemming} Stemming: biến đổi một từ về dạng gốc bằng cách loại bỏ một số ký tự nằm ở cuối từ vì đó có thể là biến thể của từ. Ví dụ các từ như ``walked'', ``walking'', ``walks'' chỉ khác nhau ở những ký tự cuối cùng, bằng cách bỏ đi các hậu tố ``-ed'', ``-ing'', ``-s'' ta sẽ được từ gốc ``walk". Phương pháp này tuy có tốc độ xử lý nhanh nhưng thiếu chính xác ở chỗ: với những động từ bất quy tắc như ``went'' hay ``spoke'' thì kết quả sau xử lý không thể trả ra từ gốc ``go'' hay ``speak''. Vì vậy, bước này được thực hiện sau bước \term{lemmatization}.
+\item[•] \term{Lemmatization:} biến đổi một từ về dạng gốc bằng cách tra cứu từ điển.  Điều này sẽ đảm bảo các từ như “goes“, “went” và “go” chắc chắn có kết quả trả về  như nhau, kể cả các danh từ như ``mouse'', ``mice'' cũng đều được đưa về cùng một dạng như nhau. Nhược điểm của phương pháp này là tốc độ xử lý khá chậm vì phải tra cứu trong cơ sở dữ liệu.
+\item[•] \term{Stemming} biến đổi một từ về dạng gốc bằng cách loại bỏ một số ký tự nằm ở cuối từ vì đó có thể là biến thể của từ. Ví dụ các từ như ``walked'', ``walking'', ``walks'' chỉ khác nhau ở những ký tự cuối cùng, bằng cách bỏ đi các hậu tố ``-ed'', ``-ing'', ``-s'' ta sẽ được từ gốc ``walk". Phương pháp này tuy có tốc độ xử lý nhanh nhưng thiếu chính xác ở chỗ: với những động từ bất quy tắc như ``went'' hay ``spoke'' thì kết quả sau xử lý không thể trả ra từ gốc ``go'' hay ``speak''. Vì vậy, bước này được thực hiện sau bước \term{lemmatization}.
 \end{itemize}
 \textbf{Rút trích đặc trưng:} Chúng tôi đề xuất sử dụng 4 đặc trưng: N-gram, Chuyển đổi trạng thái, Phủ định và SO-CAL được trình bày trong các Mục từ \ref{sec:ngram} đến \ref{sec:socal}. \\
 
@@ -145,7 +145,7 @@ LESS: gồm những từ mang ý nghĩa làm giảm bớt, hạ bớt như ``red
 MORE: gồm những từ mang ý nghĩa làm tăng thêm, hoặc duy trì như ``enhance'', ``higher'', ``exceed'', ``increase'', ``improve'',\ldots
 \item[•]Nhóm xác định tính phân cực, gồm 2 nhóm:\\
 GOOD: gồm những từ mang ý nghĩa tích cực như ``benefit'', ``improvement'', ``advantage'', ``accuracy'', ``great'', \ldots\\
-BAD: gồm những từ mang ý nghĩa tiêu cực như ''suffer``, ''adverse``, ''hazards``, ''risk``, ''death``,\ldots
+BAD: gồm những từ mang ý nghĩa tiêu cực như ``suffer'', ``adverse'', ``hazards'', ``risk'', ``death'',\ldots
 \end{itemize}
 Danh sách các từ cho mỗi nhóm trên được chúng tôi tập hợp thủ công. Kết hợp 4 nhóm, ta có 4 mẫu (\term{pattern}) giúp mô tả những thay đổi tích cực hoặc tiêu cực như \refformat{Bảng~\ref{tab:changphrase}}.
 \example{}{
